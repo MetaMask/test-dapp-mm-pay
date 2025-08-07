@@ -14,9 +14,14 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
+    /* Path mapping */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+
     /* Linting */
     "strict": true,
-    "exactOptionalPropertyTypes": true,
     "noUncheckedIndexedAccess": true,
     "noErrorTruncation": true,
     "noUnusedLocals": true,

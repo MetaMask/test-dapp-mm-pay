@@ -33,6 +33,8 @@ module.exports = {
       },
       rules: {
         'import/unambiguous': 'off',
+        'import/no-nodejs-modules': 'off',
+        '@typescript-eslint/no-require-imports': 'off',
       },
     },
 

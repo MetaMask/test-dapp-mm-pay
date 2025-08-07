@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "add-component": "npx shadcn@latest add",
     "build": "tsc && vite build",
     "dev": "vite",
     "lint": "yarn lint:eslint && yarn lint:misc --check",
@@ -25,8 +26,15 @@
     ]
   },
   "dependencies": {
+    "@radix-ui/react-dropdown-menu": "^2.1.15",
+    "@radix-ui/react-slot": "^1.2.3",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.537.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@metamask/eslint-config": "^12.2.0",
