@@ -1,5 +1,8 @@
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+
 import { ModeToggle } from '@/components/mode-toggle';
 import { MockSwap } from '@/components/mock-swap';
+import { Providers } from '@/components/providers';
 import { ThemeProvider } from '@/components/theme-provider';
 import type { Token } from '@/types/swap';
 
@@ -44,20 +47,23 @@ const mockTokens: Token[] = [
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <div className="min-h-screen bg-background">
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex justify-end mb-4">
-            <ModeToggle />
-          </div>
-          <div className="flex flex-col items-center space-y-8">
-            <h1 className="text-4xl font-bold text-center">
-              MetaMask Pay DApp
-            </h1>
+      <Providers>
+        <div className="min-h-screen bg-background">
+          <div className="container mx-auto px-4 py-8">
+            <div className="flex justify-end items-center mb-4 gap-2">
+              <ConnectButton />
+              <ModeToggle />
+            </div>
+            <div className="flex flex-col items-center space-y-8">
+              <h1 className="text-4xl font-bold text-center">
+                MetaMask Pay DApp
+              </h1>
 
-            <MockSwap tokens={mockTokens} />
+              <MockSwap tokens={mockTokens} />
+            </div>
           </div>
         </div>
-      </div>
+      </Providers>
     </ThemeProvider>
   );
 }
