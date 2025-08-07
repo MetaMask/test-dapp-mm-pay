@@ -27,7 +27,7 @@ module.exports = {
     },
 
     {
-      files: ['vite.config.ts', 'tailwind.config.js', 'postcss.config.js'],
+      files: ['vite.config.ts', 'tailwind.config.ts', 'postcss.config.js'],
       parserOptions: {
         sourceType: 'module',
       },
@@ -54,7 +54,7 @@ module.exports = {
 
   ignorePatterns: [
     '.eslintrc.cjs',
-    '!.prettierrc.js',
+    '.prettierrc.json',
     'build/',
     'dist/',
     'docs/',
