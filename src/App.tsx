@@ -1,13 +1,45 @@
 import { ModeToggle } from '@/components/mode-toggle';
+import { MockSwap } from '@/components/mock-swap';
 import { ThemeProvider } from '@/components/theme-provider';
-import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import type { Token } from '@/types/swap';
+
+// Mock token data
+const mockTokens: Token[] = [
+  {
+    id: 'eth',
+    symbol: 'ETH',
+    name: 'Ethereum',
+    decimals: 18,
+    logoURI: 'https://assets.coingecko.com/coins/images/279/small/ethereum.png',
+    balance: '2.5',
+  },
+  {
+    id: 'usdc',
+    symbol: 'USDC',
+    name: 'USD Coin',
+    decimals: 6,
+    logoURI:
+      'https://assets.coingecko.com/coins/images/6319/small/USD_Coin_icon.png',
+    balance: '1000.0',
+  },
+  {
+    id: 'usdt',
+    symbol: 'USDT',
+    name: 'Tether USD',
+    decimals: 6,
+    logoURI: 'https://assets.coingecko.com/coins/images/325/small/Tether.png',
+    balance: '500.0',
+  },
+  {
+    id: 'wbtc',
+    symbol: 'WBTC',
+    name: 'Wrapped Bitcoin',
+    decimals: 8,
+    logoURI:
+      'https://assets.coingecko.com/coins/images/7598/small/wrapped_bitcoin_wbtc.png',
+    balance: '0.1',
+  },
+];
 
 function App() {
   return (
@@ -22,23 +54,7 @@ function App() {
               MetaMask Pay DApp
             </h1>
 
-            <Card className="w-full max-w-md">
-              <CardHeader>
-                <CardTitle>Welcome to MetaMask Pay</CardTitle>
-                <CardDescription>
-                  A modern payment solution built with React, TypeScript, and
-                  shadcn/ui
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-col space-y-4">
-                  <Button className="w-full">Connect Wallet</Button>
-                  <Button variant="outline" className="w-full">
-                    Learn More
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+            <MockSwap tokens={mockTokens} />
           </div>
         </div>
       </div>
