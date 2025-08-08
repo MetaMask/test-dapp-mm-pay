@@ -1,7 +1,7 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 import { ModeToggle } from '@/components/mode-toggle';
-import { MockSwap } from '@/components/mock-swap';
+import { MockSwap } from '@/components/swaps/mock-swap';
 import { Providers } from '@/components/providers';
 import { ThemeProvider } from '@/components/theme-provider';
 import type { Token } from '@/types/swap';
