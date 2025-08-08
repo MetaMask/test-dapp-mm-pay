@@ -1,0 +1,71 @@
+# MetaMask Pay DApp - Cursor Rules
+
+## Development Guidelines
+
+### 1. Documentation First
+
+- Always prioritize reading documentation for libraries and packages before implementation
+- Consult official docs, GitHub READMEs, API references and official example repositories before making assumptions
+- When using new libraries or unfamiliar APIs, search for and reference their documentation
+
+### 2. Development Server
+
+- DO NOT start a development server regardless of changes made
+- A dev server is already running locally on port 5173
+- Never run `npm run dev`, `yarn dev`, or similar commands
+
+### 3. JSDoc Documentation
+
+- Write JSDoc descriptions for EVERY function and component created
+- Include parameter descriptions, return types, and examples where helpful
+- Format JSDoc comments properly with `@param`, `@returns`, `@example` tags as needed
+
+Example:
+
+```typescript
+/**
+ * Swaps tokens using the specified protocol
+ * @param fromToken - The token to swap from
+ * @param toToken - The token to swap to
+ * @param amount - The amount to swap in wei
+ * @returns Promise resolving to the swap transaction hash
+ * @example
+ * const txHash = await swapTokens(USDC, ETH, parseEther("100"));
+ */
+```
+
+### 4. Constants Organization
+
+- Isolate constants in dedicated constants files instead of component files
+- Don't mix unrelated constants in the same file
+- Create separate constant files by domain/feature (e.g., `tokenConstants.ts`, `swapConstants.ts`)
+- Place constants files in appropriate directories (e.g., `src/constants/`)
+
+### 5. Code Comments
+
+- Only add comments that succinctly describe what the code is doing
+- Prioritize comments for long functions with complex logic
+- For multi-step functions, add comments highlighting each major step
+- Variable names should be descriptive enough to minimize need for comments
+- Avoid obvious comments that just restate what the code clearly does
+- Don't add comments based on conversation context or that reference prompts that wouldn't make sense without context
+
+### 6. Blockchain Library Preferences
+
+- Prefer using viem/wagmi for all chain operations, formatting utilities, and contract interactions
+- If a package has an ethers dependency, it's fine to use ethers where strictly necessary
+- Still prefer viem/wagmi for everything else even when ethers is present in the project
+
+## File Structure Preferences
+
+- Use absolute imports where possible
+- Keep components focused and single-responsibility
+- Separate business logic from UI components
+- Use TypeScript strictly - no `any` types without justification
+
+## Code Quality
+
+- Follow existing code style and patterns in the project
+- Use proper TypeScript types
+- Implement error handling appropriately
+- Write clean, readable code with meaningful variable names
