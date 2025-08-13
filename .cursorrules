@@ -17,8 +17,8 @@
 ### 3. JSDoc Documentation
 
 - Write JSDoc descriptions for EVERY function and component created
-- Include parameter descriptions, return types, and examples where helpful
-- Format JSDoc comments properly with `@param`, `@returns`, `@example` tags as needed
+- Include parameter descriptions and return types where helpful
+- Format JSDoc comments properly with `@param` and `@returns` tags as needed
 
 Example:
 
@@ -29,8 +29,6 @@ Example:
  * @param toToken - The token to swap to
  * @param amount - The amount to swap in wei
  * @returns Promise resolving to the swap transaction hash
- * @example
- * const txHash = await swapTokens(USDC, ETH, parseEther("100"));
  */
 ```
 

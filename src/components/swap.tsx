@@ -1,4 +1,4 @@
-import { ArrowUpDown, RefreshCw } from 'lucide-react';
+import { RefreshCw } from 'lucide-react';
 import { useEffect } from 'react';
 
 import { TokenSelector } from '@/components/token-selector';
@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Skeleton } from '@/components/ui/skeleton';
+import { trimNumber } from '@/lib/utils';
 import type { SwapComponentProps } from '@/types/swap';
 
 export function Swap({
@@ -15,6 +16,8 @@ export function Swap({
   quote,
   isLoading = false,
   isSwapping = false,
+  isApproving = false,
+  hasSufficientAllowance,
   callbacks,
   disabled = false,
 }: SwapComponentProps) {
@@ -22,18 +25,26 @@ export function Swap({
   const {
     onTokenSelect,
     onAmountChange,
-    onSwapTokens,
     onSwap,
     onQuoteRequest,
     onMaxAmount,
+    onApprove,
   } = callbacks;
 
   // Request quote when inputs change
   useEffect(() => {
-    if (fromToken && toToken && fromAmount && parseFloat(fromAmount) > 0) {
+    if (
+      onQuoteRequest &&
+      fromToken &&
+      toToken &&
+      fromAmount &&
+      parseFloat(fromAmount) > 0
+    ) {
       onQuoteRequest(fromToken, toToken, fromAmount);
     }
-  }, [fromToken, toToken, fromAmount]);
+  }, [onQuoteRequest, fromToken, toToken, fromAmount]);
+
+  const isEthSwap = fromToken?.symbol === 'ETH' || !fromToken?.address;
 
   const canSwap =
     fromToken &&
@@ -41,11 +52,28 @@ export function Swap({
     fromAmount &&
     parseFloat(fromAmount) > 0 &&
     !isLoading &&
-    !disabled;
+    !disabled &&
+    (isEthSwap || hasSufficientAllowance);
+
+  const needsApproval =
+    fromToken &&
+    toToken &&
+    fromAmount &&
+    parseFloat(fromAmount) > 0 &&
+    !isLoading &&
+    !disabled &&
+    !isEthSwap &&
+    !hasSufficientAllowance;
 
   const handleSwap = () => {
     if (canSwap) {
       onSwap(swapData);
+    }
+  };
+
+  const handleApprove = () => {
+    if (needsApproval && onApprove && fromToken && fromAmount) {
+      onApprove(fromToken, fromAmount);
     }
   };
 
@@ -133,7 +161,7 @@ export function Swap({
                 id="to-amount"
                 type="number"
                 placeholder="0.0"
-                value={toAmount}
+                value={trimNumber(toAmount)}
                 onChange={(event) => onAmountChange(event.target.value, 'to')}
                 disabled={disabled}
               />
@@ -141,7 +169,7 @@ export function Swap({
           </div>
           {toToken?.balance && (
             <p className="text-xs text-muted-foreground">
-              Balance: {parseFloat(toToken.balance).toFixed(4)} {toToken.symbol}
+              Balance: {trimNumber(toToken.balance)} {toToken.symbol}
             </p>
           )}
         </div>
@@ -152,7 +180,8 @@ export function Swap({
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Exchange Rate</span>
               <span>
-                1 {fromToken.symbol} = {quote.exchangeRate} {toToken.symbol}
+                1 {fromToken.symbol} = {trimNumber(quote.exchangeRate)}{' '}
+                {toToken.symbol}
               </span>
             </div>
             <div className="flex justify-between text-sm">
@@ -175,13 +204,15 @@ export function Swap({
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Minimum Received</span>
               <span>
-                {quote.minimumReceived} {toToken.symbol}
+                {trimNumber(quote.minimumReceived)} {toToken.symbol}
               </span>
             </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Network Fee</span>
-              <span>{quote.fee}</span>
-            </div>
+            {quote.fee && (
+              <div className="flex justify-between text-sm">
+                <span className="text-muted-foreground">Network Fee</span>
+                <span>{quote.fee}</span>
+              </div>
+            )}
           </div>
         )}
 
@@ -199,31 +230,63 @@ export function Swap({
           </div>
         )}
 
-        {/* Swap Button */}
-        <Button
-          onClick={handleSwap}
-          disabled={!canSwap || isSwapping}
-          className="w-full"
-          size="lg"
-        >
-          {(() => {
-            if (isSwapping) {
-              return (
-                <div className="flex items-center gap-2">
-                  <RefreshCw className="h-4 w-4 animate-spin" />
-                  Swapping...
-                </div>
-              );
-            }
-            if (!fromToken || !toToken) {
-              return 'Select a token';
-            }
-            if (!fromAmount || parseFloat(fromAmount) === 0) {
-              return 'Enter an amount';
-            }
-            return `Swap ${fromToken.symbol} for ${toToken.symbol}`;
-          })()}
-        </Button>
+        {/* Approval Status */}
+        {fromToken && fromAmount && !isEthSwap && !hasSufficientAllowance && (
+          <div className="rounded-lg border bg-muted/50 p-3 space-y-2">
+            <div className="flex justify-between text-sm">
+              <span className="text-muted-foreground">Token Approval</span>
+              <span className={'text-yellow-600'}>Approval Required</span>
+            </div>
+          </div>
+        )}
+
+        {/* Approval Button */}
+        {needsApproval ? (
+          <Button
+            onClick={handleApprove}
+            disabled={isApproving || disabled}
+            className="w-full"
+            size="lg"
+          >
+            {isApproving ? (
+              <div className="flex items-center gap-2">
+                <RefreshCw className="h-4 w-4 animate-spin" />
+                Approving...
+              </div>
+            ) : (
+              `Approve ${fromToken.symbol}`
+            )}
+          </Button>
+        ) : (
+          // Swap Button
+          <Button
+            onClick={handleSwap}
+            disabled={!canSwap}
+            className="w-full"
+            size="lg"
+          >
+            {(() => {
+              if (isSwapping) {
+                return (
+                  <div className="flex items-center gap-2">
+                    <RefreshCw className="h-4 w-4 animate-spin" />
+                    Swapping...
+                  </div>
+                );
+              }
+              if (!fromToken || !toToken) {
+                return 'Select a token';
+              }
+              if (!fromAmount || parseFloat(fromAmount) === 0) {
+                return 'Enter an amount';
+              }
+              if (needsApproval) {
+                return `Approve ${fromToken.symbol} first`;
+              }
+              return `Swap ${fromToken.symbol} for ${toToken.symbol}`;
+            })()}
+          </Button>
+        )}
       </CardContent>
     </Card>
   );

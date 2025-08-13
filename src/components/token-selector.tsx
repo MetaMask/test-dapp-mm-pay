@@ -5,6 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { trimNumber } from '@/lib/utils';
 import type { Token } from '@/types/swap';
 
 type TokenSelectorProps = {
@@ -53,7 +54,10 @@ export function TokenSelector({
       </SelectTrigger>
       <SelectContent>
         {tokens.map((token) => (
-          <SelectItem key={token.id} value={token.id}>
+          <SelectItem
+            key={token.id}
+            value={token.id ?? token.symbol.toLowerCase()}
+          >
             <div className="flex items-center gap-2">
               {token.logoURI && (
                 <img
@@ -68,9 +72,9 @@ export function TokenSelector({
                   {token.name}
                 </span>
               </div>
-              {token.balance && (
+              {token.balance && parseFloat(token.balance) > 0 && (
                 <span className="ml-auto text-xs text-muted-foreground">
-                  {parseFloat(token.balance).toFixed(4)}
+                  {trimNumber(token.balance)}
                 </span>
               )}
             </div>

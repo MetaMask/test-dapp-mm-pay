@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/consistent-type-definitions */
+// eslint-disable-next-line spaced-comment
 /// <reference types="vite/client" />
 
 declare global {

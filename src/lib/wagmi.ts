@@ -1,14 +1,32 @@
 import { getDefaultConfig } from '@rainbow-me/rainbowkit';
-import { arbitrum, base, mainnet } from 'wagmi/chains';
+import type { Chain, Transport } from 'viem';
 import { http } from 'wagmi';
+import { arbitrum, base, mainnet } from 'wagmi/chains';
 
-const INFURA_KEY = import.meta.env.VITE_INFURA_KEY;
+const INFURA_KEY: string = import.meta.env.VITE_INFURA_KEY;
 
-const transports = {
-  [mainnet.id]: http(`https://mainnet.infura.io/v3/${INFURA_KEY}`),
-  [arbitrum.id]: http(`https://arbitrum-mainnet.infura.io/v3/${INFURA_KEY}`),
-  [base.id]: http(`https://base-mainnet.infura.io/v3/${INFURA_KEY}`),
-};
+const CONFIGS: { chain: Chain; rpcUrl: string }[] = [
+  {
+    chain: mainnet,
+    rpcUrl: `https://mainnet.infura.io/v3/${INFURA_KEY}`,
+  },
+  {
+    chain: arbitrum,
+    rpcUrl: `https://arbitrum-mainnet.infura.io/v3/${INFURA_KEY}`,
+  },
+  {
+    chain: base,
+    rpcUrl: `https://base-mainnet.infura.io/v3/${INFURA_KEY}`,
+  },
+];
+
+const transports = CONFIGS.reduce<Record<number, Transport>>(
+  (acc, chainConfig) => {
+    acc[chainConfig.chain.id] = http(chainConfig.rpcUrl);
+    return acc;
+  },
+  {},
+);
 
 export const config = getDefaultConfig({
   appName: 'MetaMask Pay DApp',

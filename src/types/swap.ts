@@ -1,10 +1,10 @@
 export type Token = {
-  id: string;
+  id?: string;
   symbol: string;
   name: string;
   decimals: number;
+  address: string;
   logoURI?: string;
-  address?: string;
   balance?: string;
 };
 
@@ -14,7 +14,7 @@ export type SwapQuote = {
   exchangeRate: string;
   priceImpact: string;
   minimumReceived: string;
-  fee: string;
+  fee?: string;
   route?: string[];
 };
 
@@ -31,8 +31,9 @@ export type SwapCallbacks = {
   onAmountChange: (amount: string, field: 'from' | 'to') => void;
   onSwapTokens: () => void;
   onSwap: (swapData: SwapFormData) => void;
-  onQuoteRequest: (fromToken: Token, toToken: Token, amount: string) => void;
+  onQuoteRequest?: (fromToken: Token, toToken: Token, amount: string) => void;
   onMaxAmount: () => void;
+  onApprove?: (fromToken: Token, amount: string) => void;
 };
 
 export type SwapComponentProps = {
@@ -41,6 +42,8 @@ export type SwapComponentProps = {
   quote?: SwapQuote | null;
   isLoading?: boolean;
   isSwapping?: boolean;
+  isApproving?: boolean;
+  hasSufficientAllowance?: boolean;
   callbacks: SwapCallbacks;
   disabled?: boolean;
 };
