@@ -1,7 +1,7 @@
 import { RefreshCw } from 'lucide-react';
 import { useEffect } from 'react';
 
-import { TokenSelector } from '@/components/token-selector';
+import { TokenSelector } from '@/components/swap/token-selector';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';

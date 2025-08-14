@@ -1,9 +1,10 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 import { ModeToggle } from '@/components/mode-toggle';
+import { NFTMinter } from '@/components/nft/nft-minter';
 import { Providers } from '@/components/providers';
+import { UniswapSwap } from '@/components/swap/uniswap-swap';
 import { ThemeProvider } from '@/components/theme-provider';
-import { UniswapSwap } from '@/components/uniswap-swap';
 
 function App() {
   return (
@@ -22,9 +23,19 @@ function App() {
               </div>
             </div>
             <div className="flex flex-col items-center space-y-8">
-              <div className="flex justify-center">
-                <div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full max-w-6xl">
+                <div className="flex justify-center">
                   <UniswapSwap />
+                </div>
+                <div className="flex justify-center">
+                  <NFTMinter
+                    contractAddress="0x097fF9Cf279Dab00080310490A9e6DeEF52C404a"
+                    collectionName="Metamask Pay Test NFT"
+                    collectionDescription="Test NFT collection"
+                    collectionImage=""
+                    mintFunctionName="mint"
+                    priceFunctionName="mintPrice"
+                  />
                 </div>
               </div>
             </div>

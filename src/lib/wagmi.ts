@@ -1,7 +1,7 @@
 import { getDefaultConfig } from '@rainbow-me/rainbowkit';
 import type { Chain, Transport } from 'viem';
 import { http } from 'wagmi';
-import { arbitrum, base, mainnet } from 'wagmi/chains';
+import { arbitrum, base, baseSepolia, mainnet } from 'wagmi/chains';
 
 const INFURA_KEY: string = import.meta.env.VITE_INFURA_KEY;
 
@@ -18,6 +18,10 @@ const CONFIGS: { chain: Chain; rpcUrl: string }[] = [
     chain: base,
     rpcUrl: `https://base-mainnet.infura.io/v3/${INFURA_KEY}`,
   },
+  {
+    chain: baseSepolia,
+    rpcUrl: `https://base-sepolia.infura.io/v3/${INFURA_KEY}`,
+  },
 ];
 
 const transports = CONFIGS.reduce<Record<number, Transport>>(
@@ -31,7 +35,7 @@ const transports = CONFIGS.reduce<Record<number, Transport>>(
 export const config = getDefaultConfig({
   appName: 'MetaMask Pay DApp',
   projectId: 'demo-project-id',
-  chains: [mainnet, base, arbitrum],
+  chains: [mainnet, base, arbitrum, baseSepolia],
   transports,
   ssr: false, // Since this is a client-side app
 });

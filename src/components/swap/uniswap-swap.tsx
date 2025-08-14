@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect, useMemo } from 'react';
 import { type Address, formatUnits, parseUnits } from 'viem';
 import { useAccount, useBalance, useChainId } from 'wagmi';
 
-import { Swap } from '@/components/swap';
+import { Swap } from '@/components/swap/swap';
 import { useTokenAllowance } from '@/hooks/use-token-allowance';
 import { useUniswap } from '@/hooks/use-uniswap';
 import {
