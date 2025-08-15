@@ -4,7 +4,7 @@ import { NFT } from '@/components/nft/nft';
 import { useNFT } from '@/hooks/use-nft';
 
 type NFTMinterProps = {
-  contractAddress: Address;
+  contractAddress?: Address;
   collectionName?: string;
   collectionSymbol?: string;
   collectionDescription?: string;
@@ -13,14 +13,24 @@ type NFTMinterProps = {
   priceFunctionName?: string;
 };
 
+const defaultProps = {
+  contractAddress: '0x097fF9Cf279Dab00080310490A9e6DeEF52C404a' as Address,
+  collectionName: 'Metamask Pay Test NFT',
+  collectionSymbol: 'MMP-TST-NFT',
+  collectionDescription: 'Test NFT collection',
+  collectionImage: '',
+  mintFunctionName: 'mint',
+  priceFunctionName: 'mintPrice',
+};
+
 export function NFTMinter({
-  contractAddress,
-  collectionName,
-  collectionSymbol,
-  collectionDescription,
-  collectionImage,
-  mintFunctionName = 'mint',
-  priceFunctionName = 'mintPrice',
+  contractAddress = defaultProps.contractAddress,
+  collectionName = defaultProps.collectionName,
+  collectionSymbol = defaultProps.collectionSymbol,
+  collectionDescription = defaultProps.collectionDescription,
+  collectionImage = defaultProps.collectionImage,
+  mintFunctionName = defaultProps.mintFunctionName,
+  priceFunctionName = defaultProps.priceFunctionName,
 }: NFTMinterProps) {
   const {
     collections,
@@ -51,8 +61,8 @@ export function NFTMinter({
 
   if (!isConnected) {
     return (
-      <div className="w-full max-w-md mx-auto p-8 text-center">
-        <h3 className="text-lg font-semibold mb-2">Connect Your Wallet</h3>
+      <div className="mx-auto w-full max-w-md p-8 text-center">
+        <h3 className="mb-2 text-lg font-semibold">Connect Your Wallet</h3>
         <p className="text-muted-foreground">
           Please connect your wallet to mint NFTs
         </p>
@@ -62,8 +72,8 @@ export function NFTMinter({
 
   if (collections.length === 0) {
     return (
-      <div className="w-full max-w-md mx-auto p-8 text-center">
-        <h3 className="text-lg font-semibold mb-2">Loading Collection...</h3>
+      <div className="mx-auto w-full max-w-md p-8 text-center">
+        <h3 className="mb-2 text-lg font-semibold">Loading Collection...</h3>
         <p className="text-muted-foreground">
           Reading contract data from {contractAddress}
         </p>
@@ -75,11 +85,11 @@ export function NFTMinter({
     <div className="space-y-4">
       <div className="text-center">
         {mintSuccess && mintTxHash && (
-          <p className="text-xs text-green-600 mt-2">
+          <p className="mt-2 text-xs text-green-600">
             Mint successful! Tx: {mintTxHash.slice(0, 10)}...
           </p>
         )}
-        {error && <p className="text-xs text-red-600 mt-2">Error: {error}</p>}
+        {error && <p className="mt-2 text-xs text-red-600">Error: {error}</p>}
       </div>
 
       <NFT
