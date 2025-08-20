@@ -39,7 +39,7 @@ export type MintStatus = {
   isEligible: boolean;
   reason?: string;
   maxMintPerAddress?: number;
-  currentMintCount?: number;
+  currentMintCount?: number | string;
 };
 
 export type NFTFormData = {

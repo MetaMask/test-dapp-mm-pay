@@ -48,7 +48,7 @@ export function UniswapSwap() {
     : 0n;
 
   const { approve, hasAllowance, isApproving } = useTokenAllowance(
-    getUniswapSwapRouterAddress(chainId) as Address,
+    getUniswapSwapRouterAddress(chainId),
     swapData.fromToken?.address as Address,
     fromAmount,
   );
@@ -182,8 +182,8 @@ export function UniswapSwap() {
 
   if (!isConnected) {
     return (
-      <div className="w-full max-w-md mx-auto p-8 text-center">
-        <h3 className="text-lg font-semibold mb-2">Connect Your Wallet</h3>
+      <div className="mx-auto w-full max-w-md p-8 text-center">
+        <h3 className="mb-2 text-lg font-semibold">Connect Your Wallet</h3>
         <p className="text-muted-foreground">
           Please connect your wallet to use Uniswap swaps
         </p>
@@ -193,8 +193,8 @@ export function UniswapSwap() {
 
   if (!isUniswapV3Supported(chainId)) {
     return (
-      <div className="w-full max-w-md mx-auto p-8 text-center">
-        <h3 className="text-lg font-semibold mb-2">
+      <div className="mx-auto w-full max-w-md p-8 text-center">
+        <h3 className="mb-2 text-lg font-semibold">
           Uniswap V3 is not supported on this chain
         </h3>
         <p className="text-muted-foreground">Please use a different chain</p>

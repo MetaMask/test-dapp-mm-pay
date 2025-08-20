@@ -1,3 +1,4 @@
+import type { RuntimeValue } from '@biconomy/abstractjs';
 import { useQuery } from '@tanstack/react-query';
 import { CurrencyAmount, TradeType } from '@uniswap/sdk-core';
 import IUniswapV3PoolABI from '@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Pool.sol/IUniswapV3Pool.json';
@@ -77,6 +78,9 @@ export function useUniswap(params: UseUniswapParams) {
   const publicClient = usePublicClient({ chainId });
   const { data: walletClient } = useWalletClient({ chainId });
 
+  const hasSufficientBalance =
+    fromToken && parseFloat(amount) > parseFloat(fromToken.balance ?? '0');
+
   // Swap transaction handlers
   const { data: hash, ...swapCall } = useWriteContract();
   const receipt = useWaitForTransactionReceipt({ hash });
@@ -98,7 +102,14 @@ export function useUniswap(params: UseUniswapParams) {
     isSuccess: isQuoteReady,
     error: quoteError,
   } = useQuery<QuoteResult>({
-    queryKey: ['quote', fromToken?.symbol, toToken?.symbol, amount, chainId],
+    queryKey: [
+      'quote',
+      fromToken?.symbol,
+      toToken?.symbol,
+      amount.toString(),
+      chainId,
+    ],
+    enabled: Boolean(hasRequiredParams && publicClient),
     queryFn: async () => {
       const quoterContractAddress = getUniswapQuoterAddress(chainId);
       const poolFactoryContractAddress = getUniswapFactoryAddress(chainId);
@@ -144,7 +155,7 @@ export function useUniswap(params: UseUniswapParams) {
 
       const quoteCall = await publicClient.simulateContract({
         account: account as Address,
-        address: quoterContractAddress as Address,
+        address: quoterContractAddress,
         abi: QuoterV2.abi,
         functionName: 'quoteExactInputSingle',
         args: [
@@ -216,7 +227,6 @@ export function useUniswap(params: UseUniswapParams) {
         },
       };
     },
-    enabled: Boolean(hasRequiredParams && publicClient),
   });
 
   if (quoteError) {
@@ -242,7 +252,7 @@ export function useUniswap(params: UseUniswapParams) {
 
     swapCall.writeContract({
       abi: SWAP_ROUTER_ABI,
-      address: swapRouterAddress as Address,
+      address: swapRouterAddress,
       functionName: 'exactInputSingle',
       args: [
         {
@@ -284,6 +294,7 @@ export function useUniswap(params: UseUniswapParams) {
     hasTransactionSucceeded: receipt.isSuccess,
     isWaitingUserConfirmation,
     isWaitingChainConfirmation,
+    hasSufficientBalance,
   };
 }
 
@@ -315,5 +326,35 @@ function calculateSlippage(
     minimumReceivedDecimal: formatUnits(minimumReceived, tokenDecimals),
     slippageAmountDecimal: formatUnits(slippageAmount, tokenDecimals),
     slippagePercent,
+  };
+}
+
+export function prepareUniswapSwapTransaction(
+  params: Omit<UseUniswapParams, 'amount'> & {
+    minimumReceivedWei: bigint;
+    recipient: Address;
+    amount: bigint | RuntimeValue;
+  },
+) {
+  const { fromToken, toToken, amount, chainId } = params;
+  if (!fromToken || !toToken) {
+    throw new Error('Missing required parameters for quote');
+  }
+
+  return {
+    abi: SWAP_ROUTER_ABI,
+    address: getUniswapSwapRouterAddress(chainId),
+    functionName: 'exactInputSingle',
+    args: [
+      {
+        tokenIn: fromToken.address as Address,
+        tokenOut: toToken.address as Address,
+        fee: FeeAmount.MEDIUM,
+        recipient: params.recipient,
+        amountIn: amount,
+        amountOutMinimum: params.minimumReceivedWei,
+        sqrtPriceLimitX96: 0n,
+      },
+    ],
   };
 }

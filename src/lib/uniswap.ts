@@ -1,5 +1,5 @@
 import { SWAP_ROUTER_02_ADDRESSES, Token as UniToken } from '@uniswap/sdk-core';
-import { zeroAddress } from 'viem';
+import { type Address, isAddress, zeroAddress } from 'viem';
 
 import { COMMON_TOKENS } from '@/constants/tokens';
 import {
@@ -15,25 +15,25 @@ export function isUniswapV3Supported(chainId: number): boolean {
   );
 }
 
-export function getUniswapFactoryAddress(chainId: number): string {
+export function getUniswapFactoryAddress(chainId: number): Address {
   const address = UNISWAP_V3_FACTORY_ADDRESSES[chainId];
-  if (!address) {
+  if (!address || !isAddress(address)) {
     throw new Error(`Uniswap V3 Factory not found on chain ${chainId}`);
   }
   return address;
 }
 
-export function getUniswapQuoterAddress(chainId: number): string {
+export function getUniswapQuoterAddress(chainId: number): Address {
   const address = QUOTER_V2_ADDRESSES[chainId];
-  if (!address) {
+  if (!address || !isAddress(address)) {
     throw new Error(`Uniswap V3 Quoter not found on chain ${chainId}`);
   }
   return address;
 }
 
-export function getUniswapSwapRouterAddress(chainId: number): string {
+export function getUniswapSwapRouterAddress(chainId: number): Address {
   const address = SWAP_ROUTER_02_ADDRESSES(chainId);
-  if (!address) {
+  if (!address || !isAddress(address)) {
     throw new Error(`SwapRouter not found on chain ${chainId}`);
   }
   return address;
@@ -91,6 +91,13 @@ export function getTokensForChain(chainId: number): Token[] {
   return tokenList;
 }
 
-function getTokenLogo(token: Pick<Token, 'address'>, chainId: number) {
+export function getTokenLogo(
+  token: Pick<Token, 'address'> | null,
+  chainId: number,
+) {
+  if (!token) {
+    return '';
+  }
+
   return `https://raw.githubusercontent.com/SmolDapp/tokenAssets/main/tokens/${chainId}/${token.address.toLowerCase()}/logo-128.png`;
 }

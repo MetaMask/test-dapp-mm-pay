@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NFT_CONTRACTS } from '@/constants/nft';
 import type { NFTMetadata, NFT } from '@/types/nft';
 
@@ -11,10 +12,12 @@ export function getNFTContractAddress(chainId: number) {
 
 /**
  * Fetches NFT metadata from a tokenURI
- * @param tokenURI - The URI to fetch metadata from
+ * @param _tokenURI - The URI to fetch metadata from
  * @returns Promise resolving to NFT metadata
  */
-export async function fetchNFTMetadata(tokenURI: string): Promise<NFTMetadata> {
+export async function fetchNFTMetadata(
+  _tokenURI: string,
+): Promise<NFTMetadata> {
   try {
     // Handle IPFS URIs
     // let fetchURI = tokenURI;

@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import { useState, useCallback, useEffect, useMemo } from 'react';
 import type { Address } from 'viem';
 import { formatEther, getContract } from 'viem';
@@ -10,7 +11,6 @@ import {
   usePublicClient,
 } from 'wagmi';
 
-import { useQuery } from '@tanstack/react-query';
 import { ERC721_ABI } from '@/abis/erc721-abi';
 import { DEFAULT_NFT_IMAGE } from '@/constants/nft';
 import { buildNFT } from '@/lib/nft';
@@ -51,14 +51,13 @@ export function useNFT({
   const {
     data: contractData,
     isLoading,
-    error: contractError,
     refetch: refetchContractData,
   } = useQuery({
     queryKey: ['user-nfts', contractAddress, address, chainId],
     enabled: Boolean(address && publicClient),
     queryFn: async () => {
       if (!address) {
-        return;
+        return undefined;
       }
 
       const contract = getContract({
@@ -242,8 +241,8 @@ export function useNFT({
       }
 
       setUserNFTs(nfts);
-    } catch (err) {
-      console.error('Error fetching user NFTs:', err);
+    } catch (fetchNftError) {
+      console.error('Error fetching user NFTs:', fetchNftError);
       setError('Failed to fetch your NFTs');
     } finally {
       setIsLoadingUserNFTs(false);
@@ -255,9 +254,9 @@ export function useNFT({
    * @param mintData - The mint data containing collection and quantity
    */
   const handleMint = useCallback(
-    (mintData: NFTFormData) => {
+    (submitMintData: NFTFormData) => {
       if (
-        !mintData.collection ||
+        !submitMintData.collection ||
         !address ||
         !isConnected ||
         !mintStatus?.isEligible
@@ -270,13 +269,14 @@ export function useNFT({
       setError(null);
 
       const totalCost =
-        BigInt(mintData.collection.mintPrice) * BigInt(mintData.mintQuantity);
+        BigInt(submitMintData.collection.mintPrice) *
+        BigInt(submitMintData.mintQuantity);
 
       writeContract({
         address: contractAddress,
         abi: ERC721_ABI,
-        functionName: mintFunctionName as any,
-        args: [mintData.mintQuantity],
+        functionName: 'mint',
+        args: [BigInt(submitMintData.mintQuantity)],
         value: totalCost,
       });
     },
@@ -295,12 +295,15 @@ export function useNFT({
    * Updates the selected collection
    * @param collection - The newly selected collection
    */
-  const handleCollectionSelect = useCallback((collection: NFTCollection) => {
-    setMintData((prev) => ({
-      ...prev,
-      collection,
-    }));
-  }, []);
+  const handleCollectionSelect = useCallback(
+    (selectedCollection: NFTCollection) => {
+      setMintData((prev) => ({
+        ...prev,
+        collection: selectedCollection,
+      }));
+    },
+    [],
+  );
 
   /**
    * Updates the mint quantity
