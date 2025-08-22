@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-import { IntegrationWrapper } from '@/components/integration-wrapper';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   INTEGRATION_TYPES,
@@ -8,9 +7,10 @@ import {
   type IntegrationType,
 } from '@/constants/integrations';
 import { BiconomyEoa } from '@/integrations/biconomy-eoa/biconomy-eoa';
+import { RelayEoa } from '@/integrations/relay-eoa/relay-eoa';
 
 const INTEGRATION_ROUTES: Record<IntegrationType, React.ComponentType> = {
-  [INTEGRATION_TYPES.RELAY_API]: () => <IntegrationWrapper />,
+  [INTEGRATION_TYPES.RELAY_API]: () => <RelayEoa />,
   [INTEGRATION_TYPES.RELAY_PRIVY]: () => <div>Privy</div>,
   [INTEGRATION_TYPES.BICONOMY_API]: () => <BiconomyEoa />,
   [INTEGRATION_TYPES.BICONOMY_DYNAMIC]: () => <div>Biconomy</div>,
@@ -21,7 +21,7 @@ const labels = Object.entries(INTEGRATION_LABELS);
 
 export function IntegrationRouter() {
   const [activeIntegration, setActiveIntegration] = useState<IntegrationType>(
-    INTEGRATION_TYPES.BICONOMY_API,
+    INTEGRATION_TYPES.RELAY_API,
   );
 
   return (

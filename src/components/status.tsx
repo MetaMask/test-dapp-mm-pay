@@ -16,7 +16,7 @@ export function Status(
       <div className="text-muted-foreground">{props.label}</div>
       <div
         className={cn(
-          'text-right text-xs font-bold text-muted-foreground',
+          'text-right font-bold text-muted-foreground',
           props.error && 'text-red-500',
           props.isSuccess && 'text-green-500',
         )}
