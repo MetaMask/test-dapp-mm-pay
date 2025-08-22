@@ -1,3 +1,4 @@
+import { AaveClient, AaveProvider } from '@aave/react';
 import {
   RainbowKitProvider,
   darkTheme,
@@ -9,6 +10,8 @@ import { WagmiProvider } from 'wagmi';
 
 import { useTheme } from '@/components/theme-provider';
 import { config } from '@/lib/wagmi';
+
+export const aaveClient = AaveClient.create();
 
 const queryClient = new QueryClient();
 
@@ -22,12 +25,14 @@ export function Providers({ children }: ProvidersProps) {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider
-          theme={theme === 'dark' ? darkTheme() : lightTheme()}
-          showRecentTransactions={true}
-        >
-          {children}
-        </RainbowKitProvider>
+        <AaveProvider client={aaveClient}>
+          <RainbowKitProvider
+            theme={theme === 'dark' ? darkTheme() : lightTheme()}
+            showRecentTransactions={true}
+          >
+            {children}
+          </RainbowKitProvider>
+        </AaveProvider>
       </QueryClientProvider>
     </WagmiProvider>
   );

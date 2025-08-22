@@ -3,9 +3,14 @@ import type {
   MultichainSmartAccount,
   BuildAcrossIntentComposableInstruction,
 } from '@biconomy/abstractjs';
+import { mcUSDC } from '@biconomy/abstractjs';
 import { type erc20Abi } from 'viem';
 
 import { ACROSS_ADDRESSES } from '@/constants/across';
+import { mcWETH } from '@/constants/tokens';
+import type { Token } from '@/types/swap';
+
+const SUPPORTED_TOKENS = [mcUSDC, mcWETH];
 
 type GetBridgeTransactionParams = {
   sourceChainId: number;
@@ -40,4 +45,26 @@ export function getBridgeTransaction({
       message: '0x',
     },
   };
+}
+
+export function getMultichainToken(
+  token: Token | null,
+): MultichainContract<typeof erc20Abi> {
+  if (!token) {
+    throw new Error('Token not found');
+  }
+
+  const mcToken = SUPPORTED_TOKENS.find(
+    (supportedToken) =>
+      supportedToken.addressOn(token.chainId).toLowerCase() ===
+      token.address.toLowerCase(),
+  );
+
+  if (!mcToken) {
+    throw new Error(
+      `Token not found: ${token.address} on chain ${token.chainId}`,
+    );
+  }
+
+  return mcToken;
 }

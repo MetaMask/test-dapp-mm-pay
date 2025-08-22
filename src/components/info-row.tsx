@@ -11,7 +11,7 @@ export function InfoRow({
     <div className="flex justify-between">
       <span className="text-muted-foreground">{label}</span>
 
-      <span className={'flex items-center gap-x-1'}>
+      <span className={'flex items-center gap-x-1 font-bold'}>
         {children}
         {imageURL && <img src={imageURL} className="h-4 w-4" />}
       </span>

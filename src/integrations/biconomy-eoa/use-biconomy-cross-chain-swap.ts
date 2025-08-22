@@ -18,23 +18,26 @@ import { useAccount } from 'wagmi';
 
 import { useBiconomyClient } from './use-biconomy-client';
 
+import { AAVE_USDC_ADDRESS_BASE, getAavePoolV3Address } from '@/constants/aave';
 import {
   prepareUniswapSwapTransaction,
   useUniswap,
   type UseUniswapParams,
 } from '@/hooks/use-uniswap';
-import { getBridgeTransaction } from '@/lib/biconomy';
+import { prepareAaveSupplyCall } from '@/lib/aave';
+import { getMultichainToken, getBridgeTransaction } from '@/lib/biconomy';
 import { getUniswapSwapRouterAddress } from '@/lib/uniswap';
 
 const DESTINATION_CHAIN_ID = base.id;
 const SOURCE_CHAIN_ID = arbitrum.id;
-const SOURCE_TOKEN = mcUSDC;
-const DESTINATION_TOKEN = mcWeth;
 
 export function useBiconomyCrossChainSwap(
   params: Omit<UseUniswapParams, 'amount'> & { amount: bigint },
 ) {
   const { address } = useAccount();
+
+  const SOURCE_TOKEN = getMultichainToken(params.fromToken);
+  const DESTINATION_TOKEN = getMultichainToken(params.toToken);
 
   const uniswap = useUniswap({
     ...params,
@@ -109,7 +112,7 @@ export function useBiconomyCrossChainSwap(
           constraints: executionConstraints,
         }),
         recipient: orchestrator.addressOn(DESTINATION_CHAIN_ID) as Address,
-        minimumReceivedWei: 2000n, // TODO: get from quote - fees
+        minimumReceivedWei: 0n, // TODO: get from quote - fees
       });
 
       const swapTx: BuildComposableInstruction = {
@@ -123,25 +126,70 @@ export function useBiconomyCrossChainSwap(
         },
       };
 
-      // Intruction 4: Withdrawl funds to EOA
+      // Instruction 4: Approve Aave
+      const approveAave: BuildApproveInstruction = {
+        type: 'approve',
+        data: {
+          amount: runtimeERC20BalanceOf({
+            targetAddress: orchestrator.addressOn(
+              DESTINATION_CHAIN_ID,
+            ) as Address,
+            tokenAddress: DESTINATION_TOKEN.addressOn(DESTINATION_CHAIN_ID),
+            constraints: [greaterThanOrEqualTo(1n)],
+          }),
+          chainId: DESTINATION_CHAIN_ID,
+          spender: getAavePoolV3Address(DESTINATION_CHAIN_ID),
+          tokenAddress: DESTINATION_TOKEN.addressOn(DESTINATION_CHAIN_ID),
+        },
+      };
+
+      // Instruction 5: Supply to Aave
+      const supplyAave = prepareAaveSupplyCall({
+        tokenAddress: DESTINATION_TOKEN.addressOn(DESTINATION_CHAIN_ID),
+        chainId: DESTINATION_CHAIN_ID,
+        amount: runtimeERC20BalanceOf({
+          targetAddress: orchestrator.addressOn(DESTINATION_CHAIN_ID)!,
+          tokenAddress: DESTINATION_TOKEN.addressOn(DESTINATION_CHAIN_ID),
+          constraints: [greaterThanOrEqualTo(1n)],
+        }),
+        recipientAddress: address as Address,
+      });
+
+      const supplyAaveTx: BuildComposableInstruction = {
+        type: 'default',
+        data: {
+          chainId: DESTINATION_CHAIN_ID,
+          abi: supplyAave.abi,
+          to: supplyAave.address,
+          functionName: supplyAave.functionName,
+          args: supplyAave.args,
+        },
+      };
+
+      // Intruction 6: Withdrawl funds to EOA
       const withdrawl: BuildWithdrawalInstruction = {
         type: 'withdrawal',
         data: {
           amount: runtimeERC20BalanceOf({
             targetAddress: orchestrator.addressOn(DESTINATION_CHAIN_ID)!,
-            tokenAddress: DESTINATION_TOKEN.addressOn(DESTINATION_CHAIN_ID),
+            tokenAddress: AAVE_USDC_ADDRESS_BASE,
             constraints: [greaterThanOrEqualTo(1n)],
           }),
           chainId: DESTINATION_CHAIN_ID,
-          tokenAddress: DESTINATION_TOKEN.addressOn(DESTINATION_CHAIN_ID),
+          tokenAddress: AAVE_USDC_ADDRESS_BASE,
         },
       };
 
       // Compile instructions
       const instructions = await Promise.all(
-        [bridge, approveUniswap, swapTx, withdrawl].map(async (operation) =>
-          orchestrator.buildComposable(operation),
-        ),
+        [
+          bridge,
+          approveUniswap,
+          swapTx,
+          approveAave,
+          supplyAaveTx,
+          withdrawl,
+        ].map(async (operation) => orchestrator.buildComposable(operation)),
       );
 
       const fusionQuote = await meeClient?.getFusionQuote({

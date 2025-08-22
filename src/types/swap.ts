@@ -3,6 +3,7 @@ export type Token = {
   symbol: string;
   name: string;
   decimals: number;
+  chainId: number;
   address: string;
   logoURI?: string;
   balance?: string;

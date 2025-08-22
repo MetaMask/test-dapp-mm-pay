@@ -12,11 +12,11 @@ import { COMMON_TOKENS } from '@/constants/tokens';
 import { getTokenLogo } from '@/lib/uniswap';
 import { trimNumber } from '@/lib/utils';
 
-const SOURCE_TOKEN = COMMON_TOKENS[base.id]?.USDC ?? null;
-const DESTINATION_TOKEN = COMMON_TOKENS[base.id]?.WETH ?? null;
+const SOURCE_TOKEN = COMMON_TOKENS[base.id]?.WETH ?? null;
+const DESTINATION_TOKEN = COMMON_TOKENS[base.id]?.USDC ?? null;
 const DESTINATION_CHAIN_ID = base.id;
-const AMOUNT_IN_DECIMAL = '0.65';
-const AMOUNT = parseUnits(AMOUNT_IN_DECIMAL, 6);
+const AMOUNT_IN_DECIMAL = '0.0002';
+const AMOUNT = parseUnits(AMOUNT_IN_DECIMAL, 18);
 
 export function BiconomyEoaSwapBasic() {
   const biconomySwap = useBiconomyCrossChainSwap({
@@ -60,9 +60,8 @@ export function BiconomyEoaSwapBasic() {
             <div className="flex justify-between">
               <span className="text-muted-foreground">Gas Fee</span>
               <span className={'flex items-center gap-x-1'}>
-                {/* @ts-expect-error - incorrectly typed, value exists */}
+                {/* @ts-expect-error - incorrectly typed, value exists */}$
                 {trimNumber(biconomySwap.fusionQuote?.quote.paymentInfo.gasFee)}
-                <img src={feeTokenLogo} className="h-4 w-4" />
               </span>
             </div>
 
@@ -70,11 +69,11 @@ export function BiconomyEoaSwapBasic() {
               <span className="text-muted-foreground">Orchestration Fee</span>
 
               <span className={'flex items-center gap-x-1'}>
+                $
                 {trimNumber(
                   // @ts-expect-error - incorrectly typed, value exists
                   biconomySwap.fusionQuote?.quote.paymentInfo.orchestrationFee,
                 )}
-                <img src={feeTokenLogo} className="h-4 w-4" />
               </span>
             </div>
           </div>

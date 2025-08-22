@@ -21,7 +21,7 @@ const labels = Object.entries(INTEGRATION_LABELS);
 
 export function IntegrationRouter() {
   const [activeIntegration, setActiveIntegration] = useState<IntegrationType>(
-    INTEGRATION_TYPES.RELAY_API,
+    INTEGRATION_TYPES.BICONOMY_API,
   );
 
   return (
