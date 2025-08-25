@@ -1,40 +1,68 @@
+import { useState } from 'react';
 import { parseUnits } from 'viem';
 import { arbitrum, base } from 'viem/chains';
 
-import { useRelayCrossChainSwap } from './use-relay-cross-chain-swap';
+import { useAaveDepositRelay } from './use-aave-deposit-relay';
 
+import { ErrorContainer } from '@/components/error-container';
 import { InfoRow } from '@/components/info-row';
 import { Status } from '@/components/status';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { COMMON_TOKENS } from '@/constants/tokens';
+import { AUSDC_BASE, COMMON_TOKENS } from '@/constants/tokens';
+import { useTokenBalance } from '@/hooks/use-token-balance';
 import { getTokenLogo } from '@/lib/uniswap';
 import { trimNumber } from '@/lib/utils';
 
 const SOURCE_CHAIN_ID = arbitrum.id;
 const DESTINATION_CHAIN_ID = base.id;
-const SOURCE_TOKEN = COMMON_TOKENS[SOURCE_CHAIN_ID]?.USDC ?? null;
-const DESTINATION_TOKEN = COMMON_TOKENS[DESTINATION_CHAIN_ID]?.WETH ?? null;
-const AMOUNT = parseUnits('0.65', 6);
+const SOURCE_TOKEN = COMMON_TOKENS[SOURCE_CHAIN_ID]?.WETH ?? null;
+const DESTINATION_TOKEN = COMMON_TOKENS[DESTINATION_CHAIN_ID]?.USDC ?? null;
 
-export function RelayEoaSwapBasic() {
-  const relaySwap = useRelayCrossChainSwap({
+export function AaveDepositRelayEoa() {
+  const [amount, setAmount] = useState<string>('1');
+  const sourceBalance = useTokenBalance(SOURCE_TOKEN);
+  const destinationBalance = useTokenBalance(AUSDC_BASE);
+
+  const operation = useAaveDepositRelay({
     sourceChainId: SOURCE_CHAIN_ID,
     destinationChainId: DESTINATION_CHAIN_ID,
     fromToken: SOURCE_TOKEN,
     toToken: DESTINATION_TOKEN,
-    amount: AMOUNT.toString(),
+    amount: parseUnits(amount, DESTINATION_TOKEN?.decimals ?? 18),
     chainId: DESTINATION_CHAIN_ID,
   });
 
   return (
     <div className="text-xs">
       <div className="rounded-lg">
-        {relaySwap.quote.error && (
-          <div className="text-xs text-red-500">
-            {relaySwap.quote.error.message}
-          </div>
+        {operation.quote.error && (
+          <ErrorContainer error={operation.quote.error} />
         )}
+        <div className="flex items-center gap-x-2">
+          <div className="flex items-center gap-x-2">
+            <img
+              className="size-6 rounded-full"
+              src={getTokenLogo(DESTINATION_TOKEN)}
+              alt="Source Token"
+            />
+          </div>
+          <div className="w-full">
+            <Label htmlFor="amount">
+              {DESTINATION_TOKEN?.symbol} amount to supply
+            </Label>
+            <Input
+              className="w-full"
+              id="amount"
+              type="number"
+              placeholder="0.0"
+              value={amount}
+              onChange={(event) => setAmount(event.target.value)}
+            />
+          </div>
+        </div>
         <div className="">
           <div className="mt-4 space-y-2">
             {/* <div>
@@ -48,43 +76,54 @@ export function RelayEoaSwapBasic() {
               ))}
             </div> */}
             <div>
+              <h1>Balances</h1>
+              <Separator />
+              <InfoRow
+                label="WETH Balance"
+                imageURL={getTokenLogo(SOURCE_TOKEN)}
+              >
+                {sourceBalance.balanceDecimal}
+              </InfoRow>
+              <InfoRow label="aUSDC Balance" imageURL={AUSDC_BASE.logoURI}>
+                {destinationBalance.balanceDecimal}
+              </InfoRow>
+            </div>
+            <div>
               <h1>Quote</h1>
               <Separator />
-              <InfoRow label="Rate">
-                {trimNumber(relaySwap.quote.data?.details?.rate ?? '0')}
-              </InfoRow>
+
               <InfoRow label="Amount in" imageURL={getTokenLogo(SOURCE_TOKEN)}>
-                {relaySwap.quote.data?.details?.currencyIn?.amountFormatted}
+                {trimNumber(
+                  operation.quote.data?.details?.currencyIn?.amountFormatted ??
+                    '0',
+                )}
               </InfoRow>
               <InfoRow
                 label="Amount out"
                 imageURL={getTokenLogo(DESTINATION_TOKEN)}
               >
                 {trimNumber(
-                  relaySwap.quote.data?.details?.currencyOut?.amountFormatted ??
+                  operation.quote.data?.details?.currencyOut?.amountFormatted ??
                     '0',
                 )}
               </InfoRow>
               <InfoRow label="Slippage">
                 {
-                  relaySwap.quote.data?.details?.slippageTolerance?.destination
+                  operation.quote.data?.details?.slippageTolerance?.destination
                     ?.percent
                 }
                 %
-              </InfoRow>
-              <InfoRow label="Price Impact">
-                {relaySwap.quote.data?.details?.swapImpact?.percent}%
               </InfoRow>
             </div>
             <div>
               <h1>Fees</h1>
               <Separator />
               <InfoRow label="Gas Fee">
-                ${relaySwap.quote.data?.fees?.gas?.amountUsd?.substring(0, 5)}
+                ${operation.quote.data?.fees?.gas?.amountUsd?.substring(0, 5)}
               </InfoRow>
               <InfoRow label="Relay Fee">
                 $
-                {relaySwap.quote.data?.fees?.relayer?.amountUsd?.substring(
+                {operation.quote.data?.fees?.relayer?.amountUsd?.substring(
                   0,
                   5,
                 )}
@@ -95,9 +134,9 @@ export function RelayEoaSwapBasic() {
               <h1>Status</h1>
               <Separator />
               <Status
-                isLoading={relaySwap.quote.isLoading}
-                isSuccess={relaySwap.quote.isSuccess}
-                error={relaySwap.quote.error}
+                isLoading={operation.quote.isLoading}
+                isSuccess={operation.quote.isSuccess}
+                error={operation.quote.error}
                 label="Relay Quote"
               />
               <Status
@@ -133,12 +172,12 @@ export function RelayEoaSwapBasic() {
         <div className="mt-4 flex flex-col gap-y-2 space-y-4">
           <Button
             className="w-full"
-            disabled={!relaySwap.quote.isSuccess}
+            disabled={!operation.quote.isSuccess}
             onClick={() => {
-              relaySwap.handleSwap?.();
+              operation.handleSwap?.();
             }}
           >
-            {relaySwap.quote.isSuccess ? 'Swap' : 'Waiting for quote...'}
+            {operation.quote.isSuccess ? 'Swap' : 'Waiting for quote...'}
           </Button>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { useQuote } from '@reservoir0x/relay-kit-hooks';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { getClient } from '@reservoir0x/relay-sdk';
+import type { Address } from 'viem';
 import {
   useSendTransaction,
   useWaitForTransactionReceipt,
@@ -8,16 +9,26 @@ import {
 } from 'wagmi';
 
 import type { UseUniswapParams } from '@/hooks/use-uniswap';
+import { encodeAaveSupplyCall } from '@/lib/aave';
 
-type CrossChainSwapParams = UseUniswapParams & {
+type CrossChainSwapParams = Omit<UseUniswapParams, 'amount'> & {
+  amount: bigint;
   sourceChainId: number;
   destinationChainId: number;
 };
 
 const relayClient = getClient();
 
-export function useRelayCrossChainSwap(params: CrossChainSwapParams) {
+export function useAaveDepositRelay(params: CrossChainSwapParams) {
   const { data: walletClient } = useWalletClient();
+
+  const transactions = encodeAaveSupplyCall({
+    tokenAddress: params.toToken?.address as Address,
+    chainId: params.destinationChainId,
+    amount: params.amount,
+    recipientAddress: walletClient?.account?.address as Address,
+  });
+
   const quote = useQuote(
     relayClient,
     walletClient,
@@ -27,8 +38,9 @@ export function useRelayCrossChainSwap(params: CrossChainSwapParams) {
       destinationChainId: params.destinationChainId,
       originCurrency: params.fromToken?.address ?? '',
       destinationCurrency: params.toToken?.address ?? '',
-      tradeType: 'EXACT_INPUT',
-      amount: params.amount,
+      tradeType: 'EXACT_OUTPUT',
+      amount: params.amount.toString(),
+      txs: transactions,
     },
     () => {
       console.log('Quote Request Triggered!');
@@ -75,5 +87,6 @@ export function useRelayCrossChainSwap(params: CrossChainSwapParams) {
   return {
     quote,
     handleSwap,
+    receipt,
   };
 }

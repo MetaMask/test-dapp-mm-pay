@@ -37,7 +37,7 @@ export function AaveDepositBiconomyEoa() {
   const balance = useTokenBalance(token);
   const ausdcBalance = useTokenBalance(AUSDC_BASE);
 
-  const biconomySwap = useAaveDepositBiconomy({
+  const operation = useAaveDepositBiconomy({
     fromToken: SOURCE_TOKEN,
     toToken: DESTINATION_TOKEN,
     amount: parseUnits(amount, SOURCE_TOKEN.decimals),
@@ -45,7 +45,7 @@ export function AaveDepositBiconomyEoa() {
   });
 
   useEffect(() => {
-    if (biconomySwap.txQuery.isSuccess) {
+    if (operation.txQuery.isSuccess) {
       balance.refetch().catch(console.log);
       ausdcBalance.refetch().catch(console.log);
     }
@@ -54,7 +54,7 @@ export function AaveDepositBiconomyEoa() {
   return (
     <div className="text-xs">
       <div className="rounded-lg">
-        {biconomySwap.error && <ErrorContainer error={biconomySwap.error} />}
+        {operation.error && <ErrorContainer error={operation.error} />}
         <div className="space-y-3">
           <TokenInput
             balance={balance.balanceDecimal}
@@ -81,10 +81,10 @@ export function AaveDepositBiconomyEoa() {
               label="Amount out"
               imageURL={getTokenLogo(DESTINATION_TOKEN)}
             >
-              {trimNumber(biconomySwap.uniswap?.quote?.outputAmount ?? '0')}
+              {trimNumber(operation.uniswap?.quote?.outputAmount ?? '0')}
             </InfoRow>
             <InfoRow label="Slippage">
-              {biconomySwap.uniswap?.quote?.slippagePercent ?? '0'}%
+              {operation.uniswap?.quote?.slippagePercent ?? '0'}%
             </InfoRow>
           </div>
           <div className="">
@@ -93,14 +93,14 @@ export function AaveDepositBiconomyEoa() {
             <InfoRow label="Gas Fee">
               {trimNumber(
                 // @ts-expect-error - missing type
-                biconomySwap.fusionQuote?.quote.paymentInfo.gasFee,
+                operation.fusionQuote?.quote.paymentInfo.gasFee,
               )}
             </InfoRow>
 
             <InfoRow label="Orchestration Fee">
               {trimNumber(
                 // @ts-expect-error - missing type
-                biconomySwap.fusionQuote?.quote.paymentInfo.orchestrationFee,
+                operation.fusionQuote?.quote.paymentInfo.orchestrationFee,
               )}
             </InfoRow>
           </div>
@@ -108,27 +108,27 @@ export function AaveDepositBiconomyEoa() {
             <h1>Status</h1>
             <Separator />
             <Status
-              isLoading={!biconomySwap.uniswap.isQuoteReady}
-              isSuccess={biconomySwap.uniswap.isQuoteReady}
-              error={biconomySwap.uniswap.error}
+              isLoading={!operation.uniswap.isQuoteReady}
+              isSuccess={operation.uniswap.isQuoteReady}
+              error={operation.uniswap.error}
               label="Swap Quote"
             />
             <Status
-              isLoading={biconomySwap.fusionQuoteQuery.isLoading}
-              isSuccess={biconomySwap.fusionQuoteQuery.isSuccess}
-              error={biconomySwap.error}
+              isLoading={operation.fusionQuoteQuery.isLoading}
+              isSuccess={operation.fusionQuoteQuery.isSuccess}
+              error={operation.error}
               label="Biconomy Quote"
             />
             <Status
-              isLoading={biconomySwap.swapQuery.isPending}
-              isSuccess={biconomySwap.swapQuery.isSuccess}
-              error={biconomySwap.swapQuery.error}
+              isLoading={operation.swapQuery.isPending}
+              isSuccess={operation.swapQuery.isSuccess}
+              error={operation.swapQuery.error}
               label="User Confirmation"
             />
             <Status
-              isLoading={biconomySwap.txQuery.isLoading}
-              isSuccess={biconomySwap.txQuery.isSuccess}
-              error={biconomySwap.txQuery.error}
+              isLoading={operation.txQuery.isLoading}
+              isSuccess={operation.txQuery.isSuccess}
+              error={operation.txQuery.error}
               label="Tx Status"
             />
           </div>
@@ -136,18 +136,18 @@ export function AaveDepositBiconomyEoa() {
 
         <div className="mt-4 flex flex-col gap-y-2 space-y-4">
           <Button
-            disabled={!biconomySwap.fusionQuoteQuery.isSuccess}
+            disabled={!operation.fusionQuoteQuery.isSuccess}
             className="w-full"
-            onClick={() => biconomySwap.execute()}
+            onClick={() => operation.execute()}
           >
-            {biconomySwap.fusionQuoteQuery.isSuccess
+            {operation.fusionQuoteQuery.isSuccess
               ? 'Swap'
               : 'Waiting for quote...'}
           </Button>
-          {biconomySwap.meeScanLink && (
+          {operation.meeScanLink && (
             <Button variant="outline" className="w-full">
               <a
-                href={biconomySwap.meeScanLink}
+                href={operation.meeScanLink}
                 target="_blank"
                 className="flex gap-x-2 text-xs text-blue-500"
               >

@@ -14,7 +14,9 @@ export function BiconomyEoa() {
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Biconomy Cross-Chain AAVE Deposit</CardTitle>
-          <CardDescription>Supply USDC to AAVE on Base</CardDescription>
+          <CardDescription>
+            Choose an WETH amount to swap for USDC and supply to AAVE on Base
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <AaveDepositBiconomyEoa />

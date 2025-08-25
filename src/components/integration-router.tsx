@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import { AaveAccountStatus } from './aave-account-status';
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   INTEGRATION_TYPES,
@@ -8,13 +10,14 @@ import {
 } from '@/constants/integrations';
 import { BiconomyEoa } from '@/integrations/biconomy-eoa/biconomy-eoa';
 import { RelayEoa } from '@/integrations/relay-eoa/relay-eoa';
-import { AaveAccountStatus } from './aave-account-status';
+
+const WIP = () => <div className="text-xs font-bold">🚧 Work in progress</div>;
 
 const INTEGRATION_ROUTES: Record<IntegrationType, React.ComponentType> = {
   [INTEGRATION_TYPES.RELAY_API]: () => <RelayEoa />,
-  [INTEGRATION_TYPES.RELAY_PRIVY]: () => <div>Privy</div>,
+  [INTEGRATION_TYPES.RELAY_PRIVY]: () => <WIP />,
   [INTEGRATION_TYPES.BICONOMY_API]: () => <BiconomyEoa />,
-  [INTEGRATION_TYPES.BICONOMY_DYNAMIC]: () => <div>Biconomy</div>,
+  [INTEGRATION_TYPES.BICONOMY_DYNAMIC]: () => <WIP />,
   [INTEGRATION_TYPES.AAVE]: () => <AaveAccountStatus />,
 };
 

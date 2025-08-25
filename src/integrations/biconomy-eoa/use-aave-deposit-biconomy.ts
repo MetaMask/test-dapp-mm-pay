@@ -16,6 +16,7 @@ import { useAccount } from 'wagmi';
 import { useBiconomyClient } from './use-biconomy-client';
 
 import { getAavePoolV3Address } from '@/constants/aave';
+import { COMMON_TOKENS } from '@/constants/tokens';
 import {
   prepareUniswapSwapTransaction,
   useUniswap,
@@ -27,6 +28,7 @@ import { getUniswapSwapRouterAddress } from '@/lib/uniswap';
 
 const DESTINATION_CHAIN_ID = base.id;
 const SOURCE_CHAIN_ID = arbitrum.id;
+const SOURCE_SWAP_TOKEN = COMMON_TOKENS[DESTINATION_CHAIN_ID]!.WETH!;
 
 export function useAaveDepositBiconomy(
   params: Omit<UseUniswapParams, 'amount'> & { amount: bigint },
@@ -38,6 +40,8 @@ export function useAaveDepositBiconomy(
 
   const uniswap = useUniswap({
     ...params,
+    // TODO: hard targetting WETH for now
+    fromToken: SOURCE_SWAP_TOKEN,
     amount: formatUnits(params.amount, params.fromToken?.decimals ?? 6),
   });
   const { orchestrator, meeClient } = useBiconomyClient();

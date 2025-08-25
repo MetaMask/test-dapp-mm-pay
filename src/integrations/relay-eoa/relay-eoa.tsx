@@ -1,16 +1,25 @@
-import { RelayEoaSwapBasic } from './relay-eoa-swap-basic';
+import { AaveDepositRelayEoa } from './aave-deposit-relay-eoa';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 
 export function RelayEoa() {
   return (
     <div>
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Relay EOA Cross-Chain Swap</CardTitle>
+          <CardTitle>Relay Cross-Chain AAVE Deposit</CardTitle>
+          <CardDescription>
+            Supply USDC to AAVE on Base by sourcing WETH from Arbitrum
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <RelayEoaSwapBasic />
+          <AaveDepositRelayEoa />
         </CardContent>
       </Card>
     </div>
