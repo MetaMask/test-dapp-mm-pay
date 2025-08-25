@@ -347,8 +347,8 @@ export function prepareUniswapSwapTransaction(
     functionName: 'exactInputSingle',
     args: [
       {
-        tokenIn: fromToken.address as Address,
-        tokenOut: toToken.address as Address,
+        tokenIn: fromToken.address,
+        tokenOut: toToken.address,
         fee: FeeAmount.MEDIUM,
         recipient: params.recipient,
         amountIn: amount,

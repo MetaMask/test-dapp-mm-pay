@@ -1,4 +1,3 @@
-import { ExternalLinkIcon } from 'lucide-react';
 import { parseUnits } from 'viem';
 import { arbitrum, base } from 'viem/chains';
 
@@ -54,15 +53,12 @@ export function RelayEoaSwapBasic() {
               <InfoRow label="Rate">
                 {trimNumber(relaySwap.quote.data?.details?.rate ?? '0')}
               </InfoRow>
-              <InfoRow
-                label="Amount in"
-                imageURL={getTokenLogo(SOURCE_TOKEN, SOURCE_CHAIN_ID)}
-              >
+              <InfoRow label="Amount in" imageURL={getTokenLogo(SOURCE_TOKEN)}>
                 {relaySwap.quote.data?.details?.currencyIn?.amountFormatted}
               </InfoRow>
               <InfoRow
                 label="Amount out"
-                imageURL={getTokenLogo(DESTINATION_TOKEN, DESTINATION_CHAIN_ID)}
+                imageURL={getTokenLogo(DESTINATION_TOKEN)}
               >
                 {trimNumber(
                   relaySwap.quote.data?.details?.currencyOut?.amountFormatted ??

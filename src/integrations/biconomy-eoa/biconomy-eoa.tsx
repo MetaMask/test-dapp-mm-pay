@@ -1,16 +1,23 @@
-import { BiconomyEoaSwapBasic } from './biconomy-eoa-swap-basic';
+import { AaveDepositBiconomyEoa } from './aave-deposit-biconomy-eoa';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 
 export function BiconomyEoa() {
   return (
     <div>
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Biconomy EOA Cross-Chain Swap</CardTitle>
+          <CardTitle>Biconomy Cross-Chain AAVE Deposit</CardTitle>
+          <CardDescription>Supply USDC to AAVE on Base</CardDescription>
         </CardHeader>
         <CardContent>
-          <BiconomyEoaSwapBasic />
+          <AaveDepositBiconomyEoa />
         </CardContent>
       </Card>
     </div>

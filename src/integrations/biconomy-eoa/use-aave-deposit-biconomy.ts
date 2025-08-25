@@ -1,13 +1,10 @@
 import type {
   BuildApproveInstruction,
   BuildComposableInstruction,
-  BuildWithdrawalInstruction,
 } from '@biconomy/abstractjs';
 import {
   getMeeScanLink,
   greaterThanOrEqualTo,
-  mcUSDC,
-  mcWeth,
   runtimeERC20BalanceOf,
 } from '@biconomy/abstractjs';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -18,7 +15,7 @@ import { useAccount } from 'wagmi';
 
 import { useBiconomyClient } from './use-biconomy-client';
 
-import { AAVE_USDC_ADDRESS_BASE, getAavePoolV3Address } from '@/constants/aave';
+import { getAavePoolV3Address } from '@/constants/aave';
 import {
   prepareUniswapSwapTransaction,
   useUniswap,
@@ -31,7 +28,7 @@ import { getUniswapSwapRouterAddress } from '@/lib/uniswap';
 const DESTINATION_CHAIN_ID = base.id;
 const SOURCE_CHAIN_ID = arbitrum.id;
 
-export function useBiconomyCrossChainSwap(
+export function useAaveDepositBiconomy(
   params: Omit<UseUniswapParams, 'amount'> & { amount: bigint },
 ) {
   const { address } = useAccount();
@@ -162,34 +159,16 @@ export function useBiconomyCrossChainSwap(
           abi: supplyAave.abi,
           to: supplyAave.address,
           functionName: supplyAave.functionName,
+          // @ts-expect-error - args are typed and BuildComposableInstruction expects mutable any[]
           args: supplyAave.args,
-        },
-      };
-
-      // Intruction 6: Withdrawl funds to EOA
-      const withdrawl: BuildWithdrawalInstruction = {
-        type: 'withdrawal',
-        data: {
-          amount: runtimeERC20BalanceOf({
-            targetAddress: orchestrator.addressOn(DESTINATION_CHAIN_ID)!,
-            tokenAddress: AAVE_USDC_ADDRESS_BASE,
-            constraints: [greaterThanOrEqualTo(1n)],
-          }),
-          chainId: DESTINATION_CHAIN_ID,
-          tokenAddress: AAVE_USDC_ADDRESS_BASE,
         },
       };
 
       // Compile instructions
       const instructions = await Promise.all(
-        [
-          bridge,
-          approveUniswap,
-          swapTx,
-          approveAave,
-          supplyAaveTx,
-          withdrawl,
-        ].map(async (operation) => orchestrator.buildComposable(operation)),
+        [bridge, approveUniswap, swapTx, approveAave, supplyAaveTx].map(
+          async (operation) => orchestrator.buildComposable(operation),
+        ),
       );
 
       const fusionQuote = await meeClient?.getFusionQuote({

@@ -24,7 +24,9 @@ export function TokenSelector({
   placeholder = 'Select token',
 }: TokenSelectorProps) {
   const handleValueChange = (value: string) => {
-    const token = tokens.find((tokenItem) => tokenItem.id === value);
+    const token = tokens.find(
+      (tokenItem) => tokenItem.symbol.toLowerCase() === value.toLowerCase(),
+    );
     if (token) {
       onTokenSelect(token);
     }
@@ -32,7 +34,7 @@ export function TokenSelector({
 
   return (
     <Select
-      value={selectedToken?.id ?? ''}
+      value={selectedToken?.symbol.toLowerCase() ?? ''}
       onValueChange={handleValueChange}
       disabled={disabled}
     >
@@ -54,10 +56,7 @@ export function TokenSelector({
       </SelectTrigger>
       <SelectContent>
         {tokens.map((token) => (
-          <SelectItem
-            key={token.id}
-            value={token.id ?? token.symbol.toLowerCase()}
-          >
+          <SelectItem key={token.symbol} value={token.symbol.toLowerCase()}>
             <div className="flex items-center gap-2">
               {token.logoURI && (
                 <img

@@ -1,5 +1,17 @@
-import type { Token } from '@/types/swap';
 import { mcWeth } from '@biconomy/abstractjs';
+import type { Address } from 'viem';
+
+import type { Token } from '@/types/swap';
+
+export const AUSDC_BASE = {
+  symbol: 'aUSDC',
+  name: 'Aave USD Coin',
+  decimals: 6,
+  address: '0x4e65fE4DbA92790696d040ac24Aa414708F5c0AB' as Address,
+  logoURI:
+    'https://assets.coingecko.com/coins/images/14318/standard/aUSDC.e260d492.png',
+  chainId: 8453,
+};
 
 // Common token addresses for different chains
 export const COMMON_TOKENS: Record<number, Record<string, Token>> = {
@@ -57,6 +69,7 @@ export const COMMON_TOKENS: Record<number, Record<string, Token>> = {
       address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
       chainId: 8453,
     },
+    aUSDC: AUSDC_BASE,
   },
   // Arbitrum One
   42161: {
@@ -106,6 +119,10 @@ export const COMMON_TOKENS: Record<number, Record<string, Token>> = {
       chainId: 11155111,
     },
   },
+};
+
+export const KNOWN_LOGOS = {
+  weth: 'https://raw.githubusercontent.com/SmolDapp/tokenAssets/main/tokens/42161/0x82af49447d8a07e3bd95bd0d56f35241523fbab1/logo-alt-128.png',
 };
 
 // TODO: Temp hack to get WETH address on all chains

@@ -1,52 +1,85 @@
 import { ExternalLinkIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { parseUnits } from 'viem';
-import { base } from 'viem/chains';
+import { arbitrum, base } from 'viem/chains';
 
-import { useBiconomyCrossChainSwap } from './use-biconomy-cross-chain-swap';
+import { useAaveDepositBiconomy } from './use-aave-deposit-biconomy';
 
+import { ErrorContainer } from '@/components/error-container';
 import { InfoRow } from '@/components/info-row';
 import { Status } from '@/components/status';
+import { TokenInput } from '@/components/token-input';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { COMMON_TOKENS } from '@/constants/tokens';
+import { AUSDC_BASE, COMMON_TOKENS } from '@/constants/tokens';
+import { useTokenBalance } from '@/hooks/use-token-balance';
+import { getTokensByChain } from '@/lib/tokens';
 import { getTokenLogo } from '@/lib/uniswap';
 import { trimNumber } from '@/lib/utils';
+import type { Token } from '@/types/swap';
 
-const SOURCE_TOKEN = COMMON_TOKENS[base.id]?.WETH ?? null;
 const DESTINATION_TOKEN = COMMON_TOKENS[base.id]?.USDC ?? null;
 const DESTINATION_CHAIN_ID = base.id;
 const AMOUNT_IN_DECIMAL = '0.0002';
-const AMOUNT = parseUnits(AMOUNT_IN_DECIMAL, 18);
 
-export function BiconomyEoaSwapBasic() {
-  const biconomySwap = useBiconomyCrossChainSwap({
+// hardcoded to Arbitrum for now
+const sourceTokens = getTokensByChain(arbitrum.id).filter(
+  ({ symbol }) => symbol === 'WETH',
+);
+
+const SOURCE_TOKEN = sourceTokens.find(
+  (token) => token.symbol === 'WETH',
+) as Token;
+
+export function AaveDepositBiconomyEoa() {
+  const [token, setToken] = useState<Token>(SOURCE_TOKEN);
+  const [amount, setAmount] = useState<string>(AMOUNT_IN_DECIMAL);
+  const balance = useTokenBalance(token);
+  const ausdcBalance = useTokenBalance(AUSDC_BASE);
+
+  const biconomySwap = useAaveDepositBiconomy({
     fromToken: SOURCE_TOKEN,
     toToken: DESTINATION_TOKEN,
-    amount: AMOUNT,
+    amount: parseUnits(amount, SOURCE_TOKEN.decimals),
     chainId: DESTINATION_CHAIN_ID,
   });
 
-  const feeTokenLogo = getTokenLogo(SOURCE_TOKEN, DESTINATION_CHAIN_ID);
-  console.log({ biconomySwap });
+  useEffect(() => {
+    if (biconomySwap.txQuery.isSuccess) {
+      balance.refetch().catch(console.log);
+      ausdcBalance.refetch().catch(console.log);
+    }
+  });
 
   return (
     <div className="text-xs">
       <div className="rounded-lg">
-        {biconomySwap.error && <div>{biconomySwap.error.message}</div>}
+        {biconomySwap.error && <ErrorContainer error={biconomySwap.error} />}
         <div className="space-y-3">
+          <TokenInput
+            balance={balance.balanceDecimal}
+            tokens={sourceTokens}
+            amount={amount}
+            selectedToken={token}
+            onTokenSelect={setToken}
+            onAmountChange={setAmount}
+            onMaxAmount={() => setAmount(token?.balance ?? '0')}
+          />
           <div>
-            <h1>Quote</h1>
+            <InfoRow label="aUSDC Balance" imageURL={AUSDC_BASE.logoURI}>
+              {ausdcBalance.balanceDecimal}
+            </InfoRow>
+          </div>
+          <div>
+            <h1>Swap Quote</h1>
             <Separator />
 
-            <InfoRow
-              label="Amount in"
-              imageURL={getTokenLogo(SOURCE_TOKEN, DESTINATION_CHAIN_ID)}
-            >
-              {AMOUNT_IN_DECIMAL}
+            <InfoRow label="Amount in" imageURL={getTokenLogo(SOURCE_TOKEN)}>
+              {amount}
             </InfoRow>
             <InfoRow
               label="Amount out"
-              imageURL={getTokenLogo(DESTINATION_TOKEN, DESTINATION_CHAIN_ID)}
+              imageURL={getTokenLogo(DESTINATION_TOKEN)}
             >
               {trimNumber(biconomySwap.uniswap?.quote?.outputAmount ?? '0')}
             </InfoRow>
@@ -57,25 +90,19 @@ export function BiconomyEoaSwapBasic() {
           <div className="">
             <h1>Fees</h1>
             <Separator />
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Gas Fee</span>
-              <span className={'flex items-center gap-x-1'}>
-                {/* @ts-expect-error - incorrectly typed, value exists */}$
-                {trimNumber(biconomySwap.fusionQuote?.quote.paymentInfo.gasFee)}
-              </span>
-            </div>
+            <InfoRow label="Gas Fee">
+              {trimNumber(
+                // @ts-expect-error - missing type
+                biconomySwap.fusionQuote?.quote.paymentInfo.gasFee,
+              )}
+            </InfoRow>
 
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Orchestration Fee</span>
-
-              <span className={'flex items-center gap-x-1'}>
-                $
-                {trimNumber(
-                  // @ts-expect-error - incorrectly typed, value exists
-                  biconomySwap.fusionQuote?.quote.paymentInfo.orchestrationFee,
-                )}
-              </span>
-            </div>
+            <InfoRow label="Orchestration Fee">
+              {trimNumber(
+                // @ts-expect-error - missing type
+                biconomySwap.fusionQuote?.quote.paymentInfo.orchestrationFee,
+              )}
+            </InfoRow>
           </div>
           <div className="mt-4">
             <h1>Status</h1>
@@ -84,7 +111,7 @@ export function BiconomyEoaSwapBasic() {
               isLoading={!biconomySwap.uniswap.isQuoteReady}
               isSuccess={biconomySwap.uniswap.isQuoteReady}
               error={biconomySwap.uniswap.error}
-              label="Uni Quote"
+              label="Swap Quote"
             />
             <Status
               isLoading={biconomySwap.fusionQuoteQuery.isLoading}

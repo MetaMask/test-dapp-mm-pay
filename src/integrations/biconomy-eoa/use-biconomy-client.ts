@@ -38,8 +38,9 @@ export function useBiconomyClient() {
   const { data: walletClient } = useWalletClient();
 
   const { data: biconomyClient, error } = useQuery({
-    queryKey: ['biconomy-mee', walletClient],
+    queryKey: ['biconomy-mee', walletClient?.account.address],
     enabled: Boolean(walletClient),
+    staleTime: Infinity,
     queryFn: async () => {
       if (!walletClient) {
         throw new Error('Wallet client not found');

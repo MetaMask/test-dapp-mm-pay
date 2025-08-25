@@ -52,6 +52,7 @@ export function useRelayCrossChainSwap(params: CrossChainSwapParams) {
     const { steps } = quote.data;
     const [depositStep] = steps ?? [];
     const [depositStepTx] = depositStep?.items ?? [];
+    // @ts-expect-error - missing type
     const { data: txData } = depositStepTx;
 
     if (!txData) {

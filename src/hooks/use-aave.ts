@@ -48,6 +48,7 @@ export function useAave() {
   };
 
   const error = allowance.error ?? userSuppliesError;
+
   const position = useMemo(() => {
     const data = userSupplies?.[0];
     if (!data) {

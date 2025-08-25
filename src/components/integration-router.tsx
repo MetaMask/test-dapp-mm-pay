@@ -8,12 +8,14 @@ import {
 } from '@/constants/integrations';
 import { BiconomyEoa } from '@/integrations/biconomy-eoa/biconomy-eoa';
 import { RelayEoa } from '@/integrations/relay-eoa/relay-eoa';
+import { AaveAccountStatus } from './aave-account-status';
 
 const INTEGRATION_ROUTES: Record<IntegrationType, React.ComponentType> = {
   [INTEGRATION_TYPES.RELAY_API]: () => <RelayEoa />,
   [INTEGRATION_TYPES.RELAY_PRIVY]: () => <div>Privy</div>,
   [INTEGRATION_TYPES.BICONOMY_API]: () => <BiconomyEoa />,
   [INTEGRATION_TYPES.BICONOMY_DYNAMIC]: () => <div>Biconomy</div>,
+  [INTEGRATION_TYPES.AAVE]: () => <AaveAccountStatus />,
 };
 
 const integrations = Object.entries(INTEGRATION_ROUTES);

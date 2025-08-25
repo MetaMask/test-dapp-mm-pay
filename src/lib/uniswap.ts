@@ -1,7 +1,7 @@
 import { SWAP_ROUTER_02_ADDRESSES, Token as UniToken } from '@uniswap/sdk-core';
 import { type Address, isAddress, zeroAddress } from 'viem';
 
-import { COMMON_TOKENS } from '@/constants/tokens';
+import { COMMON_TOKENS, KNOWN_LOGOS } from '@/constants/tokens';
 import {
   QUOTER_V2_ADDRESSES,
   UNISWAP_V3_FACTORY_ADDRESSES,
@@ -76,7 +76,8 @@ export function getTokensForChain(chainId: number): Token[] {
     name: tokenData.name,
     decimals: tokenData.decimals,
     address: tokenData.address,
-    logoURI: getTokenLogo(tokenData, chainId),
+    logoURI: getTokenLogo(tokenData),
+    chainId,
   }));
 
   tokenList.unshift({
@@ -84,20 +85,31 @@ export function getTokensForChain(chainId: number): Token[] {
     symbol: 'ETH',
     name: 'Ethereum',
     decimals: 18,
-    address: '', // Empty address for native ETH
-    logoURI: getTokenLogo({ address: `0x${'e'.repeat(40)}` }, 1),
+    // @ts-expect-error intentional empty address for native ETH
+    address: '',
+    logoURI: getTokenLogo({
+      address: `0x${'e'.repeat(40)}`,
+      chainId: 1,
+      symbol: 'ETH',
+    }),
+    chainId,
   });
 
   return tokenList;
 }
 
 export function getTokenLogo(
-  token: Pick<Token, 'address'> | null,
-  chainId: number,
+  token: Pick<Token, 'address' | 'chainId' | 'symbol'> | null,
 ) {
   if (!token) {
     return '';
   }
 
-  return `https://raw.githubusercontent.com/SmolDapp/tokenAssets/main/tokens/${chainId}/${token.address.toLowerCase()}/logo-128.png`;
+  if (KNOWN_LOGOS[token.symbol.toLowerCase() as keyof typeof KNOWN_LOGOS]) {
+    return KNOWN_LOGOS[token.symbol.toLowerCase() as keyof typeof KNOWN_LOGOS];
+  }
+
+  return `https://raw.githubusercontent.com/SmolDapp/tokenAssets/main/tokens/${
+    token.chainId
+  }/${token.address.toLowerCase()}/logo-128.png`;
 }

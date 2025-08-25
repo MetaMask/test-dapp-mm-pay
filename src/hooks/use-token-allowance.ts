@@ -73,6 +73,7 @@ export function useTokenAllowance(
   return {
     allowance: allowanceCall,
     receipt: approveReceipt,
+    approveCallSimulation,
     approve,
     hasAllowance,
     isApproving,
