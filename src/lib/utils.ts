@@ -1,6 +1,7 @@
 /* eslint-disable jsdoc/match-description */
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { Address } from 'viem';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -103,4 +104,19 @@ function formatScientificNotation(absoluteValue: number): string {
   }
 
   return '0.0000';
+}
+
+export function trimAddress(address?: string | Address, length = 4) {
+  if (!address) {
+    return '';
+  }
+  return `${address.slice(0, 2 + length)}...${address.slice(-Math.abs(length))}`;
+}
+
+export function getChainLogo(chainId: number) {
+  return `https://raw.githubusercontent.com/SmolDapp/tokenAssets/main/chains/${chainId}/logo-128.png`;
+}
+
+export function getConnectorLogo(name: string) {
+  return `src/assets/${name.includes('Dynamic') ? 'dynamic-icon.svg' : 'privy-icon.png'}`;
 }

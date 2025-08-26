@@ -71,7 +71,7 @@
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-import": "~2.26.0",
     "eslint-plugin-jsdoc": "^39.9.1",
-    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
