@@ -1,6 +1,5 @@
-import { getDefaultConfig } from '@rainbow-me/rainbowkit';
 import type { Chain, Transport } from 'viem';
-import { http } from 'wagmi';
+import { createConfig, http } from 'wagmi';
 import { arbitrum, base } from 'wagmi/chains';
 
 const INFURA_KEY: string = import.meta.env.VITE_INFURA_KEY;
@@ -24,10 +23,8 @@ const transports = CHAIN_CONFIGS.reduce<Record<number, Transport>>(
   {},
 );
 
-export const config = getDefaultConfig({
-  appName: 'MetaMask Pay DApp',
-  projectId: 'demo-project-id',
+export const config = createConfig({
   chains: [base, arbitrum],
   transports,
-  ssr: false, // Since this is a client-side app
+  multiInjectedProviderDiscovery: false,
 });
