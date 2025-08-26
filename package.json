@@ -1,7 +1,7 @@
 {
-  "name": "@metamask/test-pay-dapp",
+  "name": "@metamask/test-dapp-mm-pay",
+  "description": "Test Dapp for benchmarking MetaMask Pay and its competitors",
   "version": "0.0.0",
-  "private": true,
   "type": "module",
   "scripts": {
     "add-component": "npx shadcn@latest add",

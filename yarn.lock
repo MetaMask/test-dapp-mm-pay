@@ -2995,9 +2995,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@metamask/test-pay-dapp@workspace:.":
+"@metamask/test-dapp-mm-pay@workspace:.":
   version: 0.0.0-use.local
-  resolution: "@metamask/test-pay-dapp@workspace:."
+  resolution: "@metamask/test-dapp-mm-pay@workspace:."
   dependencies:
     "@aave/react": "npm:^0.4.0"
     "@biconomy/abstractjs": "npm:^1.1.0"
