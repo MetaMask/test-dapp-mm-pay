@@ -5,6 +5,7 @@ import { InfoRow } from './info-row';
 import { getChainLogo, getConnectorLogo, trimAddress } from '@/lib/utils';
 import { PrivyConnector } from './privy-connector';
 import { useWalletProvider } from '@/contexts/wallet-provider-context';
+import { DynamicWidget } from '@dynamic-labs/sdk-react-core';
 
 export function ConnectionStatus() {
   const { selectedProvider } = useWalletProvider();
@@ -15,11 +16,11 @@ export function ConnectionStatus() {
 
   return (
     <Card className="">
-      <CardHeader>
+      <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Connection Status</CardTitle>
+        {selectedProvider === 'privy' ? <PrivyConnector /> : <DynamicWidget />}
       </CardHeader>
       <CardContent className="min-w-96">
-        {selectedProvider === 'privy' && <PrivyConnector />}
         {account.isConnected ? (
           <div className="">
             <InfoRow
@@ -31,7 +32,7 @@ export function ConnectionStatus() {
               label="Wallet Type"
               children={isEmbedded ? 'Embedded' : 'Injected'}
             />
-            <InfoRow label="Address" children={trimAddress(account.address)} />
+            <InfoRow label="Address" children={account.address} />
             <InfoRow
               label="Chain"
               children={account.chain?.name}

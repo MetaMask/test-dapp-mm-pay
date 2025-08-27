@@ -24,7 +24,7 @@ const transports = CHAIN_CONFIGS.reduce<Record<number, Transport>>(
   {},
 );
 
-const rootConfig = {
+export const rootConfig = {
   chains: [base, arbitrum],
   transports,
 } as const;
@@ -33,5 +33,3 @@ export const config = createConfig({
   ...rootConfig,
   multiInjectedProviderDiscovery: false,
 });
-
-export const privyConfig = createPrivyConfig(rootConfig);

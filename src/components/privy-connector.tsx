@@ -13,32 +13,25 @@ export function PrivyConnector() {
 
   console.log({ wallets });
   if (!ready) {
-    return <div>Loading...</div>;
+    return <div />;
   }
   console.log({ user, account });
 
   return (
     <div>
-      <Button
-        onClick={() => {
-          if (authenticated) {
-            logout().catch(console.error);
-          } else {
-            login();
-          }
-        }}
-      >
-        {authenticated ? 'Logout' : 'Login'}
-      </Button>
-      <Button
-        onClick={() => {
-          privy.connectOrCreateWallet();
-        }}
-      >
-        Connect Wallet
-      </Button>
-      <InfoRow label="Authenticated" children={authenticated.toString()} />
-      <InfoRow label="Address" children={trimAddress(user?.wallet?.address)} />
+      <div className="flex gap-2">
+        <Button
+          onClick={() => {
+            if (authenticated) {
+              logout().catch(console.error);
+            } else {
+              login();
+            }
+          }}
+        >
+          {authenticated ? 'Logout' : 'Login'}
+        </Button>
+      </div>
     </div>
   );
 }

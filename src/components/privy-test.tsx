@@ -3,11 +3,10 @@ import { Button } from './ui/button';
 import { parseEther } from 'viem';
 
 export function PrivyTest() {
-  const privy = usePrivy();
+  const { ready, ...privy } = usePrivy();
   const wallets = useWallets();
   const sendTransaction = useSendTransaction();
 
-  console.log(wallets);
   const handleSendTransaction = async () => {
     const tx = await sendTransaction.sendTransaction(
       {
@@ -19,6 +18,10 @@ export function PrivyTest() {
     );
     console.log(tx);
   };
+
+  if (!ready) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
