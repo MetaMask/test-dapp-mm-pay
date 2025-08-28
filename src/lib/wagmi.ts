@@ -1,4 +1,3 @@
-import { createConfig as createPrivyConfig } from '@privy-io/wagmi';
 import type { Chain, Transport } from 'viem';
 import { createConfig, http } from 'wagmi';
 import { arbitrum, base } from 'wagmi/chains';

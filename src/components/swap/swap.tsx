@@ -78,7 +78,7 @@ export function Swap({
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
+    <Card className="mx-auto w-full max-w-md">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <RefreshCw className="h-5 w-5" />
@@ -115,7 +115,7 @@ export function Swap({
                   size="sm"
                   onClick={onMaxAmount}
                   disabled={disabled}
-                  className="absolute right-1 top-1/2 -translate-y-1/2 h-6 px-2 text-xs"
+                  className="absolute right-1 top-1/2 h-6 -translate-y-1/2 px-2 text-xs"
                 >
                   MAX
                 </Button>
@@ -176,7 +176,7 @@ export function Swap({
 
         {/* Quote Information */}
         {quote && fromToken && toToken && (
-          <div className="rounded-lg border bg-muted/50 p-3 space-y-2">
+          <div className="space-y-2 rounded-lg border bg-muted/50 p-3">
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Exchange Rate</span>
               <span>
@@ -218,7 +218,7 @@ export function Swap({
 
         {/* Loading State */}
         {isLoading && !quote && fromToken && toToken && fromAmount && (
-          <div className="rounded-lg border bg-muted/50 p-3 space-y-2">
+          <div className="space-y-2 rounded-lg border bg-muted/50 p-3">
             <div className="flex justify-between">
               <Skeleton className="h-4 w-24" />
               <Skeleton className="h-4 w-32" />
@@ -232,7 +232,7 @@ export function Swap({
 
         {/* Approval Status */}
         {fromToken && fromAmount && !isEthSwap && !hasSufficientAllowance && (
-          <div className="rounded-lg border bg-muted/50 p-3 space-y-2">
+          <div className="space-y-2 rounded-lg border bg-muted/50 p-3">
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Token Approval</span>
               <span className={'text-yellow-600'}>Approval Required</span>

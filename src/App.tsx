@@ -1,9 +1,9 @@
+import { ConnectionStatus } from './components/connection-status';
 import { IntegrationRouter } from './components/integration-router';
 import { WalletProviderSelector } from './components/wallet-provider-selector';
 
 import { ModeToggle } from '@/components/mode-toggle';
 import { ThemeProvider } from '@/components/theme-provider';
-import { ConnectionStatus } from './components/connection-status';
 import { WalletProviderContextProvider } from '@/contexts/wallet-provider-context';
 
 function AppContent() {
