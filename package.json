@@ -1,6 +1,14 @@
 {
   "name": "@metamask/test-dapp-mm-pay",
+  "homepage": "https://metamask.github.io/metamask-pay-dapp",
   "description": "Test Dapp for benchmarking MetaMask Pay and its competitors",
+  "bugs": {
+    "url": "https://github.com/MetaMask/test-dapp-mm-pay/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MetaMask/test-dapp-mm-pay.git"
+  },
   "version": "0.0.0",
   "type": "module",
   "scripts": {

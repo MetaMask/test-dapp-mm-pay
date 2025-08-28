@@ -1,4 +1,4 @@
-name: Publish docs to GitHub Pages
+name: Publish DApp to GitHub Pages
 
 on:
   workflow_call:
@@ -11,17 +11,18 @@ on:
         required: true
 
 jobs:
-  publish-docs-to-gh-pages:
-    name: Publish docs to GitHub Pages
-    runs-on: ubuntu-latest
-    environment: github-pages
+  build-and-deploy:
     permissions:
       contents: write
+    runs-on: ubuntu-latest
+    environment: github-pages
     steps:
       - name: Ensure `destination_dir` is not empty
         if: ${{ inputs.destination_dir == '' }}
         run: exit 1
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
       - name: Install Corepack via Node
         uses: actions/setup-node@v4
         with:
@@ -35,16 +36,14 @@ jobs:
           cache: 'yarn'
       - name: Install dependencies via Yarn
         run: yarn --immutable
-      - name: Update `package.json` `homepage` field
+      - name: Update package.json homepage field
         run: |
-          sed -i 's/"homepage": ".*"/"homepage": "https:\/\/metamask.github.io\/test-dapp-multichain\/${{ inputs.destination_dir }}"/' package.json
-      - name: Run build script
+          sed -i 's/"homepage": ".*"/"homepage": "https:\/\/metamask.github.io\/metamask-pay-dapp\/${{ inputs.destination_dir }}"/' package.json
+      - name: Build DApp
         run: yarn build
       - name: Deploy to `${{ inputs.destination_dir }}` directory of `gh-pages` branch
         uses: peaceiris/actions-gh-pages@de7ea6f8efb354206b205ef54722213d99067935
         with:
-          # This `PUBLISH_DOCS_TOKEN` needs to be manually set per-repository.
-          # Look in the repository settings under "Environments", and set this token in the `github-pages` environment.
           personal_token: ${{ secrets.PUBLISH_DOCS_TOKEN }}
-          publish_dir: ./build
+          publish_dir: ./dist
           destination_dir: ${{ inputs.destination_dir }}

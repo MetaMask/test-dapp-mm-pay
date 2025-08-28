@@ -4,6 +4,7 @@ import { defineConfig } from 'vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: process.env.NODE_ENV === 'production' ? '/metamask-pay-dapp/' : '/',
   plugins: [react()],
   resolve: {
     alias: {

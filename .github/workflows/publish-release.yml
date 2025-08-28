@@ -3,81 +3,11 @@ name: Publish Release
 on:
   workflow_call:
     secrets:
-      NPM_TOKEN:
-        required: true
-      SLACK_WEBHOOK_URL:
-        required: true
       PUBLISH_DOCS_TOKEN:
         required: true
 
 jobs:
-  publish-release:
-    permissions:
-      contents: write
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.sha }}
-      - name: Install Corepack via Node
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: '.nvmrc'
-      - name: Install Yarn
-        run: corepack enable
-      - name: Restore Yarn cache
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'yarn'
-      - uses: MetaMask/action-publish-release@v3
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/cache@v3
-        with:
-          path: |
-            ./dist
-            ./node_modules/.yarn-state.yml
-          key: ${{ github.sha }}
-      - run: yarn --immutable
-      - run: yarn build
-
-  publish-npm:
-    needs: publish-npm-dry-run
-    runs-on: ubuntu-latest
-    environment: npm-publish
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.sha }}
-      - name: Install Corepack via Node
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: '.nvmrc'
-      - name: Install Yarn
-        run: corepack enable
-      - name: Restore Yarn cache
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'yarn'
-      - uses: actions/cache@v3
-        with:
-          path: |
-            ./build
-            ./node_modules/.yarn-state.yml
-          key: ${{ github.sha }}
-      - name: Publish
-        uses: MetaMask/action-npm-publish@v2
-        with:
-          # This `NPM_TOKEN` needs to be manually set per-repository.
-          # Look in the repository settings under "Environments", and set this token in the `npm-publish` environment.
-          npm-token: ${{ secrets.NPM_TOKEN }}
-        env:
-          SKIP_PREPACK: true
-
   get-release-version:
-    needs: publish-npm
     runs-on: ubuntu-latest
     outputs:
       RELEASE_VERSION: ${{ steps.get-release-version.outputs.RELEASE_VERSION }}
@@ -90,7 +20,7 @@ jobs:
         run: ./scripts/get.sh ".version" "RELEASE_VERSION"
 
   publish-release-to-gh-pages:
-    name: Publish docs to `${{ needs.get-release-version.outputs.RELEASE_VERSION }}` directory of `gh-pages` branch
+    name: Publish DApp to `${{ needs.get-release-version.outputs.RELEASE_VERSION }}` directory of `gh-pages` branch
     needs: get-release-version
     permissions:
       contents: write
@@ -101,8 +31,8 @@ jobs:
       PUBLISH_DOCS_TOKEN: ${{ secrets.PUBLISH_DOCS_TOKEN }}
 
   publish-release-to-latest-gh-pages:
-    name: Publish docs to `latest` directory of `gh-pages` branch
-    needs: publish-npm
+    name: Publish DApp to `latest` directory of `gh-pages` branch
+    needs: get-release-version
     permissions:
       contents: write
     uses: ./.github/workflows/publish-docs.yml
