@@ -3,7 +3,7 @@ name: Publish Release
 on:
   workflow_call:
     secrets:
-      PUBLISH_DOCS_TOKEN:
+      PUBLISH_APP_TOKEN:
         required: true
 
 jobs:
@@ -28,7 +28,7 @@ jobs:
     with:
       destination_dir: ${{ needs.get-release-version.outputs.RELEASE_VERSION }}
     secrets:
-      PUBLISH_DOCS_TOKEN: ${{ secrets.PUBLISH_DOCS_TOKEN }}
+      PUBLISH_APP_TOKEN: ${{ secrets.PUBLISH_APP_TOKEN }}
 
   publish-release-to-latest-gh-pages:
     name: Publish DApp to `latest` directory of `gh-pages` branch
@@ -39,4 +39,4 @@ jobs:
     with:
       destination_dir: latest
     secrets:
-      PUBLISH_DOCS_TOKEN: ${{ secrets.PUBLISH_DOCS_TOKEN }}
+      PUBLISH_APP_TOKEN: ${{ secrets.PUBLISH_APP_TOKEN }}

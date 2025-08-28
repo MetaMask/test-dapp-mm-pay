@@ -72,4 +72,4 @@ jobs:
       contents: write
     uses: ./.github/workflows/publish-release.yml
     secrets:
-      PUBLISH_DOCS_TOKEN: ${{ secrets.PUBLISH_DOCS_TOKEN }}
+      PUBLISH_APP_TOKEN: ${{ secrets.PUBLISH_APP_TOKEN }}
