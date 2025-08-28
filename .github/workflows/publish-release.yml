@@ -24,7 +24,7 @@ jobs:
     needs: get-release-version
     permissions:
       contents: write
-    uses: ./.github/workflows/publish-docs.yml
+    uses: ./.github/workflows/publish-pages.yml
     with:
       destination_dir: ${{ needs.get-release-version.outputs.RELEASE_VERSION }}
     secrets:
@@ -35,7 +35,7 @@ jobs:
     needs: get-release-version
     permissions:
       contents: write
-    uses: ./.github/workflows/publish-docs.yml
+    uses: ./.github/workflows/publish-pages.yml
     with:
       destination_dir: latest
     secrets:
