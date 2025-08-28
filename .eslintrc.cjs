@@ -41,9 +41,10 @@ module.exports = {
     },
 
     {
-      files: ['src/vite-env.d.ts'],
+      files: ['*.d.ts'],
       rules: {
         'import/unambiguous': 'off',
+        'spaced-comment': 'off',
       },
     },
 
