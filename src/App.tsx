@@ -1,9 +1,10 @@
+import { DynamicWidget } from '@dynamic-labs/sdk-react-core';
+
 import { IntegrationRouter } from './components/integration-router';
+import WalletProviderDynamic from './components/wallet-provider-dynamic';
 
 import { ModeToggle } from '@/components/mode-toggle';
 import { ThemeProvider } from '@/components/theme-provider';
-import { DynamicWidget } from '@dynamic-labs/sdk-react-core';
-import WalletProviderDynamic from './components/wallet-provider-dynamic';
 
 function App() {
   return (

@@ -67,7 +67,7 @@ export function NFT({
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
+    <Card className="mx-auto w-full max-w-md">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Image className="h-5 w-5" />
@@ -114,7 +114,7 @@ export function NFT({
 
         {/* Collection Information */}
         {collection && (
-          <div className="rounded-lg border bg-muted/50 p-3 space-y-2">
+          <div className="space-y-2 rounded-lg border bg-muted/50 p-3">
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Total Supply</span>
               <span>
@@ -157,7 +157,7 @@ export function NFT({
                 min="1"
                 max={MAX_MINT_QUANTITY}
                 value={mintQuantity}
-                onChange={(e) => handleQuantityChange(e.target.value)}
+                onChange={(event) => handleQuantityChange(event.target.value)}
                 disabled={disabled}
                 placeholder="1"
               />

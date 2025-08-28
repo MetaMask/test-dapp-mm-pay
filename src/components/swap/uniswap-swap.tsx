@@ -82,7 +82,7 @@ export function UniswapSwap() {
   const { data: fromTokenBalance, refetch: refetchFromTokenBalance } =
     useBalance({
       address,
-      token: swapData.fromToken?.address as `0x${string}` | undefined,
+      token: swapData.fromToken?.address,
       query: {
         enabled: Boolean(swapData.fromToken?.address) && isConnected,
       },
@@ -90,7 +90,7 @@ export function UniswapSwap() {
 
   const { data: toTokenBalance, refetch: refetchToTokenBalance } = useBalance({
     address,
-    token: swapData.toToken?.address as `0x${string}` | undefined,
+    token: swapData.toToken?.address,
     query: {
       enabled: Boolean(swapData.toToken?.address) && isConnected,
     },
