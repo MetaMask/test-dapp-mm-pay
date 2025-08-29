@@ -1,7 +1,7 @@
 /* eslint-disable jsdoc/match-description */
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { Address } from 'viem';
+import type { Address } from 'viem';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -119,4 +119,27 @@ export function getChainLogo(chainId: number) {
 
 export function getConnectorLogo(name: string) {
   return `src/assets/${name.includes('Dynamic') ? 'dynamic-icon.svg' : 'privy-icon.png'}`;
+}
+
+const permissionMessages = {
+  hasBalance: 'Insufficient balance',
+  isWrongChain: 'Switch to the correct network',
+};
+
+/**
+ * Filters an object of boolean values and returns an array of mapped strings where the value is true
+ * @param booleanMap - Object where keys are strings and values are booleans
+ * @param stringMap - Object that maps the same keys to their corresponding string values
+ * @returns Array of mapped strings where the corresponding boolean value is true
+ */
+export function getErrorMessages<T extends Record<string, boolean>>(
+  booleanMap: T,
+  stringMap: Record<keyof T, string> = permissionMessages as Record<
+    keyof T,
+    string
+  >,
+): string[] {
+  return Object.entries(booleanMap)
+    .filter(([, value]) => value)
+    .map(([key]) => stringMap[key as keyof T]);
 }

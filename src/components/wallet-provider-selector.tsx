@@ -1,31 +1,27 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { WalletProviderPrivy } from './wallet-provider-privy';
-import WalletProviderDynamic from './wallet-provider-dynamic';
-import { getConnectorLogo } from '@/lib/utils';
+import { Tabs, TabsList, TabsTrigger } from './ui/tabs';
+
 import { useWalletProvider } from '@/contexts/wallet-provider-context';
+import { getConnectorLogo } from '@/lib/utils';
 
-type WalletProviderSelectorProps = {
-  children: React.ReactNode;
-};
-
-export function WalletProviderSelector({
-  children,
-}: WalletProviderSelectorProps) {
+export function WalletProviderSelector() {
   const { selectedProvider, setSelectedProvider } = useWalletProvider();
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-4">
+    <div className="">
+      <div className="container mx-auto py-4">
         {/* Provider Selection Tabs */}
-        <div className="mb-6 flex justify-center">
+        <div className="flex justify-center">
           <Tabs
             value={selectedProvider}
             onValueChange={(value) =>
               setSelectedProvider(value as 'dynamic' | 'privy')
             }
           >
-            <TabsList className="grid w-[400px] grid-cols-2">
-              <TabsTrigger value="dynamic" className="flex items-center gap-2">
+            <TabsList className="grid grid-cols-2 gap-x-1">
+              <TabsTrigger
+                value="dynamic"
+                className="flex items-center gap-2 px-2"
+              >
                 <img
                   className="size-4"
                   src={getConnectorLogo('Dynamic')}
@@ -42,18 +38,6 @@ export function WalletProviderSelector({
                 Privy
               </TabsTrigger>
             </TabsList>
-
-            {selectedProvider === 'dynamic' && (
-              <TabsContent value="dynamic">
-                <WalletProviderDynamic>{children}</WalletProviderDynamic>
-              </TabsContent>
-            )}
-
-            {selectedProvider === 'privy' && (
-              <TabsContent value="privy">
-                <WalletProviderPrivy>{children}</WalletProviderPrivy>
-              </TabsContent>
-            )}
           </Tabs>
         </div>
       </div>

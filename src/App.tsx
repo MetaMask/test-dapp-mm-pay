@@ -1,6 +1,8 @@
 import { ConnectionStatus } from './components/connection-status';
-import { IntegrationRouter } from './components/integration-router';
+import { WalletProviderRenderer } from './components/wallet-provider-renderer';
 import { WalletProviderSelector } from './components/wallet-provider-selector';
+import { BiconomyCard } from './integrations/biconomy/biconomy-card';
+import { RelayCard } from './integrations/relay/relay-card';
 
 import { ModeToggle } from '@/components/mode-toggle';
 import { ThemeProvider } from '@/components/theme-provider';
@@ -14,15 +16,21 @@ function AppContent() {
           <img className="size-8" src="src/assets/mm-logo.svg" />
           Pay Test DApp
         </h1>
-        <div className="flex gap-2">
+        <div className="flex items-center gap-x-2">
+          <WalletProviderSelector />
           <ModeToggle />
         </div>
       </div>
       <div className="flex flex-col items-center space-y-8">
-        <WalletProviderSelector>
-          <ConnectionStatus />
-          <IntegrationRouter />
-        </WalletProviderSelector>
+        <WalletProviderRenderer>
+          <div className="flex flex-col items-center space-y-4">
+            <ConnectionStatus />
+            <div className="flex gap-x-4">
+              <BiconomyCard />
+              <RelayCard />
+            </div>
+          </div>
+        </WalletProviderRenderer>
       </div>
     </div>
   );

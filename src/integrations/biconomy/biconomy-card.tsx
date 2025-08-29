@@ -1,4 +1,4 @@
-import { AaveDepositBiconomyEoa } from './aave-deposit-biconomy-eoa';
+import { AaveDepositBiconomyEoa } from './aave-deposit-biconomy';
 
 import {
   Card,
@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 
-export function BiconomyEoa() {
+export function BiconomyCard() {
   return (
     <div>
       <Card className="w-full max-w-md">

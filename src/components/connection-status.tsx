@@ -1,21 +1,24 @@
+import { DynamicWidget } from '@dynamic-labs/sdk-react-core';
 import { useAccount } from 'wagmi';
 
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { InfoRow } from './info-row';
-import { getChainLogo, getConnectorLogo, trimAddress } from '@/lib/utils';
 import { PrivyConnector } from './privy-connector';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+
 import { useWalletProvider } from '@/contexts/wallet-provider-context';
-import { DynamicWidget } from '@dynamic-labs/sdk-react-core';
+import { getChainLogo, getConnectorLogo } from '@/lib/utils';
+
+const EMBEDDED_CONNECTOR_IDS = ['dynamicwaas', 'privy'];
 
 export function ConnectionStatus() {
   const { selectedProvider } = useWalletProvider();
   const account = useAccount();
-  const isEmbedded = account.connector?.id.includes('dynamicwaas');
-
-  console.log(account);
+  const isEmbedded = EMBEDDED_CONNECTOR_IDS.some((id) =>
+    (account.connector?.id ?? '').includes(id),
+  );
 
   return (
-    <Card className="">
+    <Card className="h-[200px] w-[600px]">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Connection Status</CardTitle>
         {selectedProvider === 'privy' ? <PrivyConnector /> : <DynamicWidget />}
@@ -40,7 +43,9 @@ export function ConnectionStatus() {
             />
           </div>
         ) : (
-          <div>Not connected</div>
+          <div className="text-center text-2xl font-bold">
+            No wallet connected
+          </div>
         )}
       </CardContent>
     </Card>

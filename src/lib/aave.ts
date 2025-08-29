@@ -58,6 +58,10 @@ export function encodeAaveSupplyCall({
   const contractAddress = getAavePoolV3Address(chainId);
   const args = [tokenAddress, amount, recipientAddress, 0] as const;
 
+  if (!tokenAddress || !recipientAddress) {
+    return [];
+  }
+
   const approvalArgs = encodeFunctionData({
     abi: erc20Abi,
     functionName: 'approve',
