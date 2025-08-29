@@ -91,7 +91,6 @@ export function AaveDepositBiconomyEoa() {
   return (
     <div className="text-xs">
       <div className="rounded-lg">
-        {operation.error && <ErrorContainer error={operation.error} />}
         <div className="space-y-3">
           <TokenInput
             balance={balance.balanceDecimal}
@@ -198,6 +197,8 @@ export function AaveDepositBiconomyEoa() {
           )}
         </div>
       </div>
+
+      {operation.error && <ErrorContainer error={operation.error} />}
     </div>
   );
 }

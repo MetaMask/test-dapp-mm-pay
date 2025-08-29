@@ -69,9 +69,6 @@ export function AaveDepositRelay() {
   return (
     <div className="text-xs">
       <div className="rounded-lg">
-        {operation.quote.error && (
-          <ErrorContainer error={operation.quote.error} />
-        )}
         <div className="flex items-center gap-x-2">
           <div className="flex items-center gap-x-2">
             <img
@@ -183,6 +180,9 @@ export function AaveDepositRelay() {
           </Button>
         </div>
       </div>
+      {operation.quote.error && (
+        <ErrorContainer error={operation.quote.error} />
+      )}
     </div>
   );
 }
