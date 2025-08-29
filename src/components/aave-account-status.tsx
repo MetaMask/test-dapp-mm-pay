@@ -8,11 +8,11 @@ import { useAaveWithdraw } from '@/hooks/use-aave-withdraw';
 import { trimNumber } from '@/lib/utils';
 
 export function AaveAccountStatus() {
-  const { position, allowance, handleSupply } = useAave();
+  const { position } = useAave();
   const { execute } = useAaveWithdraw();
 
   return (
-    <Card>
+    <Card className="w-1/3">
       <CardHeader>
         <CardTitle className="flex items-center gap-1">
           <img src="src/assets/aave.svg" alt="Aave" className="size-6" />
@@ -26,8 +26,8 @@ export function AaveAccountStatus() {
           </InfoRow>
           <InfoRow label="APY">{position.apy}%</InfoRow>
 
-          <div className="mt-4 flex gap-x-3">
-            <Button
+          <div className="mt-4 flex justify-center gap-x-3">
+            {/* <Button
               disabled={!allowance.approveCallSimulation.isSuccess}
               onClick={() => {
                 allowance.approve();
@@ -41,7 +41,7 @@ export function AaveAccountStatus() {
               }}
             >
               Supply
-            </Button>
+            </Button> */}
             <Button
               onClick={() => {
                 execute().catch(console.error);

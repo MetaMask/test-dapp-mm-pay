@@ -15,14 +15,13 @@ import { useAccount } from 'wagmi';
 
 import { useBiconomyClient } from './use-biconomy-client';
 
-import { getAavePoolV3Address } from '@/constants/aave';
 import { COMMON_TOKENS } from '@/constants/tokens';
 import {
   prepareUniswapSwapTransaction,
   useUniswap,
   type UseUniswapParams,
 } from '@/hooks/use-uniswap';
-import { prepareAaveSupplyCall } from '@/lib/aave';
+import { getAavePoolV3Address, prepareAaveSupplyCall } from '@/lib/aave';
 import { getMultichainToken, getBridgeTransaction } from '@/lib/biconomy';
 import { getUniswapSwapRouterAddress } from '@/lib/uniswap';
 

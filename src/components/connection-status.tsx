@@ -18,7 +18,7 @@ export function ConnectionStatus() {
   );
 
   return (
-    <Card className="h-[200px] w-[600px]">
+    <Card className="h-[200px] w-2/3">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Connection Status</CardTitle>
         {selectedProvider === 'privy' ? <PrivyConnector /> : <DynamicWidget />}

@@ -1,3 +1,4 @@
+import { AaveAccountStatus } from './components/aave-account-status';
 import { ConnectionStatus } from './components/connection-status';
 import { WalletProviderRenderer } from './components/wallet-provider-renderer';
 import { WalletProviderSelector } from './components/wallet-provider-selector';
@@ -6,6 +7,7 @@ import { RelayCard } from './integrations/relay/relay-card';
 
 import { ModeToggle } from '@/components/mode-toggle';
 import { ThemeProvider } from '@/components/theme-provider';
+import { AaveProvider } from '@/contexts/aave-provider';
 import { WalletProviderContextProvider } from '@/contexts/wallet-provider-context';
 
 function AppContent() {
@@ -24,7 +26,10 @@ function AppContent() {
       <div className="flex flex-col items-center space-y-8">
         <WalletProviderRenderer>
           <div className="flex flex-col items-center space-y-4">
-            <ConnectionStatus />
+            <div className="flex w-full justify-between gap-x-4">
+              <ConnectionStatus />
+              <AaveAccountStatus />
+            </div>
             <div className="flex gap-x-4">
               <BiconomyCard />
               <RelayCard />
@@ -40,7 +45,9 @@ function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <WalletProviderContextProvider>
-        <AppContent />
+        <AaveProvider>
+          <AppContent />
+        </AaveProvider>
       </WalletProviderContextProvider>
     </ThemeProvider>
   );

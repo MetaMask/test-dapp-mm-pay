@@ -4,8 +4,8 @@ import { useCallback } from 'react';
 import { base } from 'viem/chains';
 import { useWalletClient } from 'wagmi';
 
-import { getAavePoolV3Address } from '@/constants/aave';
 import { COMMON_TOKENS } from '@/constants/tokens';
+import { getAavePoolV3Address } from '@/lib/aave';
 
 const chainId = base.id;
 const { USDC: USDC_BASE } = COMMON_TOKENS[base.id]!;

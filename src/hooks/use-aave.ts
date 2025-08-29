@@ -9,9 +9,8 @@ import {
 
 import { useTokenAllowance } from './use-token-allowance';
 
-import { getAavePoolV3Address } from '@/constants/aave';
 import { COMMON_TOKENS } from '@/constants/tokens';
-import { prepareAaveSupplyCall } from '@/lib/aave';
+import { getAavePoolV3Address, prepareAaveSupplyCall } from '@/lib/aave';
 
 const CHAIN_ID = 8453;
 const { USDC } = COMMON_TOKENS[CHAIN_ID] ?? {};
