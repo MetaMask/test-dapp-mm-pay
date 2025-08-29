@@ -2,8 +2,7 @@ import { AaveAccountStatus } from './components/aave-account-status';
 import { ConnectionStatus } from './components/connection-status';
 import { WalletProviderRenderer } from './components/wallet-provider-renderer';
 import { WalletProviderSelector } from './components/wallet-provider-selector';
-import { BiconomyCard } from './integrations/biconomy/biconomy-card';
-import { RelayCard } from './integrations/relay/relay-card';
+import { ActionCards } from './integrations/action-cards';
 
 import { ModeToggle } from '@/components/mode-toggle';
 import { ThemeProvider } from '@/components/theme-provider';
@@ -30,10 +29,7 @@ function AppContent() {
               <ConnectionStatus />
               <AaveAccountStatus />
             </div>
-            <div className="flex gap-x-4">
-              <BiconomyCard />
-              <RelayCard />
-            </div>
+            <ActionCards />
           </div>
         </WalletProviderRenderer>
       </div>
