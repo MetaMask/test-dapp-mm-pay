@@ -5,6 +5,7 @@ import type { Address } from 'viem';
 
 import dynamicIcon from '../assets/dynamic-icon.svg';
 import privyIcon from '../assets/privy-icon.png';
+import rainbowkitIcon from '../assets/rainbowkit-icon.svg';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -120,8 +121,15 @@ export function getChainLogo(chainId: number) {
   return `https://raw.githubusercontent.com/SmolDapp/tokenAssets/main/chains/${chainId}/logo-128.png`;
 }
 
-export function getConnectorLogo(name: string) {
-  return name.includes('Dynamic') ? dynamicIcon : privyIcon;
+export function getConnectorLogo(name?: string) {
+  switch (name) {
+    case 'Dynamic':
+      return dynamicIcon;
+    case 'Privy':
+      return privyIcon;
+    default:
+      return rainbowkitIcon;
+  }
 }
 
 const permissionMessages = {

@@ -1,3 +1,5 @@
+import { useAccount } from 'wagmi';
+
 import aaveLogo from '../assets/aave.svg';
 import { InfoRow } from './info-row';
 import { Button } from './ui/button';
@@ -9,6 +11,7 @@ import { useAaveWithdraw } from '@/hooks/use-aave-withdraw';
 import { trimNumber } from '@/lib/utils';
 
 export function AaveAccountStatus() {
+  const { isConnected } = useAccount();
   const { position } = useAave();
   const { execute } = useAaveWithdraw();
 
@@ -44,6 +47,7 @@ export function AaveAccountStatus() {
               Supply
             </Button> */}
             <Button
+              disabled={!isConnected || parseFloat(position.balance) > 0}
               onClick={() => {
                 execute().catch(console.error);
               }}
