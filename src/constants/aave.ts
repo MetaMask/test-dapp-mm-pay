@@ -6,11 +6,3 @@ export const AAVE_POOL_V3_ADDRESS: Record<number, Address> = {
 
 export const AAVE_USDC_ADDRESS_BASE =
   '0x4e65fE4DbA92790696d040ac24Aa414708F5c0AB';
-
-export function getAavePoolV3Address(chainId: number): Address {
-  const address = AAVE_POOL_V3_ADDRESS[chainId];
-  if (!address) {
-    throw new Error(`Aave pool v3 address not found for chainId: ${chainId}`);
-  }
-  return address;
-}

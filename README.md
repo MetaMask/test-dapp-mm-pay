@@ -1,6 +1,11 @@
 # ![mm-logo](src/assets/mm-logo-24.svg) Test Dapp MetaMask Pay
 
-Test Dapp for benchmarking Metamask Pay and its competitors
+Test Dapp for benchmarking Metamask Pay and its competitors.
+
+## Usage
+
+Currently it allows for supplying USDC to Aave on Base by spending WETH on Arbitrum via Relay.link and Biconomy.
+Route has been hardcoded for simplicity but could easily be adapted to support more tokens.
 
 ## Contributing
 
@@ -10,6 +15,7 @@ Test Dapp for benchmarking Metamask Pay and its competitors
   - If you are using [nvm](https://github.com/creationix/nvm#installation) (recommended) running `nvm install` will install the latest version and running `nvm use` will automatically choose the right node version for you.
 - Install [Yarn](https://yarnpkg.com) v4 via [Corepack](https://github.com/nodejs/corepack?tab=readme-ov-file#how-to-install)
 - Run `yarn install` to install dependencies and run any required post-install scripts
+- Copy `.env.example` to `.env` and setup
 - Run `yarn dev` to spin up the app
 
 ### Testing and Linting

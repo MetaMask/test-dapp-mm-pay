@@ -17,14 +17,20 @@ export const CHAIN_CONFIGS: { chain: Chain; rpcUrl: string }[] = [
 
 const transports = CHAIN_CONFIGS.reduce<Record<number, Transport>>(
   (acc, chainConfig) => {
-    acc[chainConfig.chain.id] = http(chainConfig.rpcUrl);
+    acc[chainConfig.chain.id] = INFURA_KEY
+      ? http(chainConfig.rpcUrl)
+      : http(chainConfig.chain.rpcUrls.default.http[0]);
     return acc;
   },
   {},
 );
 
-export const config = createConfig({
+export const rootConfig = {
   chains: [base, arbitrum],
   transports,
+} as const;
+
+export const config = createConfig({
+  ...rootConfig,
   multiInjectedProviderDiscovery: false,
 });

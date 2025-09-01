@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { parseUnits } from 'viem';
 import { arbitrum, base } from 'viem/chains';
+import { useAccount, useSwitchChain } from 'wagmi';
 
 import { useAaveDepositRelay } from './use-aave-deposit-relay';
 
@@ -8,6 +9,14 @@ import { ErrorContainer } from '@/components/error-container';
 import { InfoRow } from '@/components/info-row';
 import { Status } from '@/components/status';
 import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
@@ -21,10 +30,12 @@ const DESTINATION_CHAIN_ID = base.id;
 const SOURCE_TOKEN = COMMON_TOKENS[SOURCE_CHAIN_ID]?.WETH ?? null;
 const DESTINATION_TOKEN = COMMON_TOKENS[DESTINATION_CHAIN_ID]?.USDC ?? null;
 
-export function AaveDepositRelayEoa() {
+export function AaveDepositRelay() {
   const [amount, setAmount] = useState<string>('1');
+  const { chainId } = useAccount();
   const sourceBalance = useTokenBalance(SOURCE_TOKEN);
   const destinationBalance = useTokenBalance(AUSDC_BASE);
+  const { switchChain } = useSwitchChain();
 
   const operation = useAaveDepositRelay({
     sourceChainId: SOURCE_CHAIN_ID,
@@ -35,12 +46,43 @@ export function AaveDepositRelayEoa() {
     chainId: DESTINATION_CHAIN_ID,
   });
 
+  const quoteAmountIn = operation.quote.data?.details?.currencyIn?.amount;
+
+  const isWrongChain = chainId !== SOURCE_CHAIN_ID;
+
+  const hasSufficientBalance =
+    sourceBalance.balance &&
+    sourceBalance.balance >= BigInt(quoteAmountIn ?? '0');
+
+  const disableSubmit =
+    !isWrongChain &&
+    (!hasSufficientBalance || !operation.quote.isSuccess) &&
+    !operation.quote.isLoading;
+
+  const canSubmit = Boolean(!isWrongChain && hasSufficientBalance);
+
+  const handleSubmit = () => {
+    if (isWrongChain) {
+      switchChain({ chainId: SOURCE_CHAIN_ID });
+      return;
+    }
+
+    if (!hasSufficientBalance) {
+      return;
+    }
+
+    operation.handleSwap?.();
+  };
+
   return (
-    <div className="text-xs">
-      <div className="rounded-lg">
-        {operation.quote.error && (
-          <ErrorContainer error={operation.quote.error} />
-        )}
+    <Card className="h-fill flex w-full max-w-md flex-col justify-between text-xs">
+      <CardHeader>
+        <CardTitle>Relay Cross-Chain AAVE Deposit</CardTitle>
+        <CardDescription>
+          Supply USDC to AAVE on Base by sourcing WETH from Arbitrum
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
         <div className="flex items-center gap-x-2">
           <div className="flex items-center gap-x-2">
             <img
@@ -65,16 +107,6 @@ export function AaveDepositRelayEoa() {
         </div>
         <div className="">
           <div className="mt-4 space-y-2">
-            {/* <div>
-              <h1>Current Steps</h1>
-              <Separator />
-              {relaySwap.quote.data?.steps?.map((step) => (
-                <div key={step.id} className="font-bold">
-                  <h2>{step.action}</h2>
-                  <p>{step.description}</p>
-                </div>
-              ))}
-            </div> */}
             <div>
               <h1>Balances</h1>
               <Separator />
@@ -146,41 +178,24 @@ export function AaveDepositRelayEoa() {
                 label="Tx Status"
               />
             </div>
-
-            {/* <
-            <Status
-              isLoading={relaySwap.fusionQuoteQuery.isLoading}
-              isSuccess={relaySwap.fusionQuoteQuery.isSuccess}
-              error={relaySwap.error}
-              label="Biconomy Quote"
-            />
-            <Status
-              isLoading={relaySwap.swapQuery.isPending}
-              isSuccess={relaySwap.swapQuery.isSuccess}
-              error={relaySwap.swapQuery.error}
-              label="User Confirmation"
-            />
-            <Status
-              isLoading={relaySwap.txQuery.isLoading}
-              isSuccess={relaySwap.txQuery.isSuccess}
-              error={relaySwap.txQuery.error}
-              label="Tx Mined"
-            /> */}
           </div>
         </div>
-
-        <div className="mt-4 flex flex-col gap-y-2 space-y-4">
-          <Button
-            className="w-full"
-            disabled={!operation.quote.isSuccess}
-            onClick={() => {
-              operation.handleSwap?.();
-            }}
-          >
-            {operation.quote.isSuccess ? 'Swap' : 'Waiting for quote...'}
-          </Button>
-        </div>
-      </div>
-    </div>
+      </CardContent>
+      <CardFooter>
+        <Button
+          className={'w-full'}
+          disabled={disableSubmit}
+          onClick={handleSubmit}
+        >
+          {isWrongChain && 'Switch to the correct network'}
+          {!isWrongChain && !hasSufficientBalance && 'Insufficient balance'}
+          {canSubmit && !operation.quote.isSuccess && 'Waiting for quote...'}
+          {canSubmit && operation.quote.isSuccess && 'Swap'}
+        </Button>
+      </CardFooter>
+      {operation.quote.error && (
+        <ErrorContainer error={operation.quote.error} />
+      )}
+    </Card>
   );
 }

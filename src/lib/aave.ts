@@ -2,7 +2,7 @@ import type { RuntimeValue } from '@biconomy/abstractjs';
 import { encodeFunctionData, erc20Abi, type Address } from 'viem';
 
 import { AAVE_POOL_V3_ABI } from '@/abis/aave-pool-v3';
-import { getAavePoolV3Address } from '@/constants/aave';
+import { AAVE_POOL_V3_ADDRESS } from '@/constants/aave';
 
 type AaveSupplyParams = {
   tokenAddress: Address;
@@ -10,6 +10,14 @@ type AaveSupplyParams = {
   chainId: number;
   amount: bigint;
 };
+
+export function getAavePoolV3Address(chainId: number): Address {
+  const address = AAVE_POOL_V3_ADDRESS[chainId];
+  if (!address) {
+    throw new Error(`Aave pool v3 address not found for chainId: ${chainId}`);
+  }
+  return address;
+}
 
 /**
  * Prepares a call to the Aave Pool V3 contract to supply an asset
@@ -57,6 +65,10 @@ export function encodeAaveSupplyCall({
 }: AaveSupplyParams) {
   const contractAddress = getAavePoolV3Address(chainId);
   const args = [tokenAddress, amount, recipientAddress, 0] as const;
+
+  if (!tokenAddress || !recipientAddress) {
+    return [];
+  }
 
   const approvalArgs = encodeFunctionData({
     abi: erc20Abi,
