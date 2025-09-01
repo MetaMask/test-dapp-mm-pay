@@ -1710,6 +1710,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@emotion/hash@npm:^0.9.0":
+  version: 0.9.2
+  resolution: "@emotion/hash@npm:0.9.2"
+  checksum: 10/379bde2830ccb0328c2617ec009642321c0e009a46aa383dfbe75b679c6aea977ca698c832d225a893901f29d7b3eef0e38cf341f560f6b2b56f1ff23c172387
+  languageName: node
+  linkType: hard
+
 "@emotion/is-prop-valid@npm:1.2.2":
   version: 1.2.2
   resolution: "@emotion/is-prop-valid@npm:1.2.2"
@@ -3315,6 +3322,7 @@ __metadata:
     "@radix-ui/react-separator": "npm:^1.1.7"
     "@radix-ui/react-slot": "npm:^1.2.3"
     "@radix-ui/react-tabs": "npm:^1.1.13"
+    "@rainbow-me/rainbowkit": "npm:^2.2.8"
     "@reservoir0x/relay-kit-hooks": "npm:^1.12.0"
     "@rhinestone/module-sdk": "npm:^0.3.1"
     "@tanstack/react-query": "npm:^5.84.1"
@@ -4517,6 +4525,27 @@ __metadata:
   version: 1.1.1
   resolution: "@radix-ui/rect@npm:1.1.1"
   checksum: 10/b6c5eb787640775b53dd52fa47218a089f0a0d8220d3ebff079c0b754e1fb82d89b6bdf08a82fd0d59549bdeb52678c0cca091c302da49dcf74c3c989cb55678
+  languageName: node
+  linkType: hard
+
+"@rainbow-me/rainbowkit@npm:^2.2.8":
+  version: 2.2.8
+  resolution: "@rainbow-me/rainbowkit@npm:2.2.8"
+  dependencies:
+    "@vanilla-extract/css": "npm:1.17.3"
+    "@vanilla-extract/dynamic": "npm:2.1.4"
+    "@vanilla-extract/sprinkles": "npm:1.6.4"
+    clsx: "npm:2.1.1"
+    cuer: "npm:0.0.2"
+    react-remove-scroll: "npm:2.6.2"
+    ua-parser-js: "npm:^1.0.37"
+  peerDependencies:
+    "@tanstack/react-query": ">=5.0.0"
+    react: ">=18"
+    react-dom: ">=18"
+    viem: 2.x
+    wagmi: ^2.9.0
+  checksum: 10/2e45887964c7d4979ce859fc55dd4e1c8f0e7990edda395fd5a91285e69961c30737dccdbf67ea2aa4995e8e32f815fea525fdc0a1a6dd1f95cdd0d0c7f5d19d
   languageName: node
   linkType: hard
 
@@ -6756,6 +6785,51 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vanilla-extract/css@npm:1.17.3":
+  version: 1.17.3
+  resolution: "@vanilla-extract/css@npm:1.17.3"
+  dependencies:
+    "@emotion/hash": "npm:^0.9.0"
+    "@vanilla-extract/private": "npm:^1.0.8"
+    css-what: "npm:^6.1.0"
+    cssesc: "npm:^3.0.0"
+    csstype: "npm:^3.0.7"
+    dedent: "npm:^1.5.3"
+    deep-object-diff: "npm:^1.1.9"
+    deepmerge: "npm:^4.2.2"
+    lru-cache: "npm:^10.4.3"
+    media-query-parser: "npm:^2.0.2"
+    modern-ahocorasick: "npm:^1.0.0"
+    picocolors: "npm:^1.0.0"
+  checksum: 10/f847409e772d6a3261dd6d8159184c62899d706074474c7bdb12a0e2a1809055a3790302d892cf9f4b8a9acd44e725289ffbf8302645869757321bea588f190f
+  languageName: node
+  linkType: hard
+
+"@vanilla-extract/dynamic@npm:2.1.4":
+  version: 2.1.4
+  resolution: "@vanilla-extract/dynamic@npm:2.1.4"
+  dependencies:
+    "@vanilla-extract/private": "npm:^1.0.8"
+  checksum: 10/7fb42f869e971d6463d72519d94838ed10c5cfec5ae36c6e30cb951e9a0d9fb5bf2239310e075200f8fb7c633379067a8d2b721c85a2091d245645b1275d363a
+  languageName: node
+  linkType: hard
+
+"@vanilla-extract/private@npm:^1.0.8":
+  version: 1.0.9
+  resolution: "@vanilla-extract/private@npm:1.0.9"
+  checksum: 10/5a69387875ac6d5b058aeb778e4e37fa543f9ffec4a56cf8e39e9c6e3b7b11a914703db928fc306f5f4f509bd412b7f2f9a6808a4f66c28515b5c88974780254
+  languageName: node
+  linkType: hard
+
+"@vanilla-extract/sprinkles@npm:1.6.4":
+  version: 1.6.4
+  resolution: "@vanilla-extract/sprinkles@npm:1.6.4"
+  peerDependencies:
+    "@vanilla-extract/css": ^1.0.0
+  checksum: 10/dcd73044063168853b7551564314085eebc9e8f92c4d353a6db7f29c61db5fcaa0128bae373a1bd9c537da4ca88b01bcaae88e5a5c4bfdad43ecab1eb785c4b5
+  languageName: node
+  linkType: hard
+
 "@vitejs/plugin-react@npm:^4.2.1":
   version: 4.7.0
   resolution: "@vitejs/plugin-react@npm:4.7.0"
@@ -8856,7 +8930,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clsx@npm:^2.0.0, clsx@npm:^2.1.1":
+"clsx@npm:2.1.1, clsx@npm:^2.0.0, clsx@npm:^2.1.1":
   version: 2.1.1
   resolution: "clsx@npm:2.1.1"
   checksum: 10/cdfb57fa6c7649bbff98d9028c2f0de2f91c86f551179541cf784b1cfdc1562dcb951955f46d54d930a3879931a980e32a46b598acaea274728dbe068deca919
@@ -9255,6 +9329,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"css-what@npm:^6.1.0":
+  version: 6.2.2
+  resolution: "css-what@npm:6.2.2"
+  checksum: 10/3c5a53be94728089bd1716f915f7f96adde5dd8bf374610eb03982266f3d860bf1ebaf108cda30509d02ef748fe33eaa59aa75911e2c49ee05a85ef1f9fb5223
+  languageName: node
+  linkType: hard
+
 "css.escape@npm:^1.5.1":
   version: 1.5.1
   resolution: "css.escape@npm:1.5.1"
@@ -9281,10 +9362,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"csstype@npm:3.1.3, csstype@npm:^3.0.2":
+"csstype@npm:3.1.3, csstype@npm:^3.0.2, csstype@npm:^3.0.7":
   version: 3.1.3
   resolution: "csstype@npm:3.1.3"
   checksum: 10/f593cce41ff5ade23f44e77521e3a1bcc2c64107041e1bf6c3c32adc5187d0d60983292fda326154d20b01079e24931aa5b08e4467cc488b60bb1e7f6d478ade
+  languageName: node
+  linkType: hard
+
+"cuer@npm:0.0.2":
+  version: 0.0.2
+  resolution: "cuer@npm:0.0.2"
+  dependencies:
+    qr: "npm:~0"
+  peerDependencies:
+    react: ">=18"
+    react-dom: ">=18"
+    typescript: ">=5.4.0"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 10/4ab9f36f9f6d5bf3c97631c7e66510bd510d01ab36e2560357fa28412f5836b7c1b7f8e0a9a6715cd07ddfd8e69ee434c12dff58e790b5e50bc8f680d66cdb4e
   languageName: node
   linkType: hard
 
@@ -9424,6 +9521,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dedent@npm:^1.5.3":
+  version: 1.6.0
+  resolution: "dedent@npm:1.6.0"
+  peerDependencies:
+    babel-plugin-macros: ^3.1.0
+  peerDependenciesMeta:
+    babel-plugin-macros:
+      optional: true
+  checksum: 10/f100cb11001309f2185c4334c6f29e5323c1e73b7b75e3b1893bc71ef53cd13fb80534efc8fa7163a891ede633e310a9c600ba38c363cc9d14a72f238fe47078
+  languageName: node
+  linkType: hard
+
 "deep-eql@npm:^5.0.1":
   version: 5.0.2
   resolution: "deep-eql@npm:5.0.2"
@@ -9438,6 +9547,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"deep-object-diff@npm:^1.1.9":
+  version: 1.1.9
+  resolution: "deep-object-diff@npm:1.1.9"
+  checksum: 10/b9771cc1ca08a34e408309eaab967bd2ab697684abdfa1262f4283ced8230a9ace966322f356364ff71a785c6e9cc356b7596582e900da5726e6b87d4b2a1463
+  languageName: node
+  linkType: hard
+
 "deepmerge@npm:^2.1.1":
   version: 2.2.1
   resolution: "deepmerge@npm:2.2.1"
@@ -9445,7 +9561,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"deepmerge@npm:^4.3.0":
+"deepmerge@npm:^4.2.2, deepmerge@npm:^4.3.0":
   version: 4.3.1
   resolution: "deepmerge@npm:4.3.1"
   checksum: 10/058d9e1b0ff1a154468bf3837aea436abcfea1ba1d165ddaaf48ca93765fdd01a30d33c36173da8fbbed951dd0a267602bc782fe288b0fc4b7e1e7091afc4529
@@ -12900,6 +13016,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"media-query-parser@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "media-query-parser@npm:2.0.2"
+  dependencies:
+    "@babel/runtime": "npm:^7.12.5"
+  checksum: 10/9dff3ed135149944717a8687567f4fda1d39d28637f265c6ce7efe5ed55cd88ed49136c912ee0c7f3a6e5debc50b1ff969db609d862318f1af97f48752b08b0b
+  languageName: node
+  linkType: hard
+
 "memoize-one@npm:^5.0.0":
   version: 5.2.1
   resolution: "memoize-one@npm:5.2.1"
@@ -13390,6 +13515,13 @@ __metadata:
   bin:
     mkdirp: dist/cjs/src/bin.js
   checksum: 10/16fd79c28645759505914561e249b9a1f5fe3362279ad95487a4501e4467abeb714fd35b95307326b8fd03f3c7719065ef11a6f97b7285d7888306d1bd2232ba
+  languageName: node
+  linkType: hard
+
+"modern-ahocorasick@npm:^1.0.0":
+  version: 1.1.0
+  resolution: "modern-ahocorasick@npm:1.1.0"
+  checksum: 10/299d19120cd9b4944b546d3914acbaf388c5bf606a2aeb2682c054e492ddf2aaf0096630e5cdda4c069f13394b8ebe9ccfa733be40fe50b1d9c031f0de6213d8
   languageName: node
   linkType: hard
 
@@ -14245,7 +14377,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"picocolors@npm:1.1.1, picocolors@npm:^1.1.1":
+"picocolors@npm:1.1.1, picocolors@npm:^1.0.0, picocolors@npm:^1.1.1":
   version: 1.1.1
   resolution: "picocolors@npm:1.1.1"
   checksum: 10/e1cf46bf84886c79055fdfa9dcb3e4711ad259949e3565154b004b260cd356c5d54b31a1437ce9782624bf766272fe6b0154f5f0c744fb7af5d454d2b60db045
@@ -14804,6 +14936,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"qr@npm:~0":
+  version: 0.5.1
+  resolution: "qr@npm:0.5.1"
+  checksum: 10/33b03d1945280d8e2e518cb7357885e1a6e48ebc7fb748aeaf79e0294045f38ead398b5403f59c7b17cac98ba8d3c177e5fc6fed813e66104cdd69805ed13486
+  languageName: node
+  linkType: hard
+
 "qrcode@npm:1.5.1":
   version: 1.5.1
   resolution: "qrcode@npm:1.5.1"
@@ -15162,6 +15301,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-remove-scroll@npm:2.6.2":
+  version: 2.6.2
+  resolution: "react-remove-scroll@npm:2.6.2"
+  dependencies:
+    react-remove-scroll-bar: "npm:^2.3.7"
+    react-style-singleton: "npm:^2.2.1"
+    tslib: "npm:^2.1.0"
+    use-callback-ref: "npm:^1.3.3"
+    use-sidecar: "npm:^1.1.2"
+  peerDependencies:
+    "@types/react": "*"
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 10/e6d7e8c42793ae24c9d4a6cb3ebdf3499c1b413fb0c93c3fbf047d875396e944e88a0520dd7db3a20db37125ffadef45b1ce8cb77b74da44daf47c5eb2155c9a
+  languageName: node
+  linkType: hard
+
 "react-remove-scroll@npm:^2.6.3":
   version: 2.7.1
   resolution: "react-remove-scroll@npm:2.7.1"
@@ -15193,7 +15351,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-style-singleton@npm:^2.2.2, react-style-singleton@npm:^2.2.3":
+"react-style-singleton@npm:^2.2.1, react-style-singleton@npm:^2.2.2, react-style-singleton@npm:^2.2.3":
   version: 2.2.3
   resolution: "react-style-singleton@npm:2.2.3"
   dependencies:
@@ -17272,7 +17430,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ua-parser-js@npm:^1.0.33":
+"ua-parser-js@npm:^1.0.33, ua-parser-js@npm:^1.0.37":
   version: 1.0.41
   resolution: "ua-parser-js@npm:1.0.41"
   bin:
@@ -17535,7 +17693,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"use-sidecar@npm:^1.1.3":
+"use-sidecar@npm:^1.1.2, use-sidecar@npm:^1.1.3":
   version: 1.1.3
   resolution: "use-sidecar@npm:1.1.3"
   dependencies:

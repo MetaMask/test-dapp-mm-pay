@@ -25,7 +25,9 @@ export const privyConfig: PrivyClientConfig = {
   },
 };
 
-export function WalletProviderPrivy({ children }: WalletProviderPrivyProps) {
+export default function WalletProviderPrivy({
+  children,
+}: WalletProviderPrivyProps) {
   return (
     <PrivyProvider
       appId={import.meta.env.VITE_PRIVY_APP_ID}

@@ -1,4 +1,5 @@
 import { DynamicWidget } from '@dynamic-labs/sdk-react-core';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi';
 
 import { InfoRow } from './info-row';
@@ -21,7 +22,9 @@ export function ConnectionStatus() {
     <Card className="h-[200px] w-2/3">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Connection Status</CardTitle>
-        {selectedProvider === 'privy' ? <PrivyConnector /> : <DynamicWidget />}
+        {selectedProvider === 'privy' && <PrivyConnector />}
+        {selectedProvider === 'dynamic' && <DynamicWidget />}
+        {selectedProvider === 'rainbowkit' && <ConnectButton />}
       </CardHeader>
       <CardContent className="min-w-96">
         {account.isConnected ? (

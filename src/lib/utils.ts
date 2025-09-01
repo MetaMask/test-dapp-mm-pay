@@ -117,8 +117,17 @@ export function getChainLogo(chainId: number) {
   return `https://raw.githubusercontent.com/SmolDapp/tokenAssets/main/chains/${chainId}/logo-128.png`;
 }
 
-export function getConnectorLogo(name: string) {
-  return `src/assets/${name.includes('Dynamic') ? 'dynamic-icon.svg' : 'privy-icon.png'}`;
+export function getConnectorLogo(name?: string) {
+  const rootUrl = 'src/assets';
+
+  switch (name) {
+    case 'Dynamic':
+      return `${rootUrl}/dynamic-icon.svg`;
+    case 'Privy':
+      return `${rootUrl}/privy-icon.png`;
+    default:
+      return `${rootUrl}/rainbowkit-icon.svg`;
+  }
 }
 
 const permissionMessages = {
