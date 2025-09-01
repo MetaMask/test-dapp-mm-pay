@@ -1,7 +1,7 @@
 import { useAccount } from 'wagmi';
 
-import { BiconomyCard } from './biconomy/biconomy-card';
-import { RelayCard } from './relay/relay-card';
+import { AaveDepositBiconomyEoa } from './biconomy/aave-deposit-biconomy';
+import { AaveDepositRelay } from './relay/aave-deposit-relay';
 
 export function ActionCards() {
   const { isConnected } = useAccount();
@@ -12,8 +12,8 @@ export function ActionCards() {
 
   return (
     <div className="flex gap-x-4">
-      <BiconomyCard />
-      <RelayCard />
+      <AaveDepositRelay />
+      <AaveDepositBiconomyEoa />
     </div>
   );
 }

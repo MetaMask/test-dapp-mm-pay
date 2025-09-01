@@ -11,6 +11,14 @@ import { InfoRow } from '@/components/info-row';
 import { Status } from '@/components/status';
 import { TokenInput } from '@/components/token-input';
 import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { AUSDC_BASE, COMMON_TOKENS } from '@/constants/tokens';
 import { useTokenBalance } from '@/hooks/use-token-balance';
@@ -90,87 +98,94 @@ export function AaveDepositBiconomyEoa() {
 
   return (
     <div className="text-xs">
-      <div className="rounded-lg">
-        <div className="space-y-3">
-          <TokenInput
-            balance={balance.balanceDecimal}
-            tokens={sourceTokens}
-            amount={amount}
-            selectedToken={token}
-            onTokenSelect={setToken}
-            onAmountChange={setAmount}
-            onMaxAmount={() => setAmount(token?.balance ?? '0')}
-          />
-          <div>
-            <InfoRow label="aUSDC Balance" imageURL={AUSDC_BASE.logoURI}>
-              {ausdcBalance.balanceDecimal}
-            </InfoRow>
-          </div>
-          <div>
-            <h1>Swap Quote</h1>
-            <Separator />
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle>Biconomy Cross-Chain AAVE Deposit</CardTitle>
+          <CardDescription>
+            Choose an WETH amount to swap for USDC and supply to AAVE on Base
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            <TokenInput
+              balance={balance.balanceDecimal}
+              tokens={sourceTokens}
+              amount={amount}
+              selectedToken={token}
+              onTokenSelect={setToken}
+              onAmountChange={setAmount}
+              onMaxAmount={() => setAmount(token?.balance ?? '0')}
+            />
+            <div>
+              <InfoRow label="aUSDC Balance" imageURL={AUSDC_BASE.logoURI}>
+                {ausdcBalance.balanceDecimal}
+              </InfoRow>
+            </div>
+            <div>
+              <h1>Swap Quote</h1>
+              <Separator />
 
-            <InfoRow label="Amount in" imageURL={getTokenLogo(SOURCE_TOKEN)}>
-              {amount}
-            </InfoRow>
-            <InfoRow
-              label="Amount out"
-              imageURL={getTokenLogo(DESTINATION_TOKEN)}
-            >
-              {trimNumber(operation.uniswap?.quote?.outputAmount ?? '0')}
-            </InfoRow>
-            <InfoRow label="Slippage">
-              {operation.uniswap?.quote?.slippagePercent ?? '0'}%
-            </InfoRow>
-          </div>
-          <div className="">
-            <h1>Fees</h1>
-            <Separator />
-            <InfoRow label="Gas Fee">
-              {trimNumber(
-                // @ts-expect-error - missing type
-                operation.fusionQuote?.quote.paymentInfo.gasFee,
-              )}
-            </InfoRow>
+              <InfoRow label="Amount in" imageURL={getTokenLogo(SOURCE_TOKEN)}>
+                {amount}
+              </InfoRow>
+              <InfoRow
+                label="Amount out"
+                imageURL={getTokenLogo(DESTINATION_TOKEN)}
+              >
+                {trimNumber(operation.uniswap?.quote?.outputAmount ?? '0')}
+              </InfoRow>
+              <InfoRow label="Slippage">
+                {operation.uniswap?.quote?.slippagePercent ?? '0'}%
+              </InfoRow>
+            </div>
+            <div className="">
+              <h1>Fees</h1>
+              <Separator />
+              <InfoRow label="Gas Fee">
+                {trimNumber(
+                  // @ts-expect-error - missing type
+                  operation.fusionQuote?.quote.paymentInfo.gasFee,
+                )}
+              </InfoRow>
 
-            <InfoRow label="Orchestration Fee">
-              {trimNumber(
-                // @ts-expect-error - missing type
-                operation.fusionQuote?.quote.paymentInfo.orchestrationFee,
-              )}
-            </InfoRow>
+              <InfoRow label="Orchestration Fee">
+                {trimNumber(
+                  // @ts-expect-error - missing type
+                  operation.fusionQuote?.quote.paymentInfo.orchestrationFee,
+                )}
+              </InfoRow>
+            </div>
+            <div className="mt-4">
+              <h1>Status</h1>
+              <Separator />
+              <Status
+                isLoading={!operation.uniswap.isQuoteReady}
+                isSuccess={operation.uniswap.isQuoteReady}
+                error={operation.uniswap.error}
+                label="Swap Quote"
+              />
+              <Status
+                isLoading={operation.fusionQuoteQuery.isLoading}
+                isSuccess={operation.fusionQuoteQuery.isSuccess}
+                error={operation.error}
+                label="Biconomy Quote"
+              />
+              <Status
+                isLoading={operation.swapQuery.isPending}
+                isSuccess={operation.swapQuery.isSuccess}
+                error={operation.swapQuery.error}
+                label="User Confirmation"
+              />
+              <Status
+                isLoading={operation.txQuery.isLoading}
+                isSuccess={operation.txQuery.isSuccess}
+                error={operation.txQuery.error}
+                label="Tx Status"
+              />
+            </div>
           </div>
-          <div className="mt-4">
-            <h1>Status</h1>
-            <Separator />
-            <Status
-              isLoading={!operation.uniswap.isQuoteReady}
-              isSuccess={operation.uniswap.isQuoteReady}
-              error={operation.uniswap.error}
-              label="Swap Quote"
-            />
-            <Status
-              isLoading={operation.fusionQuoteQuery.isLoading}
-              isSuccess={operation.fusionQuoteQuery.isSuccess}
-              error={operation.error}
-              label="Biconomy Quote"
-            />
-            <Status
-              isLoading={operation.swapQuery.isPending}
-              isSuccess={operation.swapQuery.isSuccess}
-              error={operation.swapQuery.error}
-              label="User Confirmation"
-            />
-            <Status
-              isLoading={operation.txQuery.isLoading}
-              isSuccess={operation.txQuery.isSuccess}
-              error={operation.txQuery.error}
-              label="Tx Status"
-            />
-          </div>
-        </div>
-
-        <div className="mt-4 flex flex-col gap-y-2 space-y-4">
+        </CardContent>
+        <CardFooter>
           <Button
             disabled={disableSubmit}
             className="w-full"
@@ -195,10 +210,9 @@ export function AaveDepositBiconomyEoa() {
               </a>
             </Button>
           )}
-        </div>
-      </div>
-
-      {operation.error && <ErrorContainer error={operation.error} />}
+        </CardFooter>
+        {operation.error && <ErrorContainer error={operation.error} />}
+      </Card>
     </div>
   );
 }

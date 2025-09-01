@@ -9,6 +9,14 @@ import { ErrorContainer } from '@/components/error-container';
 import { InfoRow } from '@/components/info-row';
 import { Status } from '@/components/status';
 import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
@@ -67,8 +75,14 @@ export function AaveDepositRelay() {
   };
 
   return (
-    <div className="text-xs">
-      <div className="rounded-lg">
+    <Card className="h-fill flex w-full max-w-md flex-col justify-between text-xs">
+      <CardHeader>
+        <CardTitle>Relay Cross-Chain AAVE Deposit</CardTitle>
+        <CardDescription>
+          Supply USDC to AAVE on Base by sourcing WETH from Arbitrum
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
         <div className="flex items-center gap-x-2">
           <div className="flex items-center gap-x-2">
             <img
@@ -166,23 +180,22 @@ export function AaveDepositRelay() {
             </div>
           </div>
         </div>
-
-        <div className="mt-4 flex flex-col gap-y-2 space-y-4">
-          <Button
-            className={'w-full'}
-            disabled={disableSubmit}
-            onClick={handleSubmit}
-          >
-            {isWrongChain && 'Switch to the correct network'}
-            {!isWrongChain && !hasSufficientBalance && 'Insufficient balance'}
-            {canSubmit && !operation.quote.isSuccess && 'Waiting for quote...'}
-            {canSubmit && operation.quote.isSuccess && 'Swap'}
-          </Button>
-        </div>
-      </div>
+      </CardContent>
+      <CardFooter>
+        <Button
+          className={'w-full'}
+          disabled={disableSubmit}
+          onClick={handleSubmit}
+        >
+          {isWrongChain && 'Switch to the correct network'}
+          {!isWrongChain && !hasSufficientBalance && 'Insufficient balance'}
+          {canSubmit && !operation.quote.isSuccess && 'Waiting for quote...'}
+          {canSubmit && operation.quote.isSuccess && 'Swap'}
+        </Button>
+      </CardFooter>
       {operation.quote.error && (
         <ErrorContainer error={operation.quote.error} />
       )}
-    </div>
+    </Card>
   );
 }

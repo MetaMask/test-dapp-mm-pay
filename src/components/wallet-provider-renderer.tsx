@@ -1,5 +1,5 @@
-import WalletProviderDynamic from './wallet-provider-dynamic';
-import { WalletProviderPrivy } from './wallet-provider-privy';
+import WalletProviderDynamic from '../contexts/wallet-provider-dynamic';
+import { WalletProviderPrivy } from '../contexts/wallet-provider-privy';
 
 import { useWalletProvider } from '@/contexts/wallet-provider-context';
 

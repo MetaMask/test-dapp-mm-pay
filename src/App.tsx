@@ -5,8 +5,8 @@ import { WalletProviderSelector } from './components/wallet-provider-selector';
 import { ActionCards } from './integrations/action-cards';
 
 import { ModeToggle } from '@/components/mode-toggle';
-import { ThemeProvider } from '@/components/theme-provider';
 import { AaveProvider } from '@/contexts/aave-provider';
+import { ThemeProvider } from '@/contexts/theme-provider';
 import { WalletProviderContextProvider } from '@/contexts/wallet-provider-context';
 
 function AppContent() {
