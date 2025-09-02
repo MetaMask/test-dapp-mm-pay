@@ -7,4 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-[Unreleased]: https://github.com/MetaMask/test-dapp-mm-pay/
+## [0.0.1]
+
+### Uncategorized
+
+- feat: privy and ui refactor ([#5](https://github.com/MetaMask/test-dapp-mm-pay/pull/5))
+- chore: update configurations ([#4](https://github.com/MetaMask/test-dapp-mm-pay/pull/4))
+- add README.md, github actions and other config files
+- replace rainbowkit with dynamic
+- aave deposit via relay
+- aave deposit via biconomy
+- aave wip
+- add relay cross-chain swap
+- add biconomy cross chain swap
+- update prettier and basic routing
+- nft prototype
+- add swaps via uniswap v3
+- add .cursorrules
+- add rpc config
+- add wagmi and rainbowkit
+- add basic swap interface
+- add shadcn component library and configure dark mode
+- move config files to typescript
+- match test-dapp-multichain config
+- initial setup
+
+[Unreleased]: https://github.com/MetaMask/test-dapp-mm-pay/compare/v0.0.1...HEAD
+[0.0.1]: https://github.com/MetaMask/test-dapp-mm-pay/releases/tag/v0.0.1
