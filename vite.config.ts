@@ -11,7 +11,7 @@ const basePath = homepage.replace(/^https?:\/\/[^/]+/, '');
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [nodePolyfills(), react()],
-  base: process.env.ENV === 'production' ? basePath : '/',
+  base: process.env.NODE_ENV === 'production' ? basePath : '/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
