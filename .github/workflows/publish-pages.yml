@@ -38,7 +38,7 @@ jobs:
         run: yarn --immutable
       - name: Update package.json homepage field
         run: |
-          sed -i 's/"homepage": ".*"/"homepage": "https:\/\/metamask.github.io\/metamask-pay-dapp\/${{ inputs.destination_dir }}"/' package.json
+          sed -i 's/"homepage": ".*"/"homepage": "https:\/\/metamask.github.io\/test-dapp-mm-pay\/${{ inputs.destination_dir }}"/' package.json
       - name: Build DApp
         run: yarn build
       - name: Deploy to `${{ inputs.destination_dir }}` directory of `gh-pages` branch
