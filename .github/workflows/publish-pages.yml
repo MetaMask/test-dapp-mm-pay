@@ -40,6 +40,9 @@ jobs:
         run: |
           sed -i 's/"homepage": ".*"/"homepage": "https:\/\/metamask.github.io\/test-dapp-mm-pay\/${{ inputs.destination_dir }}"/' package.json
       - name: Build DApp
+        env:
+          VITE_DYNAMIC_ENVIRONMENT_ID: ${{ vars.DYNAMIC_ENVIRONMENT_ID }}
+          VITE_PRIVY_APP_ID: ${{ vars.PRIVY_APP_ID }}
         run: yarn build
       - name: Deploy to `${{ inputs.destination_dir }}` directory of `gh-pages` branch
         uses: peaceiris/actions-gh-pages@de7ea6f8efb354206b205ef54722213d99067935
