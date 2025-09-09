@@ -9,28 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.0.4]
 
-### Uncategorized
+- fix: broken image paths
 
-- chore: configure environment variables via github action workflow ([#10](https://github.com/MetaMask/test-dapp-mm-pay/pull/10))
-- 0.0.3 ([#9](https://github.com/MetaMask/test-dapp-mm-pay/pull/9))
-- add README.md, github actions and other config files
-- replace rainbowkit with dynamic
-- aave deposit via relay
-- aave deposit via biconomy
-- aave wip
-- add relay cross-chain swap
-- add biconomy cross chain swap
-- update prettier and basic routing
-- nft prototype
-- add swaps via uniswap v3
-- add .cursorrules
-- add rpc config
-- add wagmi and rainbowkit
-- add basic swap interface
-- add shadcn component library and configure dark mode
-- move config files to typescript
-- match test-dapp-multichain config
-- initial setup
+### Uncategorized
 
 ## [0.0.3]
 
