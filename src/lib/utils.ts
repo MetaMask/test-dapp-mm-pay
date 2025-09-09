@@ -3,6 +3,9 @@ import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import type { Address } from 'viem';
 
+import dynamicIcon from '../assets/dynamic-icon.svg';
+import privyIcon from '../assets/privy-icon.png';
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -118,7 +121,7 @@ export function getChainLogo(chainId: number) {
 }
 
 export function getConnectorLogo(name: string) {
-  return `src/assets/${name.includes('Dynamic') ? 'dynamic-icon.svg' : 'privy-icon.png'}`;
+  return name.includes('Dynamic') ? dynamicIcon : privyIcon;
 }
 
 const permissionMessages = {
