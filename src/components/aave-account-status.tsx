@@ -1,3 +1,4 @@
+import aaveLogo from '../assets/aave.svg';
 import { InfoRow } from './info-row';
 import { Button } from './ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
@@ -15,7 +16,7 @@ export function AaveAccountStatus() {
     <Card className="w-1/3">
       <CardHeader>
         <CardTitle className="flex items-center gap-1">
-          <img src="src/assets/aave.svg" alt="Aave" className="size-6" />
+          <img src={aaveLogo} alt="Aave" className="size-6" />
           AAVE Account Status
         </CardTitle>
       </CardHeader>
