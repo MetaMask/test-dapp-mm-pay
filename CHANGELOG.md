@@ -9,11 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.0.4]
 
+### Uncategorized
+
 ### Changed
 
 - fix: broken image paths
-
-### Uncategorized
 
 ## [0.0.3]
 
