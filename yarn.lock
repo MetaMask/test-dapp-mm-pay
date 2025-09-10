@@ -2973,35 +2973,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@metamask/delegation-deployments@npm:^0.11.0":
-  version: 0.11.0
-  resolution: "@metamask/delegation-deployments@npm:0.11.0"
-  checksum: 10/c926781be67a973ee37f16a373f258036bd894ee2b9207b531606ca2c8be0e6073025fe2bd2e24569ae0118cca0e462d4f4aa6b9df4e1704c46712502de81c88
+"@metamask/delegation-deployments@npm:^0.12.0":
+  version: 0.12.0
+  resolution: "@metamask/delegation-deployments@npm:0.12.0"
+  checksum: 10/fd3b373efc1857cc867b44b4ca33db0cf8487c1109d6f2ed7e3ce10e6a65d4165b7fcc034cab92d919d6f0833e3749a055ff862adc8d7a348cdd3a0f593f6aa6
   languageName: node
   linkType: hard
 
-"@metamask/delegation-toolkit@npm:0.11.0":
-  version: 0.11.0
-  resolution: "@metamask/delegation-toolkit@npm:0.11.0"
-  dependencies:
-    "@metamask/delegation-utils": "npm:^0.11.0"
-    webauthn-p256: "npm:^0.0.5"
-  peerDependencies:
-    viem: ">=2.18.2 <3.0.0"
-  checksum: 10/5c58b04ad54960c485887aa706a30fdd387c200904d2c85fb4aae905573edea3dc54b9ba65001dfe6bf7cade35a9a077679838094067a3635deb46088aca18be
-  languageName: node
-  linkType: hard
-
-"@metamask/delegation-utils@npm:^0.11.0":
-  version: 0.11.0
-  resolution: "@metamask/delegation-utils@npm:0.11.0"
+"@metamask/delegation-toolkit@npm:0.12.0":
+  version: 0.12.0
+  resolution: "@metamask/delegation-toolkit@npm:0.12.0"
   dependencies:
     "@metamask/delegation-abis": "npm:^0.11.0"
-    "@metamask/delegation-deployments": "npm:^0.11.0"
+    "@metamask/delegation-deployments": "npm:^0.12.0"
     buffer: "npm:^6.0.3"
+    webauthn-p256: "npm:^0.0.10"
   peerDependencies:
     viem: ">=2.18.2 <3.0.0"
-  checksum: 10/2191b206f429248dd25c82ad3e9bbc8a09c7c0c3bdb779f57c91a7b4a912d7341e88835809c999865ce9853bda6760bb1ab40a4f190b5fb7a30fa56e1012a697
+  checksum: 10/1e158c4f6c88a19777bb1cb054a8a70715367b4ae7aeeddadcb55c592ec8026873567e461f0f3803cce343f730eb6bf144410f64b1814160a3914c8d07fe2920
   languageName: node
   linkType: hard
 
@@ -3304,7 +3293,7 @@ __metadata:
     "@dynamic-labs/sdk-react-core": "npm:^4.29.3"
     "@dynamic-labs/wagmi-connector": "npm:^4.29.3"
     "@metamask/auto-changelog": "npm:^5.0.2"
-    "@metamask/delegation-toolkit": "npm:0.11.0"
+    "@metamask/delegation-toolkit": "npm:0.12.0"
     "@metamask/eslint-config": "npm:^12.2.0"
     "@metamask/eslint-config-typescript": "npm:^12.1.0"
     "@privy-io/react-auth": "npm:^2.22.0"
@@ -17970,13 +17959,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webauthn-p256@npm:^0.0.5":
-  version: 0.0.5
-  resolution: "webauthn-p256@npm:0.0.5"
+"webauthn-p256@npm:^0.0.10":
+  version: 0.0.10
+  resolution: "webauthn-p256@npm:0.0.10"
   dependencies:
     "@noble/curves": "npm:^1.4.0"
     "@noble/hashes": "npm:^1.4.0"
-  checksum: 10/6bf5d1857dfb99ecb3b318af06eddea874c10135e6ebb9f046270f5cbb162933bc6caf77aedb033e14c09971dda544a5fb367ac545e4ec8001b309ba517555cf
+  checksum: 10/dde2b6313b6a0f20996f7ee90181258fc7685bfff401df7d904578da75b374f25d5b9c1189cd2fcec30625b1f276b393188d156d49783f0611623cd713bb5b09
   languageName: node
   linkType: hard
 
