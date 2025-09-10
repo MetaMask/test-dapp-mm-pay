@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.6]
+
+### Uncategorized
+
+- fix biconomy client transport when theres no infura key ([#14](https://github.com/MetaMask/test-dapp-mm-pay/pull/14))
+- 0.0.5 ([#13](https://github.com/MetaMask/test-dapp-mm-pay/pull/13))
+- 0.0.4 ([#11](https://github.com/MetaMask/test-dapp-mm-pay/pull/11))
+- 0.0.3 ([#9](https://github.com/MetaMask/test-dapp-mm-pay/pull/9))
+- 0.0.2 ([#7](https://github.com/MetaMask/test-dapp-mm-pay/pull/7))
+- 0.0.1 ([#6](https://github.com/MetaMask/test-dapp-mm-pay/pull/6))
+- add README.md, github actions and other config files
+- replace rainbowkit with dynamic
+- aave deposit via relay
+- aave deposit via biconomy
+- aave wip
+- add relay cross-chain swap
+- add biconomy cross chain swap
+- update prettier and basic routing
+- nft prototype
+- add swaps via uniswap v3
+- add .cursorrules
+- add rpc config
+- add wagmi and rainbowkit
+- add basic swap interface
+- add shadcn component library and configure dark mode
+- move config files to typescript
+- match test-dapp-multichain config
+- initial setup
+
 ## [0.0.5]
 
 ### Fixed
@@ -35,7 +64,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - chore: update configurations ([#4](https://github.com/MetaMask/test-dapp-mm-pay/pull/4))
 - initial POC version
 
-[Unreleased]: https://github.com/MetaMask/test-dapp-mm-pay/compare/v0.0.5...HEAD
+[Unreleased]: https://github.com/MetaMask/test-dapp-mm-pay/compare/v0.0.6...HEAD
+[0.0.6]: https://github.com/MetaMask/test-dapp-mm-pay/compare/v0.0.5...v0.0.6
 [0.0.5]: https://github.com/MetaMask/test-dapp-mm-pay/compare/v0.0.4...v0.0.5
 [0.0.4]: https://github.com/MetaMask/test-dapp-mm-pay/compare/v0.0.3...v0.0.4
 [0.0.3]: https://github.com/MetaMask/test-dapp-mm-pay/compare/v0.0.2...v0.0.3
