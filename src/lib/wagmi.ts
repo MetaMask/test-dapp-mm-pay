@@ -2,7 +2,7 @@ import type { Chain, Transport } from 'viem';
 import { createConfig, http } from 'wagmi';
 import { arbitrum, base } from 'wagmi/chains';
 
-const INFURA_KEY: string = import.meta.env.VITE_INFURA_KEY;
+export const INFURA_KEY: string = import.meta.env.VITE_INFURA_KEY;
 
 export const CHAIN_CONFIGS: { chain: Chain; rpcUrl: string }[] = [
   {
@@ -17,9 +17,7 @@ export const CHAIN_CONFIGS: { chain: Chain; rpcUrl: string }[] = [
 
 const transports = CHAIN_CONFIGS.reduce<Record<number, Transport>>(
   (acc, chainConfig) => {
-    acc[chainConfig.chain.id] = INFURA_KEY
-      ? http(chainConfig.rpcUrl)
-      : http(chainConfig.chain.rpcUrls.default.http[0]);
+    acc[chainConfig.chain.id] = INFURA_KEY ? http(chainConfig.rpcUrl) : http();
     return acc;
   },
   {},

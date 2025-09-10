@@ -8,11 +8,11 @@ import { useQuery } from '@tanstack/react-query';
 import { http, type WalletClient } from 'viem';
 import { useWalletClient } from 'wagmi';
 
-import { CHAIN_CONFIGS } from '@/lib/wagmi';
+import { CHAIN_CONFIGS, INFURA_KEY } from '@/lib/wagmi';
 
 const chainConfigurations = CHAIN_CONFIGS.map(({ chain, rpcUrl }) => ({
   chain,
-  transport: http(rpcUrl),
+  transport: INFURA_KEY ? http(rpcUrl) : http(),
   version: getMEEVersion(MEEVersion.V2_1_0),
 }));
 
