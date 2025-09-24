@@ -1,10 +1,15 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
 
-export type WalletProvider = 'dynamic' | 'privy';
+import { WalletProvider as WalletProviderOptions } from '@/constants/wallets';
+
+export type WalletProvider =
+  | WalletProviderOptions.Dynamic
+  | WalletProviderOptions.Privy
+  | WalletProviderOptions.Rainbowkit;
 
 type WalletProviderContextType = {
-  selectedProvider: WalletProvider;
-  setSelectedProvider: (provider: WalletProvider) => void;
+  selectedProvider: WalletProviderOptions;
+  setSelectedProvider: (provider: WalletProviderOptions) => void;
 };
 
 const WalletProviderContext = createContext<
@@ -18,8 +23,14 @@ type WalletProviderContextProviderProps = {
 export function WalletProviderContextProvider({
   children,
 }: WalletProviderContextProviderProps) {
+  const isDynamicEnabled = Boolean(import.meta.env.VITE_DYNAMIC_ENVIRONMENT_ID);
+
   const [selectedProvider, setSelectedProvider] =
-    useState<WalletProvider>('dynamic');
+    useState<WalletProviderOptions>(
+      isDynamicEnabled
+        ? WalletProviderOptions.Dynamic
+        : WalletProviderOptions.Rainbowkit,
+    );
 
   return (
     <WalletProviderContext.Provider
