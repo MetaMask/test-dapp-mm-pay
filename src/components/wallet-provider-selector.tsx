@@ -1,6 +1,6 @@
-import { WalletProvider } from '@/constants/wallets';
 import { Tabs, TabsList, TabsTrigger } from './ui/tabs';
 
+import { WalletProvider } from '@/constants/wallets';
 import { useWalletProvider } from '@/contexts/wallet-provider-context';
 import { cn, getConnectorLogo } from '@/lib/utils';
 
@@ -26,7 +26,12 @@ export function WalletProviderSelector() {
           <Tabs
             value={selectedProvider}
             onValueChange={(value) =>
-              setSelectedProvider(value as 'dynamic' | 'privy')
+              setSelectedProvider(
+                value as
+                  | WalletProvider.Dynamic
+                  | WalletProvider.Privy
+                  | WalletProvider.Rainbowkit,
+              )
             }
           >
             <TabsList
