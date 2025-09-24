@@ -6,6 +6,7 @@ import { InfoRow } from './info-row';
 import { PrivyConnector } from './privy-connector';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 
+import { WalletProvider } from '@/constants/wallets';
 import { useWalletProvider } from '@/contexts/wallet-provider-context';
 import { getChainLogo, getConnectorLogo } from '@/lib/utils';
 
@@ -22,9 +23,9 @@ export function ConnectionStatus() {
     <Card className="h-[200px] w-2/3">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Connection Status</CardTitle>
-        {selectedProvider === 'privy' && <PrivyConnector />}
-        {selectedProvider === 'dynamic' && <DynamicWidget />}
-        {selectedProvider === 'rainbowkit' && <ConnectButton />}
+        {selectedProvider === WalletProvider.Privy && <PrivyConnector />}
+        {selectedProvider === WalletProvider.Dynamic && <DynamicWidget />}
+        {selectedProvider === WalletProvider.Rainbowkit && <ConnectButton />}
       </CardHeader>
       <CardContent className="min-w-96">
         {account.isConnected ? (

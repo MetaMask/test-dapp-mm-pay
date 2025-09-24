@@ -1,3 +1,4 @@
+import { WalletProvider } from '@/constants/wallets';
 import { Tabs, TabsList, TabsTrigger } from './ui/tabs';
 
 import { useWalletProvider } from '@/contexts/wallet-provider-context';
@@ -52,7 +53,7 @@ export function WalletProviderSelector() {
                 >
                   <img
                     className="size-4"
-                    src={getConnectorLogo('Dynamic')}
+                    src={getConnectorLogo(WalletProvider.Dynamic)}
                     alt="Dynamic"
                   />
                   Dynamic
@@ -62,7 +63,7 @@ export function WalletProviderSelector() {
                 <TabsTrigger value="privy" className="flex items-center gap-2">
                   <img
                     className="size-4"
-                    src={getConnectorLogo('Privy')}
+                    src={getConnectorLogo(WalletProvider.Privy)}
                     alt="Privy"
                   />
                   Privy

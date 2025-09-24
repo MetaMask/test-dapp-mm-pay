@@ -7,6 +7,8 @@ import dynamicIcon from '../assets/dynamic-icon.svg';
 import privyIcon from '../assets/privy-icon.png';
 import rainbowkitIcon from '../assets/rainbowkit-icon.svg';
 
+import { WalletProvider } from '@/constants/wallets';
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -123,9 +125,9 @@ export function getChainLogo(chainId: number) {
 
 export function getConnectorLogo(name?: string) {
   switch (name) {
-    case 'Dynamic':
+    case WalletProvider.Dynamic:
       return dynamicIcon;
-    case 'Privy':
+    case WalletProvider.Privy:
       return privyIcon;
     default:
       return rainbowkitIcon;

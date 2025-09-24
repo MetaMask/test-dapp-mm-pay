@@ -1,3 +1,4 @@
+import { WalletProvider } from '@/constants/wallets';
 import { useWalletProvider } from '@/contexts/wallet-provider-context';
 import WalletProviderDynamic from '@/contexts/wallet-provider-dynamic';
 import WalletProviderPrivy from '@/contexts/wallet-provider-privy';
@@ -14,15 +15,15 @@ export function WalletProviderRenderer({
 
   return (
     <div>
-      {selectedProvider === 'dynamic' && (
+      {selectedProvider === WalletProvider.Dynamic && (
         <WalletProviderDynamic>{children}</WalletProviderDynamic>
       )}
 
-      {selectedProvider === 'privy' && (
+      {selectedProvider === WalletProvider.Privy && (
         <WalletProviderPrivy>{children}</WalletProviderPrivy>
       )}
 
-      {selectedProvider === 'rainbowkit' && (
+      {selectedProvider === WalletProvider.Rainbowkit && (
         <WalletProviderRainbowkit>{children}</WalletProviderRainbowkit>
       )}
     </div>
