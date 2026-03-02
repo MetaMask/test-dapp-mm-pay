@@ -81,6 +81,23 @@ vi.mock('wagmi', () => ({
     switchChain: vi.fn(),
     isPending: false,
   }),
+  useCapabilities: () => ({
+    data: null,
+    isLoading: false,
+    error: null,
+  }),
+  useSendCalls: () => ({
+    sendCalls: vi.fn(),
+    data: null,
+    isPending: false,
+    isSuccess: false,
+    error: null,
+  }),
+  useCallsStatus: () => ({
+    data: null,
+    isLoading: false,
+    error: null,
+  }),
 }));
 
 vi.mock('@tanstack/react-query', () => ({

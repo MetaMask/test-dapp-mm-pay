@@ -25,6 +25,16 @@ import { getTokenLogo } from '@/lib/uniswap';
 
 const DESTINATION_TOKEN = COMMON_TOKENS[base.id]?.USDC ?? null;
 
+function getButtonLabel(operation: ReturnType<typeof useAaveDepositMmPay>) {
+  if (!operation.isAuxiliaryFundsSupported && !operation.capabilitiesLoading) {
+    return 'auxiliaryFunds not supported';
+  }
+  if (operation.sendCalls.isPending) {
+    return 'Confirming...';
+  }
+  return 'Supply via MetaMask Pay';
+}
+
 export function AaveDepositMmPay() {
   const [amount, setAmount] = useState<string>('1');
 
@@ -106,8 +116,8 @@ export function AaveDepositMmPay() {
                 error={
                   !operation.capabilitiesLoading &&
                   !operation.isAuxiliaryFundsSupported
-                    ? operation.capabilitiesError ||
-                      new Error('auxiliaryFunds not supported')
+                    ? (operation.capabilitiesError ??
+                      new Error('auxiliaryFunds not supported'))
                     : null
                 }
                 label="Capabilities"
@@ -123,10 +133,10 @@ export function AaveDepositMmPay() {
                 isSuccess={isConfirmed}
                 error={
                   isFailed
-                    ? operation.callsStatus.error ||
+                    ? (operation.callsStatus.error ??
                       new Error(
-                        `Call failed (status: ${operation.callsStatus.data?.statusCode})`,
-                      )
+                        `Call failed (status: ${String(operation.callsStatus.data?.statusCode)})`,
+                      ))
                     : null
                 }
                 label="Confirmation"
@@ -141,11 +151,7 @@ export function AaveDepositMmPay() {
           disabled={disableSubmit}
           onClick={operation.handleSubmit}
         >
-          {!operation.isAuxiliaryFundsSupported && !operation.capabilitiesLoading
-            ? 'auxiliaryFunds not supported'
-            : operation.sendCalls.isPending
-              ? 'Confirming...'
-              : 'Supply via MetaMask Pay'}
+          {getButtonLabel(operation)}
         </Button>
       </CardFooter>
       {operation.error && <ErrorContainer error={operation.error} />}

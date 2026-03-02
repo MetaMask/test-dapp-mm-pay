@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { type Address, toHex } from 'viem';
+import { toHex } from 'viem';
 import { base } from 'viem/chains';
 import {
   useAccount,
@@ -27,9 +27,11 @@ export function useAaveDepositMmPay({ amount }: { amount: bigint }) {
   );
 
   const calls = useMemo(() => {
-    if (!address || !USDC_BASE) return [];
+    if (!address || !USDC_BASE) {
+      return [];
+    }
     return encodeAaveSupplyCall({
-      tokenAddress: USDC_BASE.address as Address,
+      tokenAddress: USDC_BASE.address,
       chainId: base.id,
       amount,
       recipientAddress: address,
@@ -44,19 +46,23 @@ export function useAaveDepositMmPay({ amount }: { amount: bigint }) {
       enabled: Boolean(sendCalls.data?.id),
       refetchInterval: (query) => {
         const statusCode = query.state.data?.statusCode;
-        if (statusCode !== undefined && statusCode >= 200) return false;
+        if (statusCode !== undefined && statusCode >= 200) {
+          return false;
+        }
         return 1000;
       },
     },
   });
 
   const handleSubmit = () => {
-    if (!address || !USDC_BASE || calls.length === 0) return;
+    if (!address || !USDC_BASE || calls.length === 0) {
+      return;
+    }
 
     sendCalls.sendCalls({
       calls: calls.map((call) => ({
-        to: call.to as Address,
-        data: call.data as `0x${string}`,
+        to: call.to,
+        data: call.data,
         value: BigInt(call.value),
       })),
       chainId: base.id,
@@ -75,7 +81,8 @@ export function useAaveDepositMmPay({ amount }: { amount: bigint }) {
     });
   };
 
-  const error = capabilities.error || sendCalls.error || callsStatus.error;
+  const error =
+    capabilities.error ?? sendCalls.error ?? callsStatus.error ?? null;
 
   return {
     isAuxiliaryFundsSupported,
