@@ -29,7 +29,7 @@ function getButtonLabel(operation: ReturnType<typeof useAaveDepositMmPay>) {
   if (!operation.isAuxiliaryFundsSupported && !operation.capabilitiesLoading) {
     return 'auxiliaryFunds not supported';
   }
-  if (operation.sendCalls.isPending) {
+  if (operation.sendCallsStatus === 'pending') {
     return 'Confirming...';
   }
   return 'Supply via MetaMask Pay';
@@ -48,17 +48,19 @@ export function AaveDepositMmPay() {
   const usdcBalance = useTokenBalance(DESTINATION_TOKEN);
   const aUsdcBalance = useTokenBalance(AUSDC_BASE);
 
-  const isConfirmed = operation.callsStatus.data?.statusCode === 200;
+  const isConfirmed = operation.callsStatus?.status === 200;
   const isFailed =
-    operation.callsStatus.data?.statusCode !== undefined &&
-    operation.callsStatus.data.statusCode >= 400;
-  const isPending = operation.callsStatus.data?.statusCode === 100;
+    operation.callsStatus?.status !== undefined &&
+    operation.callsStatus.status >= 400;
+  const isPending =
+    operation.callsStatus?.status !== undefined &&
+    operation.callsStatus.status < 200;
 
   const disableSubmit =
     !operation.isAuxiliaryFundsSupported ||
     !amount ||
     amountInWei === 0n ||
-    operation.sendCalls.isPending;
+    operation.sendCallsStatus === 'pending';
 
   return (
     <Card className="h-fill flex w-full max-w-md flex-col justify-between text-xs">
@@ -123,9 +125,11 @@ export function AaveDepositMmPay() {
                 label="Capabilities"
               />
               <Status
-                isLoading={operation.sendCalls.isPending}
-                isSuccess={operation.sendCalls.isSuccess}
-                error={operation.sendCalls.error}
+                isLoading={operation.sendCallsStatus === 'pending'}
+                isSuccess={operation.sendCallsStatus === 'success'}
+                error={
+                  operation.sendCallsStatus === 'error' ? operation.error : null
+                }
                 label="Transaction"
               />
               <Status
@@ -133,10 +137,9 @@ export function AaveDepositMmPay() {
                 isSuccess={isConfirmed}
                 error={
                   isFailed
-                    ? (operation.callsStatus.error ??
-                      new Error(
-                        `Call failed (status: ${String(operation.callsStatus.data?.statusCode)})`,
-                      ))
+                    ? new Error(
+                        `Call failed (status: ${String(operation.callsStatus?.status)})`,
+                      )
                     : null
                 }
                 label="Confirmation"
@@ -149,7 +152,9 @@ export function AaveDepositMmPay() {
         <Button
           className="w-full"
           disabled={disableSubmit}
-          onClick={operation.handleSubmit}
+          onClick={() => {
+            operation.handleSubmit().catch(console.error);
+          }}
         >
           {getButtonLabel(operation)}
         </Button>
