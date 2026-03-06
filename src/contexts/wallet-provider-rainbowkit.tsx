@@ -8,8 +8,9 @@ import {
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiProvider } from 'wagmi';
 
-import { rootConfig } from '@/lib/wagmi';
 import { useTheme } from './theme-provider';
+
+import { rootConfig } from '@/lib/wagmi';
 
 const config = getDefaultConfig({
   ...rootConfig,

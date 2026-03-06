@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { DynamicWidget } from '@dynamic-labs/sdk-react-core';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi';
@@ -42,11 +43,12 @@ export function ConnectionStatus(props: { extendedDetails?: boolean }) {
               />
               <InfoRow
                 label="Address"
-                children={
-                  account.address?.substring(0, 6) +
-                  '...' +
-                  account.address?.substring(account.address?.length - 4)
-                }
+                children={`${account.address?.substring(
+                  0,
+                  6,
+                )}...${account.address?.substring(
+                  account.address?.length - 4,
+                )}`}
               />
               <InfoRow
                 label="Chain"
