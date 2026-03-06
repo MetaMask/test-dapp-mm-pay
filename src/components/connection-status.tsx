@@ -12,7 +12,7 @@ import { getChainLogo, getConnectorLogo } from '@/lib/utils';
 
 const EMBEDDED_CONNECTOR_IDS = ['dynamicwaas', 'privy'];
 
-export function ConnectionStatus() {
+export function ConnectionStatus(props: { extendedDetails?: boolean }) {
   const { selectedProvider } = useWalletProvider();
   const account = useAccount();
   const isEmbedded = EMBEDDED_CONNECTOR_IDS.some((id) =>
@@ -20,38 +20,47 @@ export function ConnectionStatus() {
   );
 
   return (
-    <Card className="h-[200px] w-2/3">
+    <Card className="w-full">
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>Connection Status</CardTitle>
+        <CardTitle>Status</CardTitle>
         {selectedProvider === WalletProvider.Privy && <PrivyConnector />}
         {selectedProvider === WalletProvider.Dynamic && <DynamicWidget />}
         {selectedProvider === WalletProvider.Rainbowkit && <ConnectButton />}
       </CardHeader>
-      <CardContent className="min-w-96">
-        {account.isConnected ? (
-          <div className="">
-            <InfoRow
-              label="Connector"
-              children={account.connector?.name}
-              imageURL={getConnectorLogo(account.connector?.name ?? '')}
-            />
-            <InfoRow
-              label="Wallet Type"
-              children={isEmbedded ? 'Embedded' : 'Injected'}
-            />
-            <InfoRow label="Address" children={account.address} />
-            <InfoRow
-              label="Chain"
-              children={account.chain?.name}
-              imageURL={getChainLogo(account.chain?.id ?? 0)}
-            />
-          </div>
-        ) : (
-          <div className="text-center text-2xl font-bold">
-            No wallet connected
-          </div>
-        )}
-      </CardContent>
+      {props.extendedDetails && (
+        <CardContent className="min-w-96">
+          {account.isConnected ? (
+            <div className="">
+              <InfoRow
+                label="Connector"
+                children={account.connector?.name}
+                imageURL={getConnectorLogo(account.connector?.name ?? '')}
+              />
+              <InfoRow
+                label="Wallet Type"
+                children={isEmbedded ? 'Embedded' : 'Injected'}
+              />
+              <InfoRow
+                label="Address"
+                children={
+                  account.address?.substring(0, 6) +
+                  '...' +
+                  account.address?.substring(account.address?.length - 4)
+                }
+              />
+              <InfoRow
+                label="Chain"
+                children={account.chain?.name}
+                imageURL={getChainLogo(account.chain?.id ?? 0)}
+              />
+            </div>
+          ) : (
+            <div className="text-center text-2xl font-bold">
+              No wallet connected
+            </div>
+          )}
+        </CardContent>
+      )}
     </Card>
   );
 }

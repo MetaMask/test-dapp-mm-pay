@@ -4,7 +4,6 @@ import { base } from 'viem/chains';
 
 import { useAaveDepositMmPay } from './use-aave-deposit-mmpay';
 
-import { ErrorContainer } from '@/components/error-container';
 import { InfoRow } from '@/components/info-row';
 import { Status } from '@/components/status';
 import { Button } from '@/components/ui/button';
@@ -159,7 +158,6 @@ export function AaveDepositMmPay() {
           {getButtonLabel(operation)}
         </Button>
       </CardFooter>
-      {operation.error && <ErrorContainer error={operation.error} />}
     </Card>
   );
 }

@@ -1,7 +1,6 @@
 import metamaskLogo from './assets/mm-logo.svg';
 import { AaveDepositMmPay } from './integrations/mmpay/aave-deposit-mmpay';
 
-import { AaveAccountStatus } from '@/components/aave-account-status';
 import { ConnectionStatus } from '@/components/connection-status';
 import { LogBox } from '@/components/log-box';
 import { ModeToggle } from '@/components/mode-toggle';
@@ -28,10 +27,7 @@ function AppMmPayContent() {
       <div className="flex flex-col items-center space-y-4">
         <WalletProviderRenderer>
           <div className="flex w-full max-w-md flex-col items-center space-y-4">
-            <div className="flex w-full justify-between gap-x-4">
-              <ConnectionStatus />
-              <AaveAccountStatus />
-            </div>
+            <ConnectionStatus />
             <AaveDepositMmPay />
             <LogBox />
           </div>

@@ -22,7 +22,7 @@ function sourceLabel(entry: LogEntry): string {
 
 export function LogBox() {
   const { entries, clear } = useLog();
-  const [showConsole, setShowConsole] = useState(true);
+  const [showConsole, setShowConsole] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const visible = showConsole
