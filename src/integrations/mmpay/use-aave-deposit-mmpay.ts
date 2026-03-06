@@ -1,9 +1,10 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { numberToHex, toHex } from 'viem';
 import { base } from 'viem/chains';
 import { useAccount, useCapabilities, useConnectorClient } from 'wagmi';
 
 import { COMMON_TOKENS } from '@/constants/tokens';
+import { useLog } from '@/hooks/use-log';
 import { encodeAaveSupplyCall } from '@/lib/aave';
 
 const USDC_BASE = COMMON_TOKENS[base.id]?.USDC;
@@ -37,6 +38,7 @@ export function useAaveDepositMmPay({ amount }: { amount: bigint }) {
     null,
   );
   const [error, setError] = useState<Error | null>(null);
+  const { log } = useLog();
 
   const capabilities = useCapabilities({
     query: {
@@ -47,6 +49,17 @@ export function useAaveDepositMmPay({ amount }: { amount: bigint }) {
   const isAuxiliaryFundsSupported = Boolean(
     capabilities.data?.[base.id]?.auxiliaryFunds?.supported,
   );
+
+  useEffect(() => {
+    if (!capabilities.isLoading && capabilities.data !== undefined) {
+      const supported = Boolean(
+        capabilities.data?.[base.id]?.auxiliaryFunds?.supported,
+      );
+      log(
+        `wallet_getCapabilities → auxiliaryFunds.supported: ${String(supported)}`,
+      );
+    }
+  }, [capabilities.isLoading]); // intentionally omit `log` and `capabilities.data` to run only when loading state changes
 
   const calls = useMemo(() => {
     if (!address || !USDC_BASE) {
@@ -69,6 +82,7 @@ export function useAaveDepositMmPay({ amount }: { amount: bigint }) {
             params: [id],
           });
           setCallsStatus(result);
+          log(`wallet_getCallsStatus → status: ${result.status}`);
 
           if (result.status >= 200) {
             return;
@@ -82,11 +96,15 @@ export function useAaveDepositMmPay({ amount }: { amount: bigint }) {
               ? caughtError
               : new Error('Failed to get call status'),
           );
+          log(
+            `wallet_getCallsStatus failed: ${caughtError instanceof Error ? caughtError.message : String(caughtError)}`,
+            'error',
+          );
         }
       };
       await poll();
     },
-    [],
+    [log],
   );
 
   const handleSubmit = useCallback(async () => {
@@ -94,6 +112,7 @@ export function useAaveDepositMmPay({ amount }: { amount: bigint }) {
       return;
     }
 
+    log('Submitting wallet_sendCalls...');
     setError(null);
     setSendCallsStatus('pending');
     setSendCallsId(null);
@@ -135,18 +154,23 @@ export function useAaveDepositMmPay({ amount }: { amount: bigint }) {
       const id =
         typeof result === 'string' ? result : (result as { id: string }).id;
       setSendCallsId(id);
+      log(`wallet_sendCalls accepted — id: ${id}`);
       setSendCallsStatus('success');
 
       await pollCallsStatus(id, target);
     } catch (caughtError) {
       setSendCallsStatus('error');
+      log(
+        `wallet_sendCalls failed: ${caughtError instanceof Error ? caughtError.message : String(caughtError)}`,
+        'error',
+      );
       setError(
         caughtError instanceof Error
           ? caughtError
           : new Error('wallet_sendCalls failed'),
       );
     }
-  }, [address, calls, amount, connectorClient, pollCallsStatus]);
+  }, [address, calls, amount, connectorClient, pollCallsStatus, log]);
 
   return {
     isAuxiliaryFundsSupported,
