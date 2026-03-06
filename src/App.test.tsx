@@ -86,17 +86,9 @@ vi.mock('wagmi', () => ({
     isLoading: false,
     error: null,
   }),
-  useSendCalls: () => ({
-    sendCalls: vi.fn(),
-    data: null,
-    isPending: false,
-    isSuccess: false,
-    error: null,
-  }),
-  useCallsStatus: () => ({
+  useConnectorClient: () => ({
     data: null,
     isLoading: false,
-    error: null,
   }),
 }));
 
