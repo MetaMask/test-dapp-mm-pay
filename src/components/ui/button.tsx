@@ -25,12 +25,15 @@ const buttonVariants = cva(
           'h-auto min-h-0 w-full items-start justify-start gap-3 whitespace-normal border-2 border-pay-border bg-pay-surface-muted/80 px-4 py-4 text-left font-normal text-pay-fg shadow-none hover:border-pay-border-strong hover:bg-pay-surface-muted hover:text-pay-fg',
         payGhostLink:
           'h-auto px-0 text-xs font-normal hover:bg-transparent hover:underline-offset-2',
+        payCard:
+          'rounded-lg border border-pay-border-strong bg-pay-surface-muted/50 text-pay-fg-muted shadow-none hover:bg-pay-surface-muted hover:text-pay-fg',
       },
       size: {
         default: 'h-9 px-4 py-2',
         sm: 'h-8 rounded-md px-3 text-xs',
         lg: 'h-10 rounded-md px-8',
-        icon: 'h-9 w-9',
+        icon: 'size-9',
+        payCardIcon: 'size-[38px]',
         payTile: 'h-auto min-h-0',
       },
     },

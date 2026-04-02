@@ -15,17 +15,15 @@ export function WalletProviderRenderer({
 
   return (
     <div>
-      {selectedProvider === WalletProvider.Dynamic && (
+      {/* {selectedProvider === WalletProvider.Dynamic && (
         <WalletProviderDynamic>{children}</WalletProviderDynamic>
       )}
 
       {selectedProvider === WalletProvider.Privy && (
         <WalletProviderPrivy>{children}</WalletProviderPrivy>
-      )}
+      )} */}
 
-      {selectedProvider === WalletProvider.Rainbowkit && (
-        <WalletProviderRainbowkit>{children}</WalletProviderRainbowkit>
-      )}
+      <WalletProviderRainbowkit>{children}</WalletProviderRainbowkit>
     </div>
   );
 }
