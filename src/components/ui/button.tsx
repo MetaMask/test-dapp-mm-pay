@@ -19,12 +19,19 @@ const buttonVariants = cva(
           'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
+        payPrimary:
+          'min-h-[2.75rem] w-full rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-3 text-white shadow-lg shadow-orange-500/20 hover:from-orange-600 hover:to-orange-700 focus-visible:ring-2 focus-visible:ring-pay-ring/50',
+        payAction:
+          'h-auto min-h-0 w-full items-start justify-start gap-3 whitespace-normal border-2 border-pay-border bg-pay-surface-muted/80 px-4 py-4 text-left font-normal text-pay-fg shadow-none hover:border-pay-border-strong hover:bg-pay-surface-muted hover:text-pay-fg',
+        payGhostLink:
+          'h-auto px-0 text-xs font-normal hover:bg-transparent hover:underline-offset-2',
       },
       size: {
         default: 'h-9 px-4 py-2',
         sm: 'h-8 rounded-md px-3 text-xs',
         lg: 'h-10 rounded-md px-8',
         icon: 'h-9 w-9',
+        payTile: 'h-auto min-h-0',
       },
     },
     defaultVariants: {

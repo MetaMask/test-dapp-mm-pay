@@ -7,13 +7,6 @@
 - Always prioritize reading documentation for libraries and packages before implementation
 - Consult official docs, GitHub READMEs, API references and official example repositories before making assumptions
 - When using new libraries or unfamiliar APIs, search for and reference their documentation
-- IMPORTANT: DO NOT HALLUCINATE!
-
-### Development Server
-
-- DO NOT start a development server regardless of changes made
-- A dev server is already running locally on port 5173
-- Never run `npm run dev`, `yarn dev`, or similar commands
 
 ### Constants Organization
 
@@ -21,15 +14,6 @@
 - Don't mix unrelated constants in the same file
 - Create separate constant files by domain/feature (e.g., `tokenConstants.ts`, `swapConstants.ts`)
 - Place constants files in appropriate directories (e.g., `src/constants/`)
-
-### Code Comments
-
-- Only add comments that succinctly describe what the code is doing
-- Prioritize comments for long functions with complex logic
-- For multi-step functions, add comments highlighting each major step
-- Variable names should be descriptive enough to minimize need for comments
-- Avoid obvious comments that just restate what the code clearly does
-- Don't add comments based on conversation context or that reference prompts that wouldn't make sense without context
 
 ### Blockchain Library Preferences
 
@@ -43,10 +27,3 @@
 - Keep components focused and single-responsibility
 - Separate business logic from UI components
 - Use TypeScript strictly - no `any` types without justification
-
-## Code Quality
-
-- Follow existing code style and patterns in the project
-- Use proper TypeScript types
-- Implement error handling appropriately
-- Write clean, readable code with meaningful variable names

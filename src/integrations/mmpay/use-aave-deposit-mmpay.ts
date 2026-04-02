@@ -137,7 +137,7 @@ export function useAaveDepositMmPay({ amount }: { amount: bigint }) {
             })),
             capabilities: {
               auxiliaryFunds: {
-                optional: true,
+                optional: false,
                 requiredAssets: [
                   {
                     address: USDC_BASE.address,

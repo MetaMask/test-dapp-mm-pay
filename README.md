@@ -7,6 +7,13 @@ Test Dapp for benchmarking Metamask Pay and its competitors.
 Currently it allows for supplying USDC to Aave on Base by spending WETH on Arbitrum via Relay.link and Biconomy.
 Route has been hardcoded for simplicity but could easily be adapted to support more tokens.
 
+### MetaMask Pay demo (`AppMmPay`)
+
+The default Vite entry (`src/main.tsx`) loads **MetaMask Pay Demo** — a two-column layout (user flow + developer logs) for exercising `wallet_sendCalls` / `wallet_getCallsStatus` on Aave (Base). Hyperliquid and Polymarket tiles are UI placeholders for now.
+
+- **Theme tokens:** demo chrome uses `[data-mm-pay-demo]` and Tailwind `pay-*` colors (see `src/index.css` and `tailwind.config.ts`). Adjust those variables to re-skin the demo without hunting through components.
+- **Motion:** the demo uses [Motion](https://motion.dev) for light transitions; primitives are shadcn/Radix where it helps accessibility (`Button`, `Input`, `Label`, `Badge`, `ScrollArea`, `Collapsible`, etc.).
+
 ## Contributing
 
 ### Setup

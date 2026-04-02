@@ -51,6 +51,36 @@ const config: Config = {
           '4': 'hsl(var(--chart-4))',
           '5': 'hsl(var(--chart-5))',
         },
+        pay: {
+          page: {
+            from: 'hsl(var(--pay-page-from) / <alpha-value>)',
+            via: 'hsl(var(--pay-page-via) / <alpha-value>)',
+            to: 'hsl(var(--pay-page-to) / <alpha-value>)',
+          },
+          surface: {
+            DEFAULT: 'hsl(var(--pay-surface) / <alpha-value>)',
+            muted: 'hsl(var(--pay-surface-muted) / <alpha-value>)',
+          },
+          border: {
+            DEFAULT: 'hsl(var(--pay-border) / <alpha-value>)',
+            strong: 'hsl(var(--pay-border-strong) / <alpha-value>)',
+          },
+          fg: {
+            DEFAULT: 'hsl(var(--pay-foreground) / <alpha-value>)',
+            muted: 'hsl(var(--pay-muted) / <alpha-value>)',
+            subtle: 'hsl(var(--pay-subtle) / <alpha-value>)',
+            section: 'hsl(var(--pay-section-label) / <alpha-value>)',
+            accent: 'hsl(var(--pay-accent) / <alpha-value>)',
+          },
+          accent: {
+            DEFAULT: 'hsl(var(--pay-accent-border) / <alpha-value>)',
+          },
+          ring: 'hsl(var(--pay-ring) / <alpha-value>)',
+          code: {
+            bg: 'hsl(var(--pay-code-bg) / <alpha-value>)',
+            border: 'hsl(var(--pay-code-border) / <alpha-value>)',
+          },
+        },
       },
     },
   },
