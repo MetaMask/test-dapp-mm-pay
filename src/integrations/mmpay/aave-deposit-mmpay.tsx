@@ -7,6 +7,7 @@ import { useAccount, useBalance } from 'wagmi';
 
 import { useAaveDepositMmPay } from './use-aave-deposit-mmpay';
 
+import aaveLogo from '@/assets/aave.svg';
 import {
   DeveloperPanel,
   type DeveloperPanelExecutionState,
@@ -306,9 +307,22 @@ export function AaveDepositMmPayUserPanel({
         <TokenFlowVisualization
           isActive={tokenFlowActive}
           currentStep={currentStep}
-          fromToken={nativeSymbol}
-          toToken={destinationSymbol}
-          destination={ACTION_NAME}
+          fromToken={{
+            symbol: nativeSymbol,
+            logoUrl: getTokenLogo({
+              address: `0x${'e'.repeat(40)}`,
+              chainId: 1,
+              symbol: nativeSymbol,
+            }),
+          }}
+          toToken={{
+            symbol: destinationSymbol,
+            logoUrl: DESTINATION_TOKEN ? getTokenLogo(DESTINATION_TOKEN) : '',
+          }}
+          destination={{
+            symbol: ACTION_NAME,
+            logoUrl: aaveLogo,
+          }}
         />
 
         {showProgress ? (

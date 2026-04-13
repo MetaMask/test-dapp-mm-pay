@@ -1,30 +1,33 @@
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
 
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+
+type TokenInfo = {
+  symbol: string;
+  logoUrl: string;
+};
+
 type TokenFlowVisualizationProps = {
   isActive: boolean;
   currentStep: number;
-  fromToken?: string;
-  toToken?: string;
-  destination?: string;
+  fromToken?: TokenInfo;
+  toToken?: TokenInfo;
+  destination?: TokenInfo;
 };
 
 export function TokenFlowVisualization({
   isActive,
   currentStep,
-  fromToken = 'ETH',
-  toToken = 'USDC',
-  destination = 'Aave',
+  fromToken = { symbol: 'ETH', logoUrl: '' },
+  toToken = { symbol: 'USDC', logoUrl: '' },
+  destination = { symbol: 'Aave', logoUrl: '' },
 }: TokenFlowVisualizationProps) {
   if (!isActive || currentStep < 2) {
     return null;
   }
 
-  const tokens = [
-    { symbol: fromToken, color: 'from-purple-500 to-purple-600' },
-    { symbol: toToken, color: 'from-blue-500 to-blue-600' },
-    { symbol: destination, color: 'from-green-500 to-green-600' },
-  ];
+  const tokens = [fromToken, toToken, destination];
 
   return (
     <div className="relative mb-4 flex h-16 items-center justify-center">
@@ -49,22 +52,18 @@ export function TokenFlowVisualization({
               >
                 {stepActive && !isPast ? (
                   <motion.div
-                    animate={{
-                      opacity: [0.3, 0.5, 0.3],
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                    }}
-                    className={`absolute inset-0 rounded-full bg-gradient-to-r ${token.color} blur-lg`}
+                    animate={{ opacity: [0.3, 0.5, 0.3] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="absolute inset-0 rounded-full bg-white/20 blur-lg"
                   />
                 ) : null}
 
-                <div
-                  className={`relative flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br ${token.color} text-xs font-bold text-white shadow-lg`}
-                >
-                  {token.symbol}
-                </div>
+                <Avatar className="relative h-12 w-12 shadow-lg ring-1 ring-white/10">
+                  <AvatarImage src={token.logoUrl} alt={token.symbol} />
+                  <AvatarFallback className="bg-pay-surface-muted text-xs font-bold text-pay-fg">
+                    {token.symbol.slice(0, 3)}
+                  </AvatarFallback>
+                </Avatar>
               </motion.div>
 
               {index < tokens.length - 1 ? (
