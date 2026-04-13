@@ -21,6 +21,8 @@ const badgeVariants = cva(
           'border-0 bg-orange-500/10 font-medium text-orange-400 hover:bg-orange-500/10',
         paySuccess:
           'border-0 bg-green-500/10 font-medium text-green-400 hover:bg-green-500/10',
+        payError:
+          'border-0 bg-red-500/10 font-medium text-red-400 hover:bg-red-500/10',
       },
     },
     defaultVariants: {

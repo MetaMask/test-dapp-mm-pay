@@ -1,4 +1,4 @@
-import { CheckCircle2, Clock, Loader2, RefreshCw } from 'lucide-react';
+import { AlertCircle, CheckCircle2, Clock, Loader2, RefreshCw } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 
@@ -8,7 +8,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { useLog, type LogEntry } from '@/hooks/use-log';
 import { cn } from '@/lib/utils';
 
-type ExecutionStatus = 'pending' | 'active' | 'success';
+type ExecutionStatus = 'pending' | 'active' | 'success' | 'error';
 
 export type DeveloperPanelExecutionState = {
   capabilitiesLoading: boolean;
@@ -61,7 +61,9 @@ function getExecutionStepStatuses(
 
   let execute: ExecutionStatus = 'pending';
   if (state.sendCallsStatus === 'success') {
-    if (state.callsStatus && state.callsStatus.status >= 200) {
+    if (state.callsStatus && state.callsStatus.status >= 400) {
+      execute = 'error';
+    } else if (state.callsStatus && state.callsStatus.status >= 200) {
       execute = 'success';
     } else {
       execute = 'active';
@@ -76,24 +78,18 @@ type DeveloperPanelProps = {
 };
 
 function stepTitleClass(status: ExecutionStatus): string {
-  if (status === 'success') {
-    return 'text-green-400';
-  }
-  if (status === 'active') {
-    return 'text-orange-400';
-  }
+  if (status === 'success') return 'text-green-400';
+  if (status === 'active') return 'text-orange-400';
+  if (status === 'error') return 'text-red-400';
   return 'text-pay-fg-section';
 }
 
 function executionBadgeVariant(
   status: ExecutionStatus,
-): 'payPending' | 'payActive' | 'paySuccess' {
-  if (status === 'success') {
-    return 'paySuccess';
-  }
-  if (status === 'active') {
-    return 'payActive';
-  }
+): 'payPending' | 'payActive' | 'paySuccess' | 'payError' {
+  if (status === 'success') return 'paySuccess';
+  if (status === 'active') return 'payActive';
+  if (status === 'error') return 'payError';
   return 'payPending';
 }
 
@@ -105,6 +101,9 @@ function StepStatusIcon({ status }: { status: ExecutionStatus }) {
     return (
       <Loader2 className="h-4 w-4 flex-shrink-0 animate-spin text-orange-400" />
     );
+  }
+  if (status === 'error') {
+    return <AlertCircle className="h-4 w-4 flex-shrink-0 text-red-400" />;
   }
   return <Clock className="h-4 w-4 flex-shrink-0 text-pay-border-strong" />;
 }

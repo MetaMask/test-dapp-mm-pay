@@ -91,6 +91,15 @@ export function useAaveDepositMmPay({ amount }: { amount: bigint }) {
             log(`wallet_getCallsStatus → status: ${result.status}`, level);
           }
 
+          if (result.status >= 400) {
+            setError(
+              new Error(
+                `Transaction failed with status ${result.status}`,
+              ),
+            );
+            return;
+          }
+
           if (result.status >= 200) {
             return;
           }

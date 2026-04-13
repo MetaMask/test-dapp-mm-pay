@@ -1,6 +1,6 @@
 import { CheckCircle, X } from 'lucide-react';
 import { motion } from 'motion/react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { parseUnits } from 'viem';
 import { base } from 'viem/chains';
 import { useAccount, useBalance } from 'wagmi';
@@ -51,6 +51,10 @@ function deriveMmpayDemoStep(operation: {
     return { currentStep: 3, isComplete: false };
   }
 
+  if (callsStatus && callsStatus.status >= 400) {
+    return { currentStep: 0, isComplete: false };
+  }
+
   if (callsStatus && callsStatus.status >= 200) {
     return { currentStep: 4, isComplete: true };
   }
@@ -98,6 +102,21 @@ export function useAaveMmPayDepositFlow(): AaveMmPayDepositFlow {
 
   const nativeSymbol = nativeBalance?.symbol ?? 'ETH';
 
+  // Refetch aUSDC balance once the tx is confirmed
+  const hasRefetchedRef = useRef(false);
+  useEffect(() => {
+    if (operation.sendCallsStatus === 'pending') {
+      hasRefetchedRef.current = false;
+    }
+  }, [operation.sendCallsStatus]);
+  useEffect(() => {
+    const status = operation.callsStatus?.status;
+    if (!hasRefetchedRef.current && status !== undefined && status >= 200) {
+      hasRefetchedRef.current = true;
+      aUsdcBalance.refetch().catch(console.error);
+    }
+  }, [operation.callsStatus?.status, aUsdcBalance.refetch]);
+
   const executionForDeveloperPanel = useMemo(
     (): DeveloperPanelExecutionState => ({
       capabilitiesLoading: operation.capabilitiesLoading,
@@ -141,6 +160,26 @@ export function AaveDepositMmPayUserPanel({
   nativeSymbol,
 }: UserPanelProps) {
   const { currentStep, isComplete } = deriveMmpayDemoStep(operation);
+
+  // Flash the aUSDC balance row when the value changes after the query is loaded
+  const [balanceFlash, setBalanceFlash] = useState(false);
+  const prevAUsdcBalance = useRef<string | undefined>(undefined);
+  const aUsdcBalanceInitialized = useRef(false);
+  useEffect(() => {
+    if (!aUsdcBalance.isSuccess) return;
+    if (!aUsdcBalanceInitialized.current) {
+      aUsdcBalanceInitialized.current = true;
+      prevAUsdcBalance.current = aUsdcBalance.balanceDecimal;
+      return;
+    }
+    if (prevAUsdcBalance.current !== aUsdcBalance.balanceDecimal) {
+      prevAUsdcBalance.current = aUsdcBalance.balanceDecimal;
+      setBalanceFlash(true);
+      const t = setTimeout(() => setBalanceFlash(false), 2000);
+      return () => clearTimeout(t);
+    }
+  }, [aUsdcBalance.balanceDecimal, aUsdcBalance.isSuccess]);
+
   const isExecuting =
     operation.sendCallsStatus === 'pending' ||
     (operation.sendCallsStatus === 'success' &&
@@ -233,35 +272,46 @@ export function AaveDepositMmPayUserPanel({
           </div>
         </div>
 
-        <div className="mb-4 space-y-2.5 rounded-lg border border-pay-border-strong bg-pay-surface-muted/50 p-3">
-          <div>
-            <p className="mb-1.5 text-sm text-pay-fg-muted">You need:</p>
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-pay-fg">
-                {amount || '0'} {destinationSymbol} on {NETWORK_LABEL}
+        <div className="mb-4 grid grid-cols-3 divide-x divide-pay-border-strong rounded-lg border border-pay-border-strong bg-pay-surface-muted/50">
+          <div className="px-3 py-2.5">
+            <p className="mb-1 text-xs text-pay-fg-muted">You need</p>
+            <div className="flex items-center gap-1.5">
+              <span className="text-sm text-pay-fg">
+                {amount || '0'} {destinationSymbol}
               </span>
               {needsMoreThanHave ? (
-                <X className="h-4 w-4 shrink-0 text-red-400" aria-hidden />
+                <X className="h-3.5 w-3.5 shrink-0 text-red-400" aria-hidden />
               ) : null}
             </div>
           </div>
-          <div className="border-t border-pay-border-strong pt-2.5">
-            <p className="mb-1.5 text-sm text-pay-fg-muted">You have:</p>
-            <div className="flex items-center justify-between">
-              <span className="text-pay-fg">
-                {usdcBalance.balanceDecimal} {destinationSymbol} on{' '}
-                {NETWORK_LABEL}
-              </span>
-            </div>
+          <div className="px-3 py-2.5">
+            <p className="mb-1 text-xs text-pay-fg-muted">You have</p>
+            <span className="text-sm text-pay-fg">
+              {usdcBalance.balanceDecimal} {destinationSymbol}
+            </span>
           </div>
-          <div className="border-t border-pay-border-strong pt-2.5">
-            <p className="mb-1.5 text-sm text-pay-fg-muted">
-              aUSDC on {NETWORK_LABEL}
-            </p>
-            <div className="flex items-center justify-between text-sm text-pay-fg">
-              <span>{aUsdcBalance.balanceDecimal} aUSDC</span>
-            </div>
-          </div>
+          <motion.div
+            className="px-3 py-2.5"
+            animate={
+              balanceFlash
+                ? { backgroundColor: ['rgba(74,222,128,0.15)', 'rgba(74,222,128,0)'] }
+                : { backgroundColor: 'rgba(74,222,128,0)' }
+            }
+            transition={{ duration: 1.8, ease: 'easeOut' }}
+          >
+            <p className="mb-1 text-xs text-pay-fg-muted">aUSDC earned</p>
+            <motion.span
+              animate={
+                balanceFlash
+                  ? { scale: [1, 1.06, 1], color: ['#4ade80', 'currentColor'] }
+                  : {}
+              }
+              transition={{ duration: 0.4 }}
+              className="inline-block origin-left text-sm text-pay-fg"
+            >
+              {aUsdcBalance.balanceDecimal}
+            </motion.span>
+          </motion.div>
         </div>
 
         <motion.div
