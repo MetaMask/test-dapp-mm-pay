@@ -75,6 +75,8 @@ export function useAaveDepositMmPay({ amount }: { amount: bigint }) {
 
   const pollCallsStatus = useCallback(
     async (id: string, provider: { request: (args: any) => Promise<any> }) => {
+      let lastLoggedStatus: number | null = null;
+
       const poll = async () => {
         try {
           const result: CallsStatusResponse = await provider.request({
@@ -82,7 +84,12 @@ export function useAaveDepositMmPay({ amount }: { amount: bigint }) {
             params: [id],
           });
           setCallsStatus(result);
-          log(`wallet_getCallsStatus → status: ${result.status}`);
+
+          if (result.status !== lastLoggedStatus) {
+            lastLoggedStatus = result.status;
+            const level = result.status >= 400 ? 'error' : 'log';
+            log(`wallet_getCallsStatus → status: ${result.status}`, level);
+          }
 
           if (result.status >= 200) {
             return;

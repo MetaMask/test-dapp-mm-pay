@@ -1,4 +1,4 @@
-import { CheckCircle2, Clock, Loader2 } from 'lucide-react';
+import { CheckCircle2, Clock, Loader2, RefreshCw } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 
@@ -127,10 +127,18 @@ const executionStepsConfig = [
   },
 ] as const;
 
+function isPolling(execution: DeveloperPanelExecutionState): boolean {
+  return (
+    execution.sendCallsStatus === 'success' &&
+    (execution.callsStatus === null || execution.callsStatus.status < 200)
+  );
+}
+
 export function DeveloperPanel({ execution }: DeveloperPanelProps) {
   const { entries, clear } = useLog();
   const [showConsole, setShowConsole] = useState(false);
   const logsEndRef = useRef<HTMLDivElement>(null);
+  const polling = isPolling(execution);
 
   const visible = showConsole
     ? entries
@@ -252,6 +260,16 @@ export function DeveloperPanel({ execution }: DeveloperPanelProps) {
                     <span>{entry.message}</span>
                   </motion.div>
                 ))}
+                {polling && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="flex items-center gap-1.5 pt-1 text-orange-400"
+                  >
+                    <RefreshCw className="h-3 w-3 animate-spin" />
+                    <span>polling wallet_getCallsStatus…</span>
+                  </motion.div>
+                )}
                 <div ref={logsEndRef} />
               </div>
             )}
