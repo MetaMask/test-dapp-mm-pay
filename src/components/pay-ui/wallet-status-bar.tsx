@@ -1,4 +1,3 @@
-import { DynamicWidget } from '@dynamic-labs/sdk-react-core';
 import {
   ConnectButton,
   useAccountModal,
@@ -8,10 +7,7 @@ import { motion } from 'motion/react';
 import { formatUnits } from 'viem';
 import { useAccount, useBalance } from 'wagmi';
 
-import { PrivyConnector } from '@/components/privy-connector';
 import { CHAIN_META } from '@/constants/chains';
-import { WalletProvider } from '@/constants/wallets';
-import { useWalletProvider } from '@/contexts/wallet-provider-context';
 
 function getChainIcon(chainId: number | undefined) {
   if (!chainId) {
@@ -110,7 +106,6 @@ function RainbowKitConnectedCards({
 }
 
 export function WalletStatusBar() {
-  const { selectedProvider } = useWalletProvider();
   const { address, isConnected, chain } = useAccount();
   const { data: balance, isLoading: balanceLoading } = useBalance({ address });
 
@@ -128,17 +123,7 @@ export function WalletStatusBar() {
           balanceLoading={balanceLoading}
         />
       ) : (
-        <div className="flex flex-wrap items-center justify-end gap-2">
-          {selectedProvider === WalletProvider.Privy ? (
-            <PrivyConnector />
-          ) : null}
-          {selectedProvider === WalletProvider.Dynamic ? (
-            <DynamicWidget />
-          ) : null}
-          {selectedProvider === WalletProvider.Rainbowkit ? (
-            <ConnectButton />
-          ) : null}
-        </div>
+        <ConnectButton />
       )}
     </motion.div>
   );

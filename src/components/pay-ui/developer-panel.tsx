@@ -1,4 +1,10 @@
-import { AlertCircle, CheckCircle2, Clock, Loader2, RefreshCw } from 'lucide-react';
+import {
+  AlertCircle,
+  CheckCircle2,
+  Clock,
+  Loader2,
+  RefreshCw,
+} from 'lucide-react';
 import { motion } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 
@@ -78,18 +84,30 @@ type DeveloperPanelProps = {
 };
 
 function stepTitleClass(status: ExecutionStatus): string {
-  if (status === 'success') return 'text-green-400';
-  if (status === 'active') return 'text-orange-400';
-  if (status === 'error') return 'text-red-400';
+  if (status === 'success') {
+    return 'text-green-400';
+  }
+  if (status === 'active') {
+    return 'text-orange-400';
+  }
+  if (status === 'error') {
+    return 'text-red-400';
+  }
   return 'text-pay-fg-section';
 }
 
 function executionBadgeVariant(
   status: ExecutionStatus,
 ): 'payPending' | 'payActive' | 'paySuccess' | 'payError' {
-  if (status === 'success') return 'paySuccess';
-  if (status === 'active') return 'payActive';
-  if (status === 'error') return 'payError';
+  if (status === 'success') {
+    return 'paySuccess';
+  }
+  if (status === 'active') {
+    return 'payActive';
+  }
+  if (status === 'error') {
+    return 'payError';
+  }
   return 'payPending';
 }
 

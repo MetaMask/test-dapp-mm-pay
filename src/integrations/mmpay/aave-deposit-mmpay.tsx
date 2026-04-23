@@ -166,7 +166,9 @@ export function AaveDepositMmPayUserPanel({
   const prevAUsdcBalance = useRef<string | undefined>(undefined);
   const aUsdcBalanceInitialized = useRef(false);
   useEffect(() => {
-    if (!aUsdcBalance.isSuccess) return;
+    if (!aUsdcBalance.isSuccess) {
+      return;
+    }
     if (!aUsdcBalanceInitialized.current) {
       aUsdcBalanceInitialized.current = true;
       prevAUsdcBalance.current = aUsdcBalance.balanceDecimal;
@@ -294,7 +296,12 @@ export function AaveDepositMmPayUserPanel({
             className="px-3 py-2.5"
             animate={
               balanceFlash
-                ? { backgroundColor: ['rgba(74,222,128,0.15)', 'rgba(74,222,128,0)'] }
+                ? {
+                    backgroundColor: [
+                      'rgba(74,222,128,0.15)',
+                      'rgba(74,222,128,0)',
+                    ],
+                  }
                 : { backgroundColor: 'rgba(74,222,128,0)' }
             }
             transition={{ duration: 1.8, ease: 'easeOut' }}

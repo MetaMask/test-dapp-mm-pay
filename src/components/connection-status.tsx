@@ -1,32 +1,21 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import { DynamicWidget } from '@dynamic-labs/sdk-react-core';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi';
 
 import { InfoRow } from './info-row';
-import { PrivyConnector } from './privy-connector';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 
-import { WalletProvider } from '@/constants/wallets';
-import { useWalletProvider } from '@/contexts/wallet-provider-context';
-import { getChainLogo, getConnectorLogo } from '@/lib/utils';
-
-const EMBEDDED_CONNECTOR_IDS = ['dynamicwaas', 'privy'];
+import rainbowkitIcon from '@/assets/rainbowkit-icon.svg';
+import { getChainLogo } from '@/lib/utils';
 
 export function ConnectionStatus(props: { extendedDetails?: boolean }) {
-  const { selectedProvider } = useWalletProvider();
   const account = useAccount();
-  const isEmbedded = EMBEDDED_CONNECTOR_IDS.some((id) =>
-    (account.connector?.id ?? '').includes(id),
-  );
 
   return (
     <Card className="w-full">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Status</CardTitle>
-        {selectedProvider === WalletProvider.Privy && <PrivyConnector />}
-        {selectedProvider === WalletProvider.Dynamic && <DynamicWidget />}
-        {selectedProvider === WalletProvider.Rainbowkit && <ConnectButton />}
+        <ConnectButton />
       </CardHeader>
       {props.extendedDetails && (
         <CardContent className="min-w-96">
@@ -35,12 +24,9 @@ export function ConnectionStatus(props: { extendedDetails?: boolean }) {
               <InfoRow
                 label="Connector"
                 children={account.connector?.name}
-                imageURL={getConnectorLogo(account.connector?.name ?? '')}
+                imageURL={rainbowkitIcon}
               />
-              <InfoRow
-                label="Wallet Type"
-                children={isEmbedded ? 'Embedded' : 'Injected'}
-              />
+              <InfoRow label="Wallet Type" children="Injected" />
               <InfoRow
                 label="Address"
                 children={`${account.address?.substring(

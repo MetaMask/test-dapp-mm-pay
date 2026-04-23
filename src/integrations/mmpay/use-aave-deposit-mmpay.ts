@@ -93,9 +93,7 @@ export function useAaveDepositMmPay({ amount }: { amount: bigint }) {
 
           if (result.status >= 400) {
             setError(
-              new Error(
-                `Transaction failed with status ${result.status}`,
-              ),
+              new Error(`Transaction failed with status ${result.status}`),
             );
             return;
           }

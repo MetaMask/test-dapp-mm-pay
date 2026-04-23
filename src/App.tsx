@@ -2,13 +2,11 @@ import metamaskLogo from './assets/mm-logo.svg';
 import { AaveAccountStatus } from './components/aave-account-status';
 import { ConnectionStatus } from './components/connection-status';
 import { WalletProviderRenderer } from './components/wallet-provider-renderer';
-import { WalletProviderSelector } from './components/wallet-provider-selector';
 import { ActionCards } from './integrations/action-cards';
 
 import { ModeToggle } from '@/components/mode-toggle';
 import { AaveProvider } from '@/contexts/aave-provider';
 import { ThemeProvider } from '@/contexts/theme-provider';
-import { WalletProviderContextProvider } from '@/contexts/wallet-provider-context';
 
 function AppContent() {
   return (
@@ -19,7 +17,6 @@ function AppContent() {
           Pay Test DApp
         </h1>
         <div className="flex items-center gap-x-2">
-          <WalletProviderSelector />
           <ModeToggle />
         </div>
       </div>
@@ -41,11 +38,9 @@ function AppContent() {
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <WalletProviderContextProvider>
-        <AaveProvider>
-          <AppContent />
-        </AaveProvider>
-      </WalletProviderContextProvider>
+      <AaveProvider>
+        <AppContent />
+      </AaveProvider>
     </ThemeProvider>
   );
 }
