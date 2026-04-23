@@ -167,19 +167,20 @@ export function AaveDepositMmPayUserPanel({
   const aUsdcBalanceInitialized = useRef(false);
   useEffect(() => {
     if (!aUsdcBalance.isSuccess) {
-      return;
+      return undefined;
     }
     if (!aUsdcBalanceInitialized.current) {
       aUsdcBalanceInitialized.current = true;
       prevAUsdcBalance.current = aUsdcBalance.balanceDecimal;
-      return;
+      return undefined;
     }
     if (prevAUsdcBalance.current !== aUsdcBalance.balanceDecimal) {
       prevAUsdcBalance.current = aUsdcBalance.balanceDecimal;
       setBalanceFlash(true);
-      const t = setTimeout(() => setBalanceFlash(false), 2000);
-      return () => clearTimeout(t);
+      const timer = setTimeout(() => setBalanceFlash(false), 2000);
+      return () => clearTimeout(timer);
     }
+    return undefined;
   }, [aUsdcBalance.balanceDecimal, aUsdcBalance.isSuccess]);
 
   const isExecuting =
