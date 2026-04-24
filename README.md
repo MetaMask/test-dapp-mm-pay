@@ -4,12 +4,7 @@ Test Dapp for benchmarking Metamask Pay and its competitors.
 
 ## Usage
 
-Currently it allows for supplying USDC to Aave on Base by spending WETH on Arbitrum via Relay.link and Biconomy.
-Route has been hardcoded for simplicity but could easily be adapted to support more tokens.
-
-### MetaMask Pay demo (`AppMmPay`)
-
-The default Vite entry (`src/main.tsx`) loads **MetaMask Pay Demo** — a two-column layout (user flow + developer logs) for exercising `wallet_sendCalls` / `wallet_getCallsStatus` on Aave (Base). Hyperliquid and Polymarket tiles are UI placeholders for now.
+The default Vite entry (`src/main.tsx`) loads the **MetaMask Pay Demo** (`AppMmPay`) — a two-column layout (user flow + developer logs) for exercising `wallet_sendCalls` / `wallet_getCallsStatus` against Aave on Base. Hyperliquid and Polymarket tiles are UI placeholders for now.
 
 - **Theme tokens:** demo chrome uses `[data-mm-pay-demo]` and Tailwind `pay-*` colors (see `src/index.css` and `tailwind.config.ts`). Adjust those variables to re-skin the demo without hunting through components.
 - **Motion:** the demo uses [Motion](https://motion.dev) for light transitions; primitives are shadcn/Radix where it helps accessibility (`Button`, `Input`, `Label`, `Badge`, `ScrollArea`, `Collapsible`, etc.).
@@ -22,12 +17,23 @@ The default Vite entry (`src/main.tsx`) loads **MetaMask Pay Demo** — a two-co
   - If you are using [nvm](https://github.com/creationix/nvm#installation) (recommended) running `nvm install` will install the latest version and running `nvm use` will automatically choose the right node version for you.
 - Install [Yarn](https://yarnpkg.com) v4 via [Corepack](https://github.com/nodejs/corepack?tab=readme-ov-file#how-to-install)
 - Run `yarn install` to install dependencies and run any required post-install scripts
-- Copy `.env.example` to `.env` and setup
+- Copy `.env.example` to `.env` and fill in the required values (see [Environment variables](#environment-variables) below)
 - Run `yarn dev` to spin up the app
+
+### Environment variables
+
+| Variable | Required | Where to get it |
+| --- | --- | --- |
+| `VITE_INFURA_KEY` | Yes | [infura.io](https://infura.io) — used as the default RPC transport for wagmi chains. |
+| `VITE_WALLETCONNECT_PROJECT_ID` | Yes | [cloud.reown.com](https://cloud.reown.com) — required for RainbowKit / WalletConnect wallet connections. Without it, the WalletConnect option silently fails. |
 
 ### Testing and Linting
 
-Run `yarn lint` to run the linter, or run `yarn lint:fix` to run the linter and fix any automatically fixable issues.
+- `yarn test` — run the test suite once (Vitest).
+- `yarn test:watch` — re-run tests on change.
+- `yarn test:ui` — Vitest UI.
+- `yarn lint` — run ESLint + Prettier checks.
+- `yarn lint:fix` — auto-fix lint/format issues.
 
 ### Release & Publishing
 
