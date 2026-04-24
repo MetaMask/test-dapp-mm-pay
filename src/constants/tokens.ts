@@ -1,4 +1,3 @@
-import { mcWeth } from '@biconomy/abstractjs';
 import type { Address } from 'viem';
 
 import type { Token } from '@/types/swap';
@@ -123,12 +122,4 @@ export const COMMON_TOKENS: Record<number, Record<string, Token>> = {
 
 export const KNOWN_LOGOS = {
   weth: 'https://raw.githubusercontent.com/SmolDapp/tokenAssets/main/tokens/42161/0x82af49447d8a07e3bd95bd0d56f35241523fbab1/logo-alt-128.png',
-};
-
-// TODO: Temp hack to get WETH address on all chains
-export const mcWETH = mcWeth;
-mcWETH.addressOn = (chainId: number) => {
-  const address = COMMON_TOKENS[chainId]?.WETH?.address;
-
-  return address as `0x${string}`;
 };
