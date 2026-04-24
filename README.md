@@ -22,10 +22,10 @@ The default Vite entry (`src/main.tsx`) loads the **MetaMask Pay Demo** (`AppMmP
 
 ### Environment variables
 
-| Variable | Required | Where to get it |
-| --- | --- | --- |
-| `VITE_INFURA_KEY` | Yes | [infura.io](https://infura.io) — used as the default RPC transport for wagmi chains. |
-| `VITE_WALLETCONNECT_PROJECT_ID` | Yes | [cloud.reown.com](https://cloud.reown.com) — required for RainbowKit / WalletConnect wallet connections. Without it, the WalletConnect option silently fails. |
+| Variable                        | Required | Where to get it                                                                                                                                               |
+| ------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `VITE_INFURA_KEY`               | Yes      | [infura.io](https://infura.io) — used as the default RPC transport for wagmi chains.                                                                          |
+| `VITE_WALLETCONNECT_PROJECT_ID` | Yes      | [cloud.reown.com](https://cloud.reown.com) — required for RainbowKit / WalletConnect wallet connections. Without it, the WalletConnect option silently fails. |
 
 ### Testing and Linting
 
