@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- MetaMask Pay integration: `AppMmPay` demo exercising `wallet_sendCalls` / `wallet_getCallsStatus` against Aave on Base, with a two-column user-flow + developer-logs layout ([#27](https://github.com/MetaMask/test-dapp-mm-pay/pull/27))
+- RainbowKit as the default wallet provider ([#19](https://github.com/MetaMask/test-dapp-mm-pay/pull/19))
+
+### Changed
+
+- Theme tokens driven by `[data-mm-pay-demo]` + Tailwind `pay-*` colors; demo uses Motion for transitions and shadcn/Radix primitives
+- `.env.example`: replaced `VITE_DYNAMIC_ENVIRONMENT_ID` / `VITE_PRIVY_APP_ID` with `VITE_WALLETCONNECT_PROJECT_ID`
+
+### Removed
+
+- Dynamic.xyz and Privy wallet providers (superseded by RainbowKit)
+- Relay.link + Biconomy cross-chain routing scaffolding
+
 ## [0.0.6]
 
 ### Fixed
